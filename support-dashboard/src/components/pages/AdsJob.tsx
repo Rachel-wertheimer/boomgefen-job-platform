@@ -1,0 +1,330 @@
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../app/store";
+import { registerUserAndCreateAd } from "../../app/slice/adsSlice";
+import { FaSpinner } from "react-icons/fa"; // אייקון לטעינה
+
+// --- פונקציית עזר לבדיקת גודל מסך ---
+const useWindowSize = () => {
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return windowSize;
+};
+
+// --- הגדרת אנימציות ---
+const AnimationStyles = () => (
+  <style>
+    {`
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+    `}
+  </style>
+);
+
+const CreateAdForm = () => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [company, setCompany] = useState("");
+  const [type, setType] = useState("");
+  const [goal, setGoal] = useState("");
+  const [description, setDescription] = useState("");
+
+  const dispatch: AppDispatch = useDispatch();
+  const { loading, error } = useSelector((state: RootState) => state.ads);
+
+  // --- State לאפקט הפוקוס ---
+  const [focusState, setFocusState] = useState<Record<string, boolean>>({});
+
+  const { width } = useWindowSize();
+  const isMobile = width <= 768; // נקודת שבירה לטפסים
+
+  // --- פלטת צבעים אחידה ---
+  const colors = {
+    primary: "#6d44b8",
+    primaryHover: "#5a379a",
+    danger: "#fa5252",
+    lightGradient: "linear-gradient(135deg, #f5f7fa, #e6e8ff)",
+    textDark: "#212529",
+    textMedium: "#555",
+    borderColor: "#ced4da",
+  };
+
+  // --- פונקציות לניהול פוקוס ---
+  const handleFocus = (field: string) => setFocusState(prev => ({ ...prev, [field]: true }));
+  const handleBlur = (field: string) => setFocusState(prev => ({ ...prev, [field]: false }));
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!fullName || !email || !phone || !company || !type || !goal || !description) {
+      alert("אנא מלא את כל השדות");
+      return;
+    }
+    const userData = { full_name: fullName, email, phone };
+    const adData = { company, type, goal, description };
+    dispatch(registerUserAndCreateAd({ userData, adData }));
+
+    // ניקוי הטופס (רק אם ההרשמה הצליחה - אולי כדאי לטפל בזה ב-Redux)
+    // בינתיים משאיר את הלוגיקה המקורית
+    setFullName("");
+    setEmail("");
+    setPhone("");
+    setCompany("");
+    setType("");
+    setGoal("");
+    setDescription("");
+  };
+
+  // --- אובייקט הסגנונות הראשי ---
+  const styles: Record<string, React.CSSProperties> = {
+    pageContainer: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      width: "100%",
+      minHeight: "100vh",
+      background: colors.lightGradient,
+      padding: isMobile ? "90px 15px 30px 15px" : "100px 30px 30px 30px",
+      boxSizing: "border-box",
+      direction: "rtl",
+    },
+    formCard: {
+      width: "100%",
+      maxWidth: "900px",
+      backgroundColor: "#ffffff",
+      borderRadius: "20px",
+      padding: isMobile ? "24px" : "40px",
+      boxShadow: "0 10px 30px rgba(0, 0, 0, 0.08)",
+      boxSizing: "border-box",
+      animation: "fadeIn 0.5s ease-out forwards",
+    },
+    formHeader: {
+      textAlign: "center",
+      marginBottom: "30px",
+    },
+    title: {
+      fontSize: isMobile ? "2rem" : "2.5rem",
+      color: colors.primary, // צבע ראשי
+      fontWeight: 700,
+      margin: 0,
+    },
+    subtitle: {
+      fontSize: isMobile ? "1rem" : "1.1rem",
+      color: colors.textMedium,
+      marginTop: "10px",
+      lineHeight: 1.6,
+    },
+    formGrid: {
+      display: "grid",
+      // --- פריסה רספונסיבית: 2 עמודות בדסקטופ, 1 במובייל ---
+      gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+      gap: "24px",
+    },
+    formGroup: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "8px",
+    },
+    formGroupFullWidth: {
+      // --- גורם לשדה לתפוס 2 עמודות ---
+      gridColumn: "1 / -1",
+    },
+    label: {
+      fontSize: "1rem",
+      fontWeight: 600,
+      color: colors.textDark,
+    },
+    // --- סגנון בסיס לאינפוט ---
+    inputBase: {
+      width: "100%",
+      padding: "14px 16px",
+      fontSize: "1rem",
+      borderRadius: "8px",
+      border: `1px solid ${colors.borderColor}`,
+      boxSizing: "border-box",
+      transition: "border-color 0.3s, box-shadow 0.3s",
+      outline: "none",
+      fontFamily: "inherit",
+    },
+    // --- סגנון לאינפוט בפוקוס ---
+    inputFocus: {
+      borderColor: colors.primary,
+      boxShadow: `0 0 0 3px ${colors.primary}30`,
+    },
+    textareaBase: {
+      width: "100%",
+      minHeight: "160px",
+      resize: "vertical",
+      padding: "14px 16px",
+      fontSize: "1rem",
+      borderRadius: "8px",
+      border: `1px solid ${colors.borderColor}`,
+      boxSizing: "border-box",
+      fontFamily: "inherit",
+    }
+    ,    
+
+    buttonContainer: {
+      paddingTop: '24px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '15px',
+    },
+    submitBtn: {
+      padding: "14px 30px",
+      fontSize: "17px",
+      borderRadius: "30px",
+      cursor: "pointer",
+      textAlign: "center",
+      fontWeight: "bold",
+      border: `2px solid ${colors.primary}`,
+      transition: "all 0.3s ease",
+      backgroundColor: colors.primary,
+      color: "white",
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      minWidth: '180px',
+      justifyContent: 'center',
+    },
+    submitBtnHover: {
+      backgroundColor: colors.primaryHover,
+      borderColor: colors.primaryHover,
+    },
+    submitBtnDisabled: {
+      opacity: 0.6,
+      cursor: "not-allowed",
+    },
+    loadingSpinner: {
+      animation: 'spin 1s linear infinite',
+    },
+    errorMessage: {
+      color: colors.danger,
+      fontWeight: 600,
+      textAlign: 'center',
+      fontSize: '0.95rem',
+    }
+  };
+
+  // --- שילוב סגנונות דינמיים ---
+  const [isSubmitHover, setIsSubmitHover] = useState(false);
+  const isDisabled = loading;
+
+  const submitBtnStyle = {
+    ...styles.submitBtn,
+    ...(isDisabled ? styles.submitBtnDisabled : (isSubmitHover ? styles.submitBtnHover : {}))
+  };
+
+  // פונקציה לקבלת סגנון אינפוט דינמי
+  const getInputStyle = (name: string) => ({
+    ...styles.inputBase,
+    ...(focusState[name] ? styles.inputFocus : {})
+  });
+
+  // פונקציה לקבלת סגנון טקסטאריאה דינמי
+  const getTextareaStyle = (name: string) => ({
+    ...styles.textareaBase,
+    ...(focusState[name] ? styles.inputFocus : {})
+  });
+
+
+  return (
+    <div style={styles.pageContainer}>
+      <AnimationStyles />
+      <div style={styles.formCard}>
+        <div style={styles.formHeader}>
+          <h1 style={styles.title}>יצירת מודעה חדשה</h1>
+          <p style={styles.subtitle}>מלאו את הפרטים הבאים כדי ליצור מודעה ולהתחיל לקבל פניות.</p>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div style={styles.formGrid}>
+            <div style={styles.formGroup}>
+              <label style={styles.label}>שם מלא</label>
+              <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} required
+                style={getInputStyle('fullName')} onFocus={() => handleFocus('fullName')} onBlur={() => handleBlur('fullName')}
+                placeholder="שם פרטי ושם משפחה" />
+            </div>
+            <div style={styles.formGroup}>
+              <label style={styles.label}>חברה / מוסד</label>
+              <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} required
+                style={getInputStyle('company')} onFocus={() => handleFocus('company')} onBlur={() => handleBlur('company')}
+                placeholder="שם החברה" />
+            </div>
+            <div style={styles.formGroup}>
+              <label style={styles.label}>אימייל</label>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
+                style={getInputStyle('email')} onFocus={() => handleFocus('email')} onBlur={() => handleBlur('email')}
+                placeholder="example@mail.com" />
+            </div>
+            <div style={styles.formGroup}>
+              <label style={styles.label}>מה אתם מחפשים?</label>
+              <input type="text" value={type} onChange={(e) => setType(e.target.value)} required
+                style={getInputStyle('type')} onFocus={() => handleFocus('type')} onBlur={() => handleBlur('type')}
+                placeholder="לדוגמה: שחקנית במה" />
+            </div>
+            <div style={styles.formGroup}>
+              <label style={styles.label}>טלפון</label>
+              <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required
+                style={getInputStyle('phone')} onFocus={() => handleFocus('phone')} onBlur={() => handleBlur('phone')}
+                placeholder="050-1234567" />
+            </div>
+            <div style={styles.formGroup}>
+              <label style={styles.label}>מה המטרה?</label>
+              <input type="text" value={goal} onChange={(e) => setGoal(e.target.value)} required
+                style={getInputStyle('goal')} onFocus={() => handleFocus('goal')} onBlur={() => handleBlur('goal')}
+                placeholder="לדוגמה: להשתתף בסרט" />
+            </div>
+            <div style={styles.formGroupFullWidth}>
+              <label style={styles.label}>תיאור</label>
+              <textarea value={description} onChange={(e) => setDescription(e.target.value)} required rows={4}
+                style={getTextareaStyle('description')} onFocus={() => handleFocus('description')} onBlur={() => handleBlur('description')}
+                placeholder="תרחיבו כאן עוד על הדרישה שלכם..."></textarea>
+            </div>
+          </div>
+
+          <div style={styles.buttonContainer}>
+            <button
+              type="submit"
+              disabled={isDisabled}
+              style={submitBtnStyle}
+              onMouseEnter={() => setIsSubmitHover(true)}
+              onMouseLeave={() => setIsSubmitHover(false)}
+            >
+              {loading ? (
+                <>
+                  שולח...
+                  <FaSpinner style={styles.loadingSpinner} />
+                </>
+              ) : "פרסום מודעה"}
+            </button>
+            {error && <p style={styles.errorMessage}>שגיאה: {error}</p>}
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default CreateAdForm;
