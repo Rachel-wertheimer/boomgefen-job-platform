@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { sendMail } from "../api/mail";
-import axios from "axios";
 
 interface MailState {
   sendingMail: boolean;

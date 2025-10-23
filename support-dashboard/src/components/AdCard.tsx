@@ -50,8 +50,6 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
   const [error, setError] = useState<string | null>(null);
   const [messageText, setMessageText] = useState("");
 
-  const [isContactHover, setIsContactHover] = useState(false);
-  const [isSendHover, setIsSendHover] = useState(false);
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
 
   const [isVisible, setIsVisible] = useState(false);
@@ -217,8 +215,6 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
           style={styles.button}
           onClick={handleContact}
           disabled={isLoading}
-          onMouseEnter={() => setIsContactHover(true)}
-          onMouseLeave={() => setIsContactHover(false)}
         >
           {isLoading ? <FaSpinner className="spin" /> : contactDetails ? "הסתר פרטים" : "ליצירת קשר"}
         </button>

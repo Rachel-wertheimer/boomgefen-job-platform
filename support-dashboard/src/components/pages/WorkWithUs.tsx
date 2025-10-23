@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState, AppDispatch } from '../../app/store';
 import { updateRegistrationFormField, updateProfession } from '../../app/slice/userSlice';
-import { useNavigate } from 'react-router-dom';
 import { createUser, createUserProfile } from '../../app/api/user';
 import { FaSpinner } from 'react-icons/fa';
 
@@ -49,11 +48,7 @@ const professionsList = [
 ];
 
 
-
-// ... (שאר הקוד נשאר זהה) ...
-
 export default function WorkWithUs() {
-    const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const formData = useSelector((state: RootState) => state.user.registrationForm);
     const [loading, setLoading] = useState(false);
