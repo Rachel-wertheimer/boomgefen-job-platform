@@ -9,6 +9,10 @@ const transporter = nodemailer.createTransport({
   },
   connectionTimeout: 20000, // 20 שניות
 });
+transporter.verify((err, success) => {
+  if (err) console.error("Gmail connection failed:", err);
+  else console.log("Gmail connection successful!");
+});
 
 exports.sendMail = async (req, res) => {
   const { to, subject, text } = req.body;
