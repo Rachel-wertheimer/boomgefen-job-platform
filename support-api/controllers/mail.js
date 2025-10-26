@@ -7,6 +7,7 @@ const transporter = nodemailer.createTransport({
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS,
   },
+  connectionTimeout: 20000, // 20 שניות
 });
 
 exports.sendMail = async (req, res) => {
@@ -14,7 +15,7 @@ exports.sendMail = async (req, res) => {
 
   try {
     await transporter.sendMail({
-      from: `"BOOM&גפן" <${process.env.MAIL_USER}>`, // מה שיראה בצד השני
+      from: `"BOOM & גפן" <${process.env.MAIL_USER}>`, 
       to,
       subject,
       text,
