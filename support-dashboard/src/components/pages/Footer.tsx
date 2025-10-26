@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 
 // --- הגדרת אנימציות ---
 const AnimationStyles = () => (
