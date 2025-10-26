@@ -10,6 +10,8 @@ import FirstScreen from "./pages/firstScreen";
 import ContactUs from "./pages/ContactUs";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailed from "./pages/PaymentFailed";
+import Footer from "./pages/Footer";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const LayoutWithNavbar = () => (
   <>
@@ -17,6 +19,7 @@ const LayoutWithNavbar = () => (
     <div style={{ padding: "20px", marginTop: "70px" }}>
       <Outlet />
     </div>
+    <Footer /> 
   </>
 );
 
@@ -36,7 +39,8 @@ export const Routing = () => (
       <Route path="/contact-us" element={<ContactUs />} />
       <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
       <Route path="/payment-failed" element={<PaymentFailed />} />
-      <Route path="*" element={<h2>Page Not Found</h2>} />
+      <Route path="*" element={<NotFoundPage></NotFoundPage>} />
+      <Route path="/footer" element={<Footer></Footer>}></Route>
     </Route>
   </Routes>
 );
