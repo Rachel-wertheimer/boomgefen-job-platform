@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:3001/api/v1/ads";
+const API_URL = "https://boomgefen-job-platform-1.onrender.com/api/v1/ads";
 export const getAllAds = async () => {
   const res = await axios.get(`${API_URL}/getAll`);
   return res.data.data;
