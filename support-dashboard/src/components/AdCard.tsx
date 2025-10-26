@@ -6,9 +6,8 @@ import { LoginModal } from "./pages/loginWorkWithUS";
 import { getUserDetailsByID } from "../app/api/user";
 import type { UserDetails } from "../app/slice/userSlice";
 import { sendMail } from "../app/api/mail";
-import { FaSpinner } from "react-icons/fa"; // אייקון לטעינה
+import { FaSpinner } from "react-icons/fa"; 
 
-// 🎨 פלטת צבעים אחידה
 const colors = {
   primary: "#6d44b8",
   primaryHover: "#5a379a",

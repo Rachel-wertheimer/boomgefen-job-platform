@@ -324,12 +324,10 @@ const ContactUs: React.FC = () => {
           </div>
         )}
 
-        {/* צד ימין - טופס */}
         <form
           onSubmit={handleSubmit}
           style={styles.formPanel}
         >
-          {/* אם לא הגיע מניווט, מציג כותרת חלופית */}
           {!fromNav && (
              <h2 style={styles.formTitle}>
                 שלחו לנו הודעה

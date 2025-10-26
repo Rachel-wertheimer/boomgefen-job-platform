@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3001/api/v1/users";
-const BASE_URL_Profiles = "http://localhost:3001/api/v1/user_profiles";
+const BASE_URL = "https://boomgefen-job-platform-1.onrender.com/api/v1/users";
+const BASE_URL_Profiles = "https://boomgefen-job-platform-1.onrender.com/api/v1/user_profiles";
 
 
 export const loginUser = async (email: string, password: string) => {

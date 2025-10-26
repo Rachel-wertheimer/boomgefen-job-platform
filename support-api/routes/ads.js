@@ -10,7 +10,6 @@ router.post('/createAds', createAds);
 router.put('/toggleApproved/:adId', toggleApprovedController);
 router.put('/toggleRelevant/:adId', toggleRelevantController);
 
-
 module.exports = router;
 
 

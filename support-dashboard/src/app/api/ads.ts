@@ -1,8 +1,8 @@
 import axios from "axios";
 import type { Ad } from "../slice/adsSlice";
 
-const BASE_URL = "http://localhost:3001/api/v1/ads";
-const BASE_URL_USERS = "http://localhost:3001/api/v1/users";
+const BASE_URL = "https://boomgefen-job-platform-1.onrender.com/api/v1/ads";
+const BASE_URL_USERS = "https://boomgefen-job-platform-1.onrender.com/api/v1/users";
 
 export const getApprovedAds = async (): Promise<Ad[]> => {
   const response = await axios.get(`${BASE_URL}/getAllApprovedAds`);

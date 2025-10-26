@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"; // הוספנו useEffect
 import { useNavigate } from "react-router-dom";
 import { LoginModal } from "./loginWorkWithUS"; // ודא שהנתיב הזה נכון
+import { FaWhatsapp } from "react-icons/fa";
 
 // --- פונקציית עזר לבדיקת גודל מסך ---
 const useWindowSize = () => {
