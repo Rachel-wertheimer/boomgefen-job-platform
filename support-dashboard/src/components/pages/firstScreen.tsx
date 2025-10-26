@@ -263,7 +263,7 @@ export default function FirstScreen() {
             style={styles.icon}
             onClick={() =>
               window.open(
-                "https://wa.me/97254857277?text=שלום%20רחל!",
+                "https://wa.me/972507999045?text=שלום%20כבי%20וBOOM!",
                 "_blank"
               )
             }
