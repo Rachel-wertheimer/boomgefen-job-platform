@@ -158,25 +158,25 @@ const ContactUs: React.FC = () => {
       marginBottom: 0,
       color: colors.primary, // צבע מותג
     },
-    subtitle: { 
-        color: colors.textMedium, 
-        marginBottom: "10px",
-        fontSize: '1.1rem',
-        lineHeight: 1.6
+    subtitle: {
+      color: colors.textMedium,
+      marginBottom: "10px",
+      fontSize: '1.1rem',
+      lineHeight: 1.6
     },
     infoItem: {
-        marginBottom: "10px",
+      marginBottom: "10px",
     },
     infoLabel: {
-        margin: 0,
-        fontWeight: "bold",
-        color: colors.primary, // צבע מותג
-        fontSize: '1.1rem',
+      margin: 0,
+      fontWeight: "bold",
+      color: colors.primary, // צבע מותג
+      fontSize: '1.1rem',
     },
     infoText: {
-        margin: "5px 0",
-        color: colors.textDark,
-        fontSize: '1rem',
+      margin: "5px 0",
+      color: colors.textDark,
+      fontSize: '1rem',
     },
     formPanel: {
       padding: isMobile ? "30px" : "40px",
@@ -241,12 +241,12 @@ const ContactUs: React.FC = () => {
       cursor: "not-allowed",
     },
     loadingSpinner: {
-        animation: 'spin 1s linear infinite',
+      animation: 'spin 1s linear infinite',
     },
     errorText: {
-        color: colors.danger,
-        textAlign: "center",
-        fontSize: '0.9rem',
+      color: colors.danger,
+      textAlign: "center",
+      fontSize: '0.9rem',
     }
   };
 
@@ -258,7 +258,7 @@ const ContactUs: React.FC = () => {
 
   const getTextAreaStyle = (name: string) => ({
     ...styles.inputBase,
-    minHeight: "120px", 
+    minHeight: "120px",
     resize: "vertical" as 'vertical',
     ...(focusState[name] ? styles.inputFocus : {})
   });
@@ -311,7 +311,7 @@ const ContactUs: React.FC = () => {
             </div>
 
             <a
-              href="https://wa.me/972544483040"
+              href="https://wa.me/972507999045?text=שלום%20כבי%20וBOOM!"
               target="_blank"
               rel="noopener noreferrer"
               style={whatsappBtnStyle}
@@ -329,11 +329,11 @@ const ContactUs: React.FC = () => {
           style={styles.formPanel}
         >
           {!fromNav && (
-             <h2 style={styles.formTitle}>
-                שלחו לנו הודעה
-             </h2>
+            <h2 style={styles.formTitle}>
+              שלחו לנו הודעה
+            </h2>
           )}
-          
+
           <input
             type="text"
             name="name"
@@ -386,10 +386,10 @@ const ContactUs: React.FC = () => {
             onMouseLeave={() => setIsSubmitHover(false)}
           >
             {sendingMail ? (
-                <>
+              <>
                 שולח...
                 <FaSpinner style={styles.loadingSpinner} />
-                </>
+              </>
             ) : "שלח הודעה"}
           </motion.button>
 
