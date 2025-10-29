@@ -1,45 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
 import { registerUserAndCreateAd } from "../../app/slice/adsSlice";
-import { FaSpinner } from "react-icons/fa"; // אייקון לטעינה
-
-// --- פונקציית עזר לבדיקת גודל מסך ---
-const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return windowSize;
-};
-
-// --- הגדרת אנימציות ---
-const AnimationStyles = () => (
-  <style>
-    {`
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-    `}
-  </style>
-);
+import { FaSpinner } from "react-icons/fa";
+import { useWindowSize } from "../../utils/hooks";
+import { AnimationStyles, animationStyles } from "../../utils/animations";
+import { appColors } from "../../utils/colors";
 
 const CreateAdForm = () => {
   const [fullName, setFullName] = useState("");
@@ -59,16 +25,7 @@ const CreateAdForm = () => {
   const { width } = useWindowSize();
   const isMobile = width <= 768; // נקודת שבירה לטפסים
 
-  // --- פלטת צבעים אחידה ---
-  const colors = {
-    primary: "#6d44b8",
-    primaryHover: "#5a379a",
-    danger: "#fa5252",
-    lightGradient: "linear-gradient(135deg, #f5f7fa, #e6e8ff)",
-    textDark: "#212529",
-    textMedium: "#555",
-    borderColor: "#ced4da",
-  };
+  const colors = appColors;
 
   // --- פונקציות לניהול פוקוס ---
   const handleFocus = (field: string) => setFocusState(prev => ({ ...prev, [field]: true }));
@@ -116,7 +73,7 @@ const CreateAdForm = () => {
       padding: isMobile ? "24px" : "40px",
       boxShadow: "0 10px 30px rgba(0, 0, 0, 0.08)",
       boxSizing: "border-box",
-      animation: "fadeIn 0.5s ease-out forwards",
+      animation: animationStyles.fadeIn,
     },
     formHeader: {
       textAlign: "center",
@@ -217,7 +174,7 @@ const CreateAdForm = () => {
       cursor: "not-allowed",
     },
     loadingSpinner: {
-      animation: 'spin 1s linear infinite',
+      animation: animationStyles.spin,
     },
     errorMessage: {
       color: colors.danger,

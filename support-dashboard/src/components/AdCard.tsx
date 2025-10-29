@@ -6,34 +6,9 @@ import { LoginModal } from "./pages/loginWorkWithUS";
 import { getUserDetailsByID } from "../app/api/user";
 import type { UserDetails } from "../app/slice/userSlice";
 import { sendMail } from "../app/api/mail";
-import { FaSpinner } from "react-icons/fa"; 
-
-const colors = {
-  primary: "#6d44b8",
-  primaryHover: "#5a379a",
-  danger: "#fa5252",
-  dangerHover: "#e03131",
-  textDark: "#212529",
-  textMedium: "#555",
-  borderColor: "#e0e0e0",
-  activeBackground: "#f5f3f9",
-};
-
-// --- הגדרת האנימציה ---
-const AnimationStyles = () => (
-  <style>
-    {`
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-    `}
-  </style>
-);
+import { FaSpinner } from "react-icons/fa";
+import { AnimationStyles, animationStyles } from "../utils/animations";
+import { appColors } from "../utils/colors";
 
 export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
   ad,
@@ -95,17 +70,18 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
   };
 
   // --- סגנונות ---
+  const colors = appColors;
   const styles: Record<string, React.CSSProperties> = {
     card: {
       display: "flex",
       flexDirection: "column",
-      backgroundColor: "#ffffff",
+      backgroundColor: colors.cardBackground,
       borderRadius: "16px",
       padding: "24px",
       boxShadow: "0 6px 20px rgba(0, 0, 0, 0.07)",
-      border: "1px solid #e9ecef",
+      border: "1px solid " + colors.borderColor,
       opacity: isVisible ? 1 : 0,
-      animation: isVisible ? "fadeIn 0.4s ease-out forwards" : "none",
+      animation: isVisible ? animationStyles.fadeIn : "none",
       transition: "box-shadow 0.3s ease",
     },
     companyWrapper: {
@@ -158,7 +134,7 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
       fontWeight: "bold",
       border: "2px solid transparent",
       transition: "all 0.3s ease",
-      backgroundColor: contactDetails ? colors.danger : colors.primary,
+      backgroundColor: contactDetails ? appColors.danger : appColors.primary,
       color: "white",
       width: "100%",
     },
@@ -243,7 +219,7 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
           >
             {isSending ? (
               <>
-                שולח... <FaSpinner style={{ animation: "spin 1s linear infinite" }} />
+                שולח... <FaSpinner style={{ animation: animationStyles.spin }} />
               </>
             ) : (
               "שלח הודעה"

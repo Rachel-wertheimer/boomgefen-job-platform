@@ -1,43 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion"; // שמרנו על framer-motion לבקשתך
+import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { sendUserMail } from "../../app/slice/mailSlice";
-import type { AppDispatch, RootState } from "../../app/store"; // ייבוא תקין
-import { FaSpinner, FaWhatsapp } from "react-icons/fa"; // הוספת אייקונים
-
-// --- פונקציית עזר לבדיקת גודל מסך ---
-const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return windowSize;
-};
-
-// --- הגדרת אנימציות ---
-const AnimationStyles = () => (
-  <style>
-    {`
-      @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-    `}
-  </style>
-);
+import type { AppDispatch, RootState } from "../../app/store";
+import { FaSpinner, FaWhatsapp } from "react-icons/fa";
+import { useWindowSize } from "../../utils/hooks";
+import { AnimationStyles, animationStyles } from "../../utils/animations";
+import { appColors } from "../../utils/colors";
 
 const ContactUs: React.FC = () => {
   // --- כל הלוגיקה נשארת זהה ---
@@ -105,16 +75,7 @@ const ContactUs: React.FC = () => {
   const handleFocus = (field: string) => setFocusState(prev => ({ ...prev, [field]: true }));
   const handleBlur = (field: string) => setFocusState(prev => ({ ...prev, [field]: false }));
 
-  const colors = {
-    primary: "#6d44b8",
-    primaryHover: "#5a379a",
-    lightGradient: "linear-gradient(135deg, #f5f7fa, #e6e8ff)",
-    textDark: "#212529",
-    textMedium: "#555",
-    borderColor: "#ced4da",
-    activeBackground: "#f5f3f9",
-    danger: "#fa5252",
-  };
+  const colors = appColors;
 
   const styles: Record<string, React.CSSProperties> = {
     pageContainer: {
@@ -241,7 +202,7 @@ const ContactUs: React.FC = () => {
       cursor: "not-allowed",
     },
     loadingSpinner: {
-      animation: 'spin 1s linear infinite',
+      animation: animationStyles.spin,
     },
     errorText: {
       color: colors.danger,

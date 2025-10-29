@@ -1,23 +1,36 @@
 const nodemailer = require("nodemailer");
 const { handleFormSubmission } = require("../services/form");
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
-  },
-  connectionTimeout: 20000, // 20 שניות
-});
-transporter.verify((err, success) => {
-  if (err) console.error("Gmail connection failed:", err);
-  else console.log("Gmail connection successful!");
-});
+// Create transporter only if mail credentials are provided
+let transporter = null;
+if (process.env.MAIL_USER && process.env.MAIL_PASS) {
+  transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
+    },
+    connectionTimeout: 20000,
+  });
+  
+  transporter.verify((err, success) => {
+    if (err) console.error("Gmail connection failed:", err);
+    else console.log("Gmail connection successful!");
+  });
+} else {
+  console.log("Mail service disabled - no credentials provided");
+}
 
 exports.sendMail = async (req, res) => {
   const { to, subject, text } = req.body;
 
   try {
+    if (!transporter) {
+      console.log("Mail service not available - skipping email send");
+      console.log(`Would have sent: To: ${to}, Subject: ${subject}, Text: ${text}`);
+      return res.status(200).json({ message: "Mail service not available in this environment" });
+    }
+
     await transporter.sendMail({
       from: `"BOOM & גפן" <${process.env.MAIL_USER}>`, 
       to,

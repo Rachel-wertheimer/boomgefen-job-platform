@@ -10,44 +10,11 @@ import {
 } from "../../app/slice/adsSlice";
 import { fetchUserDetails } from "../../app/slice/userSlice";
 import { sendUserMail } from "../../app/slice/mailSlice";
-import { FaSpinner } from "react-icons/fa";
-
-// --- פונקציית עזר לבדיקת גודל מסך ---
-const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return windowSize;
-};
-
-// --- הגדרת אנימציות ---
-const AnimationStyles = () => (
-  <style>
-    {`
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-    `}
-  </style>
-);
+import { FaSpinner, FaEdit } from "react-icons/fa";
+import { AnimationStyles, animationStyles } from "../../utils/animations";
+import { appColors } from "../../utils/colors";
+import EditAdModal from "./EditAdModal";
+import { useWindowSize } from "../../utils/hooks";
 
 export default function AdsManager() {
   const dispatch = useDispatch<AppDispatch>();
@@ -58,25 +25,15 @@ export default function AdsManager() {
 
   // --- מצב טעינה לכל כרטיס בנפרד ---
   const [togglingId, setTogglingId] = useState<number | null>(null);
+  const [editingAd, setEditingAd] = useState<any | null>(null);
 
   const token = sessionStorage.getItem("token") || "";
 
   const { width } = useWindowSize();
   const isMobile = width <= 768;
 
-  // --- פלטת צבעים אחידה ---
-  const colors = {
-    primary: "#6d44b8",
-    primaryHover: "#5a379a",
-    danger: "#fa5252",
-    success: "#40c057",
-    lightGradient: "linear-gradient(135deg, #f5f7fa, #e6e8ff)",
-    textDark: "#212529",
-    textMedium: "#555",
-    borderColor: "#ced4da",
-    cardBackground: "#ffffff",
-    activeBackground: "#f5f3f9",
-  };
+  // Use shared colors and styles
+  const colors = appColors;
 
   useEffect(() => {
     if (filter === 'notApproved') {
@@ -167,7 +124,7 @@ export default function AdsManager() {
       flexDirection: "column",
       alignItems: "center",
       gap: "30px",
-      animation: "fadeIn 0.5s ease-out forwards",
+      animation: animationStyles.fadeIn,
     },
     header: {
       textAlign: "center",
@@ -380,7 +337,7 @@ export default function AdsManager() {
 
         {loading && (
           <p style={styles.loadingText}>
-            <FaSpinner style={{ animation: 'spin 1s linear infinite' }} />
+            <FaSpinner style={{ animation: animationStyles.spin }} />
             טוען...
           </p>
         )}
@@ -440,12 +397,45 @@ export default function AdsManager() {
                       <div style={relevantToggle.thumb}></div>
                     </div>
                   </div>
+                  
+                  {/* כפתור עריכה */}
+                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
+                    <button
+                      onClick={() => setEditingAd(ad)}
+                      style={{
+                        padding: "10px 20px",
+                        fontSize: "14px",
+                        borderRadius: "20px",
+                        cursor: "pointer",
+                        fontWeight: "bold",
+                        border: `2px solid ${colors.primary}`,
+                        backgroundColor: "white",
+                        color: colors.primary,
+                        transition: "all 0.3s ease",
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px',
+                      }}
+                    >
+                      <FaEdit /> ערוך תוכן
+                    </button>
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
+      {editingAd && (
+        <EditAdModal
+          ad={editingAd}
+          onClose={() => setEditingAd(null)}
+          onSave={() => {
+            refreshList();
+            setEditingAd(null);
+          }}
+        />
+      )}
     </div>
   );
 }

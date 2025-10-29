@@ -5,38 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
 import { fetchAds } from "../../app/slice/adsSlice";
 import { AdsList } from "../AdsList";
+import { useWindowSize } from "../../utils/hooks";
+import { appColors } from "../../utils/colors";
 
-// --- פונקציית עזר לבדיקת גודל מסך ---
-const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return windowSize;
-};
-
-// --- פלטת צבעים אחידה ---
-const colors = {
-  primary: "#6d44b8", // סגול עמוק מהלוגו
-  primaryHover: "#5a379a",
-  danger: "#fa5252",
-  lightGradient: "linear-gradient(135deg, #f5f7fa, #e6e8ff)", // רקע עמוד
-  textDark: "#212529",
-  textMedium: "#555",
-  activeBackground: "#f5f3f9",
-};
+const colors = appColors;
 
 // הגדרות עיצוב מודרניות עבור react-select (מעודכן לצבעי המותג)
 const customSelectStyles: StylesConfig<{ label: string; value: string }, false> = {

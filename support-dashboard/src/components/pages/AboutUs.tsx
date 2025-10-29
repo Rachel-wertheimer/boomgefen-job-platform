@@ -1,50 +1,13 @@
-import React, { useState, useEffect } from "react";
-
-// --- פונקציית עזר לבדיקת גודל מסך ---
-const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return windowSize;
-};
-
-// --- הגדרת אנימציית FadeIn ---
-const AnimationStyles = () => (
-  <style>
-    {`
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-    `}
-  </style>
-);
+import React, { useState } from "react";
+import { useWindowSize } from "../../utils/hooks";
+import { AnimationStyles, animationStyles } from "../../utils/animations";
+import { appColors } from "../../utils/colors";
 
 export default function AboutUs() {
   const { width } = useWindowSize();
   const isMobile = width <= 768;
 
-  // --- פלטת צבעים אחידה ---
-  const colors = {
-    primary: "#6d44b8",
-    primaryHover: "#5a379a",
-    lightGradient: "linear-gradient(135deg, #f5f7fa, #e6e8ff)",
-    textDark: "#212529",
-    textMedium: "#555",
-  };
+  const colors = appColors;
 
   // --- סגנונות ---
   const styles: Record<string, React.CSSProperties> = {
@@ -66,7 +29,7 @@ export default function AboutUs() {
       flexDirection: "column",
       alignItems: "center",
       gap: "40px",
-      animation: "fadeIn 0.5s ease-out forwards",
+      animation: animationStyles.fadeIn,
     },
     topLogoContainer: {
       display: "flex",

@@ -1,0 +1,16 @@
+export const appColors = {
+  primary: "#6d44b8",
+  primaryHover: "#5a379a",
+  danger: "#fa5252",
+  success: "#40c057",
+  textDark: "#212529",
+  textMedium: "#555",
+  textLight: "#666",
+  borderColor: "#ced4da",
+  activeBackground: "#f5f3f9",
+  lightGradient: "linear-gradient(135deg, #f5f7fa, #e6e8ff)",
+  cardBackground: "#ffffff",
+  primaryDarker: "#5a379a",
+  textWhite: "#ffffff",
+  dangerHover: "#e03131",
+};

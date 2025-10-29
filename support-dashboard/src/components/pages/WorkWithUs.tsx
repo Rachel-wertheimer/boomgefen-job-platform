@@ -1,46 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState, AppDispatch } from '../../app/store';
 import { updateRegistrationFormField, updateProfession } from '../../app/slice/userSlice';
 import { createUser, createUserProfile } from '../../app/api/user';
 import { FaSpinner } from 'react-icons/fa';
-
-// --- פונקציית עזר לבדיקת גודל מסך ---
-const useWindowSize = () => {
-    const [windowSize, setWindowSize] = useState({
-        width: window.innerWidth,
-        height: window.innerHeight,
-    });
-
-    useEffect(() => {
-        function handleResize() {
-            setWindowSize({
-                width: window.innerWidth,
-                height: window.innerHeight,
-            });
-        }
-        window.addEventListener("resize", handleResize);
-        handleResize();
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-    return windowSize;
-};
-
-// --- הגדרת אנימציית FadeIn ---
-const AnimationStyles = () => (
-    <style>
-        {`
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-    `}
-    </style>
-);
+import { useWindowSize } from "../../utils/hooks";
+import { AnimationStyles, animationStyles } from "../../utils/animations";
+import { appColors } from "../../utils/colors";
 
 const professionsList = [
     'שחקנית', 'מפיקה', 'צלמת', 'עורכת וידאו', 'רקדנית', 'ארטיסטית',
@@ -60,16 +26,7 @@ export default function WorkWithUs() {
 
     const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScUvzvNjNO2U75PvFc0gIZ-B8qp9N0nD6-v-XbZYHkzQKVyIQ/formResponse';
 
-    const colors = {
-        primary: "#6d44b8",
-        primaryHover: "#5a379a",
-        lightGradient: "linear-gradient(135deg, #f5f7fa, #e6e8ff)",
-        textDark: "#212529",
-        textMedium: "#555",
-        textLight: "#666",
-        borderColor: "#ced4da",
-        activeBackground: "#f5f3f9",
-    };
+    const colors = appColors;
 
     const handleFocus = (field: string) => setFocusState(prev => ({ ...prev, [field]: true }));
     const handleBlur = (field: string) => setFocusState(prev => ({ ...prev, [field]: false }));
@@ -214,7 +171,7 @@ export default function WorkWithUs() {
             display: "flex",
             flexDirection: "column",
             gap: "24px",
-            animation: "fadeIn 0.5s ease-out forwards",
+            animation: animationStyles.fadeIn,
         },
         formRow: {
             display: "flex",
@@ -321,7 +278,7 @@ export default function WorkWithUs() {
             cursor: "not-allowed",
         },
         loadingSpinner: {
-            animation: 'spin 1s linear infinite',
+            animation: animationStyles.spin,
         },
     };
 
