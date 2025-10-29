@@ -59,3 +59,27 @@ exports.deleteUserDAL = async (userId) => {
       throw error;
     }
   };
+
+exports.generateResetTokenDAL = async (userId) => {
+  try {
+    console.log('start generateResetTokenDAL');
+    const token = await functionDB.generateResetToken(userId);
+    console.log('end generateResetTokenDAL');
+    return token;
+  } catch (error) {
+    console.error('Error generating reset token in DAL:', error);
+    throw error;
+  }
+};
+
+exports.updatePasswordByTokenDAL = async (resetToken, newPassword) => {
+  try {
+    console.log('start updatePasswordByTokenDAL');
+    const result = await functionDB.updatePasswordByToken(resetToken, newPassword);
+    console.log('end updatePasswordByTokenDAL');
+    return result;
+  } catch (error) {
+    console.error('Error updating password by token in DAL:', error);
+    throw error;
+  }
+};

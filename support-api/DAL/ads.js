@@ -89,4 +89,16 @@ exports.toggleRelevantDAL = async (adId) => {
     }
 };
 
+exports.updateAdContentDAL = async (adId, adData) => {
+    try {
+        console.log('start updateAdContentDAL');
+        const updatedAd = await functionDB.update_ad_content(adId, adData);
+        console.log('end updateAdContentDAL');
+        return updatedAd;
+    } catch (error) {
+        console.error('Error updating ad content:', error);
+        throw error;
+    }
+};
+
 

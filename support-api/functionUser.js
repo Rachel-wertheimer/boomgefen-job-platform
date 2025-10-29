@@ -67,3 +67,31 @@ exports.deleteUserByID = async (userId) => {
     throw error;
   }
 };
+
+exports.generateResetToken = async (userId) => {
+  const crypto = require('crypto');
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  const expiresAt = new Date();
+  expiresAt.setHours(expiresAt.getHours() + 1); // תקף לשעה
+  
+  await pool.query(
+    `UPDATE user_profiles SET reset_token = ?, reset_token_expires = ? WHERE user_id = ?`,
+    [resetToken, expiresAt, userId]
+  );
+  
+  return resetToken;
+};
+
+exports.updatePasswordByToken = async (resetToken, newPassword) => {
+  const bcrypt = require('bcrypt');
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  
+  const [result] = await pool.query(
+    `UPDATE user_profiles 
+     SET password = ?, reset_token = NULL, reset_token_expires = NULL 
+     WHERE reset_token = ? AND reset_token_expires > NOW()`,
+    [hashedPassword, resetToken]
+  );
+  
+  return result.affectedRows > 0;
+};

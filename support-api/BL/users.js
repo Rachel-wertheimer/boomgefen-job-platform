@@ -1,4 +1,4 @@
-const { CreateUserDAL, FindUserByEmailDAL, getDetailsDAL, updateSubscriptionDAL, deleteUserDAL } = require('../DAL/users');
+const { CreateUserDAL, FindUserByEmailDAL, getDetailsDAL, updateSubscriptionDAL, deleteUserDAL, generateResetTokenDAL, updatePasswordByTokenDAL } = require('../DAL/users');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -47,7 +47,8 @@ exports.FindUserByEmailBL = async (email, password) => {
         id: user.id,
         role: user.type,
         email: user.email,
-        userName: user.full_name
+        userName: user.full_name,
+        name: user.full_name
       },
       JWT_SECRET,
       { expiresIn: '1h' }
@@ -87,6 +88,47 @@ exports.deleteUserBL = async (userId) => {
     return result;
   } catch (err) {
     console.error('Error in deleteUserBL', err);
+    throw err;
+  }
+};
+
+exports.forgotPasswordBL = async (email) => {
+  try {
+    console.log('Start forgotPasswordBL');
+    const user = await FindUserByEmailDAL(email);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    
+    const resetToken = await generateResetTokenDAL(user.id);
+    
+    // Send email with reset link (would need email service)
+    console.log(`Reset token generated for user ${email}: ${resetToken}`);
+    
+    return { success: true, message: 'Password reset token generated. Please check your email.' };
+  } catch (err) {
+    console.error('Error in forgotPasswordBL', err);
+    throw err;
+  }
+};
+
+exports.resetPasswordBL = async (resetToken, newPassword) => {
+  try {
+    console.log('Start resetPasswordBL');
+    
+    if (!newPassword || newPassword.length < 6) {
+      throw new Error('Password must be at least 6 characters long');
+    }
+    
+    const success = await updatePasswordByTokenDAL(resetToken, newPassword);
+    
+    if (!success) {
+      throw new Error('Invalid or expired reset token');
+    }
+    
+    return { success: true, message: 'Password reset successfully' };
+  } catch (err) {
+    console.error('Error in resetPasswordBL', err);
     throw err;
   }
 };

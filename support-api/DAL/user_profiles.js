@@ -12,3 +12,39 @@ exports.CreateUserProfilesDAL = async (details, userId) => {
         throw error;
     }
 };
+exports.getUserByEmailDAL = async (details, userId) => {
+    try {
+        console.log('start getUserByEmailDAL');
+        const result = await functionDB.getUserByEmail(details, userId);
+        console.log('end getUserByEmailDAL');
+        return result;
+    }
+    catch (error) {
+        console.error('Error getUserByEmailDAL:', error);
+        throw error;
+    }
+};
+exports.updateTemporaryPasswordDAL = async (details, userId) => {
+    try {
+        console.log('start updateTemporaryPasswordDAL');
+        const result = await functionDB.updateTemporaryPassword(details, userId);
+        console.log('end getUserByEmailDAL');
+        return result;
+    }
+    catch (error) {
+        console.error('Error getUserByEmailDAL:', error);
+        throw error;
+    }
+};
+exports.updatePasswordDAL = async (details, userId) => {
+    try {
+        console.log('start updatePasswordDAL');
+        const result = await functionDB.updatePassword(details, userId);
+        console.log('end updatePasswordDAL');
+        return result;
+    }
+    catch (error) {
+        console.error('Error updatePassword:', error);
+        throw error;
+    }
+};

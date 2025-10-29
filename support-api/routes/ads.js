@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllApprovedAds, getAllAds, getAllNotApprovedAds, createAds, toggleApprovedController, toggleRelevantController, getAllNotRelevantAds } = require('../controllers/ads');
+const { getAllApprovedAds, getAllAds, getAllNotApprovedAds, createAds, toggleApprovedController, toggleRelevantController, getAllNotRelevantAds, updateAdContentController } = require('../controllers/ads');
 const router = express.Router();
 
 router.get('/getAllApprovedAds', getAllApprovedAds);
@@ -9,6 +9,7 @@ router.get('/getAll', getAllAds);
 router.post('/createAds', createAds);
 router.put('/toggleApproved/:adId', toggleApprovedController);
 router.put('/toggleRelevant/:adId', toggleRelevantController);
+router.put('/updateContent/:adId', updateAdContentController);
 
 module.exports = router;
 

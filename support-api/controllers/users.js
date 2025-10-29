@@ -1,4 +1,4 @@
-const { CreateUserBL, FindUserByEmailBL, getDetailsBL, updateSubscriptionBL, deleteUserBL } = require("../BL/users");
+const { CreateUserBL, FindUserByEmailBL, getDetailsBL, updateSubscriptionBL, deleteUserBL, forgotPasswordBL, resetPasswordBL } = require("../BL/users");
 const asyncHandler = require("../middleware/asyncHandler");
 
 exports.CreateUser = asyncHandler(async (req, res, next) => {
@@ -64,6 +64,30 @@ exports.deleteUser = async (req, res) => {
     res.json({ success: true, message: 'User deleted successfully', result });
   } catch (err) {
     console.error('Error in deleteUser controller:', err);
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+
+exports.forgotPassword = async (req, res) => {
+  try {
+    console.log('Start forgotPassword controller');
+    const { email } = req.body;
+    const result = await forgotPasswordBL(email);
+    res.json(result);
+  } catch (err) {
+    console.error('Error in forgotPassword controller:', err);
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    console.log('Start resetPassword controller');
+    const { resetToken, newPassword } = req.body;
+    const result = await resetPasswordBL(resetToken, newPassword);
+    res.json(result);
+  } catch (err) {
+    console.error('Error in resetPassword controller:', err);
     res.status(400).json({ success: false, message: err.message });
   }
 };

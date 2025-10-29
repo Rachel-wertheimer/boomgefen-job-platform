@@ -1,0 +1,20 @@
+# Node modules
+node_modules/
+support-api/node_modules/
+support-dashboard/node_modules/
+
+# Build outputs
+support-dashboard/dist/
+support-dashboard/dist/assets/
+
+# Environment variables
+support-api/.env
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
