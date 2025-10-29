@@ -641,8 +641,13 @@ const userSlice = createSlice({
       .addCase(subscribeUser.pending, (state) => { state.loading = true; state.error = null; })
       .addCase(subscribeUser.fulfilled, (state, action) => {
         state.loading = false;
-        if (state.currentUser) state.currentUser.is_subscribed = true;
-        if (action.payload.ad?.endDate) state.currentUser!.subscription_end = action.payload.ad.endDate;
+        if (state.currentUser && action.payload?.ad?.endDate) {
+          state.currentUser = {
+            ...state.currentUser,
+            is_subscribed: true,
+            subscription_end: action.payload.ad.endDate
+          };
+        }
       })
       .addCase(subscribeUser.rejected, (state, action) => { state.loading = false; state.error = action.payload as string; })
       // DELETE

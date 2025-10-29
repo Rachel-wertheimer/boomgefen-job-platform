@@ -26,9 +26,6 @@
 import { Ads } from "./Ads";
 import AdsJob from "./AdsJob";
 import React from "react";
-import { appColors } from "../../utils/colors";
-
-const colors = appColors;
 
 // אובייקט סגנונות חדש ומודרני
 const styles: Record<string, React.CSSProperties> = {
