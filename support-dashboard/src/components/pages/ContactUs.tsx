@@ -477,7 +477,7 @@ const ContactUs: React.FC = () => {
             <p>בואו נתחיל לתכנן את האירוע המושלם שלכם ✨</p>
             <p>📞 טלפון: 0507999045</p>
             <p>✉️ מייל: boom.gefen.hevy@gmail.com</p>
-            <a href="https://wa.me/972507999045?text=שלום%20כבי%20וBOOM!">
+            <a href="https://wa.me/972507999045?text=שלום%20גפן%20וBOOM!">
               <FaWhatsapp /> צ׳אט בוואטסאפ
             </a>
           </div>
