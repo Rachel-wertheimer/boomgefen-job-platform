@@ -404,7 +404,7 @@ import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
 import { sendMail } from "../../utils/mailService";
 
-// Inline animations נשארים כמו אצלך
+// Inline animations
 const AnimationStyles = () => (
   <style
     dangerouslySetInnerHTML={{
@@ -420,11 +420,7 @@ const AnimationStyles = () => (
 );
 
 const animationStyles = {
-  modalFadeIn: "modalFadeIn 0.3s ease-out forwards",
-  overlayFadeIn: "overlayFadeIn 0.3s ease-out forwards",
   spin: "spin 1s linear infinite",
-  fadeIn: "fadeIn 0.5s ease-out forwards",
-  marqueeScroll: "marqueeScroll 40s linear infinite",
 };
 
 const ContactUs: React.FC = () => {
@@ -433,15 +429,9 @@ const ContactUs: React.FC = () => {
 
   const { width } = useWindowSize();
   const isMobile = width <= 768;
-
   const colors = appColors;
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
   const [sendingMail, setSendingMail] = useState(false);
   const [mailError, setMailError] = useState<string | null>(null);
 
@@ -452,11 +442,9 @@ const ContactUs: React.FC = () => {
   const handleFocus = (field: string) => setFocusState(prev => ({ ...prev, [field]: true }));
   const handleBlur = (field: string) => setFocusState(prev => ({ ...prev, [field]: false }));
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -464,22 +452,21 @@ const ContactUs: React.FC = () => {
     setSendingMail(true);
     setMailError(null);
 
-    const recipientEmail = "boom.gefen.hevy@gmail.com";
-    const subject = `פנייה חדשה מאתר - ${formData.name}`;
-    const text = `
-  התקבלה פנייה חדשה מאתר:
-  שם מלא: ${formData.name}
-  כתובת מייל: ${formData.email}
-  טלפון: ${formData.phone}
-  -----------------
-  ${formData.message}
-  `;
-
-    const payload = { to: recipientEmail, subject, text };
+    const payload = {
+      to: "boom.gefen.hevy@gmail.com",
+      subject: `פנייה חדשה מאתר - ${formData.name}`,
+      text: `
+        התקבלה פנייה חדשה מאתר:
+        שם מלא: ${formData.name}
+        כתובת מייל: ${formData.email}
+        טלפון: ${formData.phone}
+        -----------------
+        ${formData.message}
+      `,
+    };
 
     try {
       await sendMail(payload);
-      // ניקוי הטופס אם נשלח בהצלחה
       setFormData({ name: "", email: "", phone: "", message: "" });
     } catch (err: any) {
       setMailError(err.message || "שגיאה בשליחת המייל");
@@ -488,17 +475,10 @@ const ContactUs: React.FC = () => {
     }
   };
 
-  // --- כל השאר נשאר אותו דבר, כולל styles שלך ---
-  // (רק החלפנו את ה-Redux ב-state מקומי: sendingMail, mailError)
-
   return (
     <div style={{ padding: isMobile ? "90px 15px 30px 15px" : "100px 30px 30px 30px" }}>
       <AnimationStyles />
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
+      <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         {fromNav && (
           <div>
             <h1>יצירת קשר</h1>
