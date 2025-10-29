@@ -50,3 +50,14 @@ exports.update_ad_is_relevant = async (adId, is_relevant) => {
   await pool.query(`UPDATE ads SET is_relevant = ? WHERE id = ?`, [is_relevant, adId]);
   return { id: adId, is_relevant: is_relevant };
 };
+
+exports.update_ad_content = async (adId, adData) => {
+  const { company, type, goal, description } = adData;
+  await pool.query(
+    `UPDATE ads SET company = ?, type = ?, goal = ?, description = ? WHERE id = ?`,
+    [company, type, goal, description, adId]
+  );
+  
+  const [rows] = await pool.query(`SELECT * FROM ads WHERE id = ?`, [adId]);
+  return rows[0];
+};

@@ -14,8 +14,7 @@ exports.CreateUserProfile = asyncHandler(async (req, res, next) => {
     res.status(500).json({ error: err.message });
     return next('CreateUser failed', 404);
   }
-}
-)
+});
 
 exports.getUserByEmail = async (req, res) => {
   const { email } = req.body;
@@ -43,20 +42,29 @@ exports.getUserByEmail = async (req, res) => {
   }
 };
 
-
 exports.updateTemporaryPassword = async (req, res) => {
   const { email, code } = req.body;
-  const isValid = await updateTemporaryPasswordBL(email, code);
-  if (!isValid)
-    return res.status(400).json({ message: "קוד לא תקף או שגוי" });
-  res.status(200).json({ message: "קוד תקף, ניתן לשנות סיסמה" });
+  try {
+    const isValid = await updateTemporaryPasswordBL(email, code);
+    if (!isValid)
+      return res.status(400).json({ message: "קוד לא תקף או שגוי" });
+    res.status(200).json({ message: "קוד תקף, ניתן לשנות סיסמה" });
+  } catch (err) {
+    console.error("Error in updateTemporaryPassword:", err);
+    res.status(500).json({ error: err.message });
+  }
 };
 
 exports.updatePassword = async (req, res) => {
   const { email, code, newPassword } = req.body;
-  const success = await updatePasswordBL(email, code, newPassword);
-  if (!success)
-    return res.status(400).json({ message: "קוד לא תקף או שפג תוקף" });
-  res.status(200).json({ message: "הסיסמה עודכנה בהצלחה" });
+  try {
+    const success = await updatePasswordBL(email, code, newPassword);
+    if (!success)
+      return res.status(400).json({ message: "קוד לא תקף או שפג תוקף" });
+    res.status(200).json({ message: "הסיסמה עודכנה בהצלחה" });
+  } catch (err) {
+    console.error("Error in updatePassword:", err);
+    res.status(500).json({ error: err.message });
+  }
 };
 

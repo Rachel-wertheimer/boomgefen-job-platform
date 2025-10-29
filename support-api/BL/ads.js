@@ -1,4 +1,4 @@
-const { getAllApprovedAdsDAL, getAllAdsDAL, getAllNotApprovedAdsDAL, createAdsDAL, toggleApprovedDAL, toggleRelevantDAL, getAllNotRelevantAdsDAL } = require("../DAL/ads");
+const { getAllApprovedAdsDAL, getAllAdsDAL, getAllNotApprovedAdsDAL, createAdsDAL, toggleApprovedDAL, toggleRelevantDAL, getAllNotRelevantAdsDAL, updateAdContentDAL } = require("../DAL/ads");
 
 exports.getAllApprovedAdsBL = async () => {
   try {
@@ -79,5 +79,14 @@ exports.toggleRelevantBL = async (adId, userRole) => {
   }
 
   const updatedAd = await toggleRelevantDAL(adId);
+  return updatedAd;
+};
+
+exports.updateAdContentBL = async (adId, adData, userRole) => {
+  if (userRole !== 'MANAGER') {
+    throw new Error('Unauthorized: Only managers can update ad content');
+  }
+
+  const updatedAd = await updateAdContentDAL(adId, adData);
   return updatedAd;
 };

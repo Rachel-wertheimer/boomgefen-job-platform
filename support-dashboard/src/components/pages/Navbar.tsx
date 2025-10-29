@@ -208,9 +208,10 @@ export default function Navbar() {
       {isMobile && mobileMenuOpen && (
         <div
           style={{
-            position: "absolute",
+            position: "fixed",
             top: "90px",
             left: 0,
+            right: 0,
             width: "100%",
             background: "white",
             boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
@@ -219,6 +220,9 @@ export default function Navbar() {
             alignItems: "center",
             padding: "20px",
             gap: "10px",
+            zIndex: 9999,
+            maxHeight: "calc(100vh - 90px)",
+            overflowY: "auto",
           }}
         >
           <NavLink to="/home" onClick={() => setMobileMenuOpen(false)}>

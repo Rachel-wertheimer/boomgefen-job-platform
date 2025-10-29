@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"; // הוספנו useEffect
 import { useNavigate } from "react-router-dom";
-import { LoginModal } from "./loginWorkWithUS"; // ודא שהנתיב הזה נכון
+import { LoginModal } from "./loginWorkWithUS";
 
 const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState({
