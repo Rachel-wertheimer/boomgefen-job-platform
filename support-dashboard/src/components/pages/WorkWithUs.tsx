@@ -9,9 +9,9 @@ import { appColors } from "../../utils/colors";
 
 // Inline animations
 const AnimationStyles = () => (
-  <style
-    dangerouslySetInnerHTML={{
-      __html: `
+    <style
+        dangerouslySetInnerHTML={{
+            __html: `
         @keyframes modalFadeIn {
           from { opacity: 0; transform: scale(0.95); }
           to { opacity: 1; transform: scale(1); }
@@ -33,16 +33,16 @@ const AnimationStyles = () => (
           100% { transform: translateX(-100%); }
         }
       `,
-    }}
-  />
+        }}
+    />
 );
 
 const animationStyles = {
-  modalFadeIn: "modalFadeIn 0.3s ease-out forwards",
-  overlayFadeIn: "overlayFadeIn 0.3s ease-out forwards",
-  spin: "spin 1s linear infinite",
-  fadeIn: "fadeIn 0.5s ease-out forwards",
-  marqueeScroll: "marqueeScroll 40s linear infinite",
+    modalFadeIn: "modalFadeIn 0.3s ease-out forwards",
+    overlayFadeIn: "overlayFadeIn 0.3s ease-out forwards",
+    spin: "spin 1s linear infinite",
+    fadeIn: "fadeIn 0.5s ease-out forwards",
+    marqueeScroll: "marqueeScroll 40s linear infinite",
 };
 
 const professionsList = [
@@ -166,6 +166,8 @@ export default function WorkWithUs() {
                 additionalSkills: formData.additionalSkills,
                 expectations: formData.expectations,
             };
+            sessionStorage.setItem('userEmail', formData.email); // שומר את האימייל ב-SSENSTORG
+
 
             await createUserProfile(profilePayload, userRes.userId);
             window.location.href = "https://pay.sumit.co.il/g9687k/gg7p5h/hykun7/payment/";

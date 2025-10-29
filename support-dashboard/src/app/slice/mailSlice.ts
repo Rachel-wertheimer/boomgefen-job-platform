@@ -1,47 +1,58 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { sendMail } from "../api/mail";
+import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
+import { sendEmail, type EmailData } from "../api/mail";
 
-interface MailState {
-  sendingMail: boolean;
-  mailError: string | null;
-}
-
-const initialState: MailState = {
-  sendingMail: false,
-  mailError: null,
+type EmailState = {
+  sending: boolean;
+  error: string | null;
+  successMessage: string | null;
 };
 
-// Thunk לשליחת מייל
-export const sendUserMail = createAsyncThunk(
-  "mail/sendUserMail",
-  async (payload: { to: string; subject: string; text: string }, { rejectWithValue }) => {
+const initialState: EmailState = {
+  sending: false,
+  error: null,
+  successMessage: null,
+};
+
+// thunk אסינכרוני לשליחת מייל
+export const sendEmailThunk = createAsyncThunk(
+  "email/sendEmail",
+  async (emailData: EmailData, { rejectWithValue }) => {
     try {
-      const data = await sendMail(payload.to, payload.subject, payload.text);
-      return data;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.error || "שליחת המייל נכשלה");
+      const response = await sendEmail(emailData);
+      return response.message;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to send email");
     }
   }
 );
 
-const mailSlice = createSlice({
-  name: "mail",
+const emailSlice = createSlice({
+  name: "email",
   initialState,
-  reducers: {},
+  reducers: {
+    resetEmailState(state) {
+      state.sending = false;
+      state.error = null;
+      state.successMessage = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(sendUserMail.pending, (state) => {
-        state.sendingMail = true;
-        state.mailError = null;
+      .addCase(sendEmailThunk.pending, (state) => {
+        state.sending = true;
+        state.error = null;
+        state.successMessage = null;
       })
-      .addCase(sendUserMail.fulfilled, (state) => {
-        state.sendingMail = false;
+      .addCase(sendEmailThunk.fulfilled, (state, action: PayloadAction<string>) => {
+        state.sending = false;
+        state.successMessage = action.payload;
       })
-      .addCase(sendUserMail.rejected, (state, action) => {
-        state.sendingMail = false;
-        state.mailError = action.payload as string;
+      .addCase(sendEmailThunk.rejected, (state, action) => {
+        state.sending = false;
+        state.error = action.payload as string;
       });
   },
 });
 
-export default mailSlice.reducer;
+export const { resetEmailState } = emailSlice.actions;
+export default emailSlice.reducer;

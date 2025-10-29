@@ -5,11 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
 import { subscribeUser } from "../../app/slice/userSlice";
 import { FaSpinner, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { sendMail } from "../../utils/mailService";
 
 // --- הגדרת אנימציית FadeIn ---
 const AnimationStyles = () => (
-    <style>
-        {`
+  <style>
+    {`
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
@@ -19,19 +20,33 @@ const AnimationStyles = () => (
         to { transform: rotate(360deg); }
       }
     `}
-    </style>
+  </style>
 );
 
 const PaymentSuccess: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.user);
-  
+
   // --- הוספנו useNavigate וכפתור ---
   const navigate = useNavigate();
   const [isHover, setIsHover] = useState(false);
 
   useEffect(() => {
     dispatch(subscribeUser());
+    const email = sessionStorage.getItem("userEmail");
+    if (email) {
+      sendMail({
+        to: email,
+        subject: "הרשמתך לסוכנות הושלמה בהצלחה",
+        text: `שלום,
+        ההרשמה שלך לסוכנות הושלמה בהצלחה.
+        תודה שהצטרפת!`,
+      })
+        .then(() => {
+          sessionStorage.removeItem("userEmail"); // מוחק מה־SSENSTORG לאחר שליחת המייל
+        })
+        .catch(err => console.error("Error sending confirmation email:", err));
+    }
   }, [dispatch]);
 
   // --- פלטת צבעים אחידה ---
@@ -73,20 +88,20 @@ const PaymentSuccess: React.FC = () => {
       animation: "fadeIn 0.5s ease-out forwards",
     },
     iconWrapper: {
-        marginBottom: '20px',
+      marginBottom: '20px',
     },
     iconSuccess: {
-        fontSize: '4rem',
-        color: colors.success,
+      fontSize: '4rem',
+      color: colors.success,
     },
     iconError: {
-        fontSize: '4rem',
-        color: colors.danger,
+      fontSize: '4rem',
+      color: colors.danger,
     },
     iconLoading: {
-        fontSize: '3rem',
-        color: colors.primary,
-        animation: 'spin 1.5s linear infinite',
+      fontSize: '3rem',
+      color: colors.primary,
+      animation: 'spin 1.5s linear infinite',
     },
     title: {
       fontSize: "2.2rem",
@@ -98,7 +113,7 @@ const PaymentSuccess: React.FC = () => {
       fontSize: "1.1rem",
       color: colors.textMedium,
       lineHeight: 1.6,
-      minHeight: '50px', 
+      minHeight: '50px',
       display: 'flex',
       alignItems: 'center',
     },
@@ -109,7 +124,7 @@ const PaymentSuccess: React.FC = () => {
     },
     // --- סגנונות לכפתור החדש ---
     buttonContainer: {
-        marginTop: '30px', // רווח מעל הכפתור
+      marginTop: '30px', // רווח מעל הכפתור
     },
     buttonBase: {
       padding: "12px 28px",
@@ -176,14 +191,14 @@ const PaymentSuccess: React.FC = () => {
         <p style={styles.statusText}>נרשמת בהצלחה להיות מנויה שלנו 🎉</p>
         {/* --- הוספת כפתור במקרה הצלחה --- */}
         <div style={styles.buttonContainer}>
-            <button
-                onClick={() => navigate("/home")}
-                style={buttonStyle}
-                onMouseEnter={() => setIsHover(true)}
-                onMouseLeave={() => setIsHover(false)}
-            >
-                מעבר לעמוד הבית
-            </button>
+          <button
+            onClick={() => navigate("/home")}
+            style={buttonStyle}
+            onMouseEnter={() => setIsHover(true)}
+            onMouseLeave={() => setIsHover(false)}
+          >
+            מעבר לעמוד הבית
+          </button>
         </div>
       </>
     );

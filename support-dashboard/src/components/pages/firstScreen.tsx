@@ -27,7 +27,10 @@ export default function FirstScreen() {
   const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(false); // מצב לפתיחת מודאל
 
-  const handleCloseLogin = () => setShowLogin(false);
+  const handleCloseLogin = () => {
+    setShowLogin(false);
+    navigate("/home")
+  };
 
   // --- קביעת מצב רספונסיבי ---
   const { width } = useWindowSize();

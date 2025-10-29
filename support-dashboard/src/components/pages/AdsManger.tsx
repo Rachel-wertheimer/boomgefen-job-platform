@@ -9,11 +9,11 @@ import {
   toggleAdRelevant,
 } from "../../app/slice/adsSlice";
 import { fetchUserDetails } from "../../app/slice/userSlice";
-import { sendUserMail } from "../../app/slice/mailSlice";
 import { FaSpinner, FaEdit } from "react-icons/fa";
 import { appColors } from "../../utils/colors";
 import EditAdModal from "./EditAdModal";
 import { useWindowSize } from "../../utils/hooks";
+import { sendMail } from "../../utils/mailService";
 
 // Inline animations
 const AnimationStyles = () => (
@@ -89,6 +89,53 @@ export default function AdsManager() {
   };
 
   // טוגל אישור/דחייה
+  // const handleToggleApproved = async (ad: any) => {
+  //   if (togglingId) return;
+  //   setTogglingId(ad.id);
+
+  //   try {
+  //     await dispatch(toggleAdApproved({ adId: ad.id, token }));
+  //     refreshList();
+
+  //     // שליחת מייל למשתמש
+  //     let userEmail = ad.userEmail;
+  //     if (!userEmail && ad.id_user) {
+  //       try {
+  //         const userDetails = await dispatch(fetchUserDetails(ad.id_user)).unwrap();
+  //         userEmail = userDetails.email;
+  //       } catch (err) {
+  //       }
+  //     }
+
+  //     if (userEmail) {
+  //       const isNowApproved = !ad.approved;
+  //       const subject = isNowApproved ? "המודעה שלך אושרה" : "המודעה שלך נדחתה";
+  //       const text = isNowApproved
+  //         ? "המודעה שלך אושרה על ידי מנהל המערכת."
+  //         : "המודעה שלך נדחתה על ידי מנהל המערכת.";
+
+  //       dispatch(sendUserMail({ to: userEmail, subject, text }));
+  //     }
+  //   } catch (err) {
+  //   } finally {
+  //     setTogglingId(null);
+  //   }
+  // };
+
+  // // טוגל רלוונטי/לא רלוונטי
+  // const handleToggleRelevant = async (ad: any) => {
+  //   if (togglingId) return;
+  //   setTogglingId(ad.id);
+
+  //   try {
+  //     await dispatch(toggleAdRelevant({ adId: ad.id, token }));
+  //     refreshList();
+  //   } catch (err) {
+  //   } finally {
+  //     setTogglingId(null);
+  //   }
+  // };
+  // טוגל אישור/דחייה
   const handleToggleApproved = async (ad: any) => {
     if (togglingId) return;
     setTogglingId(ad.id);
@@ -103,18 +150,17 @@ export default function AdsManager() {
         try {
           const userDetails = await dispatch(fetchUserDetails(ad.id_user)).unwrap();
           userEmail = userDetails.email;
-        } catch (err) {
-        }
+        } catch (err) { }
       }
 
       if (userEmail) {
-        const isNowApproved = !ad.approved;
+        const isNowApproved = !ad.approved; // הערך לאחר הטוגל
         const subject = isNowApproved ? "המודעה שלך אושרה" : "המודעה שלך נדחתה";
         const text = isNowApproved
           ? "המודעה שלך אושרה על ידי מנהל המערכת."
           : "המודעה שלך נדחתה על ידי מנהל המערכת.";
 
-        dispatch(sendUserMail({ to: userEmail, subject, text }));
+        await sendMail({ to: userEmail, subject, text });
       }
     } catch (err) {
     } finally {
@@ -130,11 +176,30 @@ export default function AdsManager() {
     try {
       await dispatch(toggleAdRelevant({ adId: ad.id, token }));
       refreshList();
+
+      // שליחת מייל למשתמש
+      let userEmail = ad.userEmail;
+      if (!userEmail && ad.id_user) {
+        try {
+          const userDetails = await dispatch(fetchUserDetails(ad.id_user)).unwrap();
+          userEmail = userDetails.email;
+        } catch (err) { }
+      }
+
+      if (userEmail) {
+        const isNowRelevant = !ad.is_relevant; // הערך לאחר הטוגל
+        const subject = isNowRelevant ? "המודעה שלך נחשבה רלוונטית" : "המודעה שלך נחשבה לא רלוונטית";
+        const text = isNowRelevant
+          ? "המודעה שלך נחשבת כעת רלוונטית במערכת."
+          : "המודעה שלך נחשבת כעת לא רלוונטית במערכת.";
+        await sendMail({ to: userEmail, subject, text });
+      }
     } catch (err) {
     } finally {
       setTogglingId(null);
     }
   };
+
 
   // --- סגנונות ---
   const styles: Record<string, React.CSSProperties> = {
@@ -429,11 +494,11 @@ export default function AdsManager() {
                       <div style={relevantToggle.thumb}></div>
                     </div>
                   </div>
-                  
+
                   {/* כפתור עריכה */}
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'center', 
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
                     marginTop: '15px',
                     padding: '10px 0'
                   }}>

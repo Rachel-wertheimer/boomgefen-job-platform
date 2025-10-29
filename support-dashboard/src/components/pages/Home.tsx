@@ -1,28 +1,3 @@
-// import { Ads } from "./Ads";
-// import AdsJob from "./AdsJob";
-
-// export default function Home() {
-//   return (
-//     <div style={{ display: "flex", gap: "20px", margin: "20px" }}>
-//       {/* Ads תופס 2/3 מהרוחב */}
-//       <div style={{ flex: 2 }}>
-//         <Ads />
-//       </div>
-
-//       {/* AdsJob מוצמד לשמאל */}
-//       <div
-//         style={{
-//           position: "fixed",
-//           top: "100px",
-//           left: "100px",
-//           width: "25%", // או גודל קבוע
-//         }}
-//       >
-//         <AdsJob />
-//       </div>
-//     </div>
-//   );
-// }
 import { Ads } from "./Ads";
 import AdsJob from "./AdsJob";
 import React from "react";

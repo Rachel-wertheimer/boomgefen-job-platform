@@ -1,6 +1,7 @@
 const { CreateUserDAL, FindUserByEmailDAL, getDetailsDAL, updateSubscriptionDAL, deleteUserDAL, generateResetTokenDAL, updatePasswordByTokenDAL } = require('../DAL/users');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { sendEmail } = require('../services/sendEmail');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -95,22 +96,54 @@ exports.deleteUserBL = async (userId) => {
 exports.forgotPasswordBL = async (email) => {
   try {
     console.log('Start forgotPasswordBL');
+
     const user = await FindUserByEmailDAL(email);
-    if (!user) {
-      throw new Error('User not found');
-    }
-    
+    if (!user) throw new Error('User not found');
+
+    // יצירת טוקן רנדומלי ושמירה בבסיס
     const resetToken = await generateResetTokenDAL(user.id);
-    
-    // Send email with reset link (would need email service)
-    console.log(`Reset token generated for user ${email}: ${resetToken}`);
-    
-    return { success: true, message: 'Password reset token generated. Please check your email.' };
+
+    // לינק לאיפוס סיסמה (אפשר לשים דומיין אמיתי שלך)
+    const resetLink = `https://yourdomain.com/reset-password?token=${resetToken}`;
+
+    // שליחת המייל
+    const subject = 'Reset your password';
+    const html = `
+      <p>Hello ${user.full_name},</p>
+      <p>You requested a password reset. Click the link below to reset your password:</p>
+      <a href="${resetLink}">Reset Password</a>
+      <p>If you did not request this, please ignore this email.</p>
+    `;
+    await sendEmail({ to: user.email, subject, html });
+
+    console.log(`Reset token sent to ${email}: ${resetToken}`);
+
+    return { success: true, message: 'Password reset token sent to your email.' };
   } catch (err) {
     console.error('Error in forgotPasswordBL', err);
     throw err;
   }
 };
+
+// exports.forgotPasswordBL = async (email) => {
+//   try {
+//     console.log('Start forgotPasswordBL');
+//     const user = await FindUserByEmailDAL(email);
+//     if (!user) {
+//       throw new Error('User not found');
+//     }
+    
+//     const resetToken = await generateResetTokenDAL(user.id);
+    
+//     // Send email with reset link (would need email service)
+//     console.log(`Reset token generated for user ${email}: ${resetToken}`);
+    
+//     return { success: true, message: 'Password reset token generated. Please check your email.' };
+//   } catch (err) {
+//     console.error('Error in forgotPasswordBL', err);
+//     throw err;
+//   }
+// };
 
 exports.resetPasswordBL = async (resetToken, newPassword) => {
   try {

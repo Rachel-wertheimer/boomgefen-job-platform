@@ -262,7 +262,7 @@ const CreateAdForm = () => {
             </div>
             <div style={styles.formGroup}>
               <label style={styles.label}>חברה / מוסד</label>
-              <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} required
+              <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} 
                 style={getInputStyle('company')} onFocus={() => handleFocus('company')} onBlur={() => handleBlur('company')}
                 placeholder="שם החברה" />
             </div>
@@ -280,7 +280,7 @@ const CreateAdForm = () => {
             </div>
             <div style={styles.formGroup}>
               <label style={styles.label}>טלפון</label>
-              <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required
+              <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} 
                 style={getInputStyle('phone')} onFocus={() => handleFocus('phone')} onBlur={() => handleBlur('phone')}
                 placeholder="050-1234567" />
             </div>

@@ -5,9 +5,9 @@ import type { RootState } from "../app/store";
 import { LoginModal } from "./pages/loginWorkWithUS";
 import { getUserDetailsByID } from "../app/api/user";
 import type { UserDetails } from "../app/slice/userSlice";
-import { sendMail } from "../app/api/mail";
 import { FaSpinner } from "react-icons/fa";
 import { appColors } from "../utils/colors";
+import { sendMail } from "../utils/mailService";
 
 // Inline animations
 const AnimationStyles = () => (
@@ -92,19 +92,31 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
   const handleSendMessage = async () => {
     if (!messageText.trim()) return alert("אנא כתוב הודעה לפני שליחה");
     if (!contactDetails?.email) return alert("פרטי הקשר חסרים");
-
+  
     setIsSending(true);
     try {
-      await sendMail(contactDetails.email, `פנייה בנוגע למודעה של ${company}`, messageText);
+      // הכנת payload לפי השירות החדש
+      const payload = {
+        to: contactDetails.email,
+        subject: `פנייה בנוגע למודעה של ${company}`,
+        text: messageText,
+        // אופציונלי: אפשר לשלוח גם html אם רוצים
+        html: `<p>${messageText}</p>`,
+      };
+  
+      await sendMail(payload);
+  
       alert("המייל נשלח בהצלחה!");
       setMessageText("");
       setContactDetails(null);
-    } catch {
+    } catch (err: any) {
+      console.error(err);
       alert("שגיאה בשליחת המייל");
     } finally {
       setIsSending(false);
     }
   };
+  
 
   // --- סגנונות ---
   const colors = appColors;
