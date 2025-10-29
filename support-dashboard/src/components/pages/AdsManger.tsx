@@ -11,10 +11,47 @@ import {
 import { fetchUserDetails } from "../../app/slice/userSlice";
 import { sendUserMail } from "../../app/slice/mailSlice";
 import { FaSpinner, FaEdit } from "react-icons/fa";
-import { AnimationStyles, animationStyles } from "../../utils/animations";
 import { appColors } from "../../utils/colors";
 import EditAdModal from "./EditAdModal";
 import { useWindowSize } from "../../utils/hooks";
+
+// Inline animations
+const AnimationStyles = () => (
+  <style
+    dangerouslySetInnerHTML={{
+      __html: `
+        @keyframes modalFadeIn {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes overlayFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes marqueeScroll {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-100%); }
+        }
+      `,
+    }}
+  />
+);
+
+const animationStyles = {
+  modalFadeIn: "modalFadeIn 0.3s ease-out forwards",
+  overlayFadeIn: "overlayFadeIn 0.3s ease-out forwards",
+  spin: "spin 1s linear infinite",
+  fadeIn: "fadeIn 0.5s ease-out forwards",
+  marqueeScroll: "marqueeScroll 40s linear infinite",
+};
 
 export default function AdsManager() {
   const dispatch = useDispatch<AppDispatch>();
@@ -399,25 +436,33 @@ export default function AdsManager() {
                   </div>
                   
                   {/* כפתור עריכה */}
-                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    marginTop: '15px',
+                    padding: '10px 0'
+                  }}>
                     <button
                       onClick={() => setEditingAd(ad)}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primaryDarker}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary}
                       style={{
-                        padding: "10px 20px",
-                        fontSize: "14px",
-                        borderRadius: "20px",
+                        padding: "12px 30px",
+                        fontSize: "16px",
+                        borderRadius: "25px",
                         cursor: "pointer",
                         fontWeight: "bold",
-                        border: `2px solid ${colors.primary}`,
-                        backgroundColor: "white",
-                        color: colors.primary,
+                        border: "none",
+                        backgroundColor: colors.primary,
+                        color: "white",
                         transition: "all 0.3s ease",
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '5px',
+                        gap: '8px',
+                        boxShadow: "0 4px 12px rgba(109, 68, 184, 0.3)",
                       }}
                     >
-                      <FaEdit /> ערוך תוכן
+                      <FaEdit style={{ fontSize: '18px' }} /> ערוך תוכן
                     </button>
                   </div>
                 </div>

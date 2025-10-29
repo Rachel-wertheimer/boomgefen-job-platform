@@ -1,9 +1,20 @@
 const nodemailer = require("nodemailer");
+const sgMail = require("@sendgrid/mail");
 const { handleFormSubmission } = require("../services/form");
 
-// Create transporter only if mail credentials are provided
+// Initialize SendGrid if API key is available
+if (process.env.SENDGRID_API_KEY) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  console.log("✅ SendGrid initialized successfully!");
+} else if (process.env.MAIL_USER && process.env.MAIL_PASS) {
+  console.log("Using Gmail/Nodemailer");
+} else {
+  console.log("⚠️ Mail service disabled - no credentials provided");
+}
+
+// Legacy Gmail transporter for backward compatibility
 let transporter = null;
-if (process.env.MAIL_USER && process.env.MAIL_PASS) {
+if (process.env.MAIL_USER && process.env.MAIL_PASS && !process.env.SENDGRID_API_KEY) {
   transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -12,35 +23,54 @@ if (process.env.MAIL_USER && process.env.MAIL_PASS) {
     },
     connectionTimeout: 20000,
   });
-  
+
   transporter.verify((err, success) => {
     if (err) console.error("Gmail connection failed:", err);
     else console.log("Gmail connection successful!");
   });
-} else {
-  console.log("Mail service disabled - no credentials provided");
 }
 
 exports.sendMail = async (req, res) => {
   const { to, subject, text } = req.body;
 
   try {
-    if (!transporter) {
-      console.log("Mail service not available - skipping email send");
-      console.log(`Would have sent: To: ${to}, Subject: ${subject}, Text: ${text}`);
-      return res.status(200).json({ message: "Mail service not available in this environment" });
+    // Try SendGrid first if available
+    if (process.env.SENDGRID_API_KEY) {
+      console.log(`📧 Sending email via SendGrid to: ${to}`);
+
+      const msg = {
+        to,
+        from: process.env.SENDGRID_FROM_EMAIL || "boom.gefen.hevy@gmail.com",
+        subject,
+        text,
+      };
+
+      await sgMail.send(msg);
+      console.log("✅ Email sent successfully via SendGrid");
+      return res.status(200).json({ message: "המייל נשלח בהצלחה" });
     }
 
-    await transporter.sendMail({
-      from: `"BOOM & גפן" <${process.env.MAIL_USER}>`, 
-      to,
-      subject,
-      text,
+    // Fallback to Gmail/Nodemailer
+    if (transporter) {
+      await transporter.sendMail({
+        from: `"BOOM & גפן" <${process.env.MAIL_USER}>`,
+        to,
+        subject,
+        text,
+      });
+      return res.status(200).json({ message: "המייל נשלח בהצלחה" });
+    }
+
+    // No mail service configured
+    console.log("⚠️ Mail service not available - skipping email send");
+    console.log(`Would have sent: To: ${to}, Subject: ${subject}, Text: ${text}`);
+    return res.status(200).json({
+      message: "Mail service not configured. Please add SENDGRID_API_KEY to environment variables."
     });
-    res.status(200).json({ message: "המייל נשלח בהצלחה" });
+
   } catch (err) {
-    console.error("שגיאה בשליחת מייל:", err);
-    res.status(500).json({ error: "נכשל בשליחת המייל" });
+    console.error("❌ Error sending email:", err);
+    return res.status(500).json({ error: "נכשל בשליחת המייל: " + err.message });
   }
 };
 

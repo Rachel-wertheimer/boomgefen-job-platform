@@ -14,9 +14,8 @@ exports.CreateUserProfile = asyncHandler(async (req, res, next) => {
     res.status(500).json({ error: err.message });
     return next('CreateUser failed', 404);
   }
-}
-)
 
+})
 exports.getUserByEmail = async (req, res) => {
   const { email } = req.body;
   try {
