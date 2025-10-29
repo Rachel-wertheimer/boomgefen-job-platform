@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,25 +12,8 @@ import {
 import type { AppDispatch, RootState } from "../../app/store";
 import { logout } from "../../app/slice/userSlice";
 import { LoginModal } from "./loginWorkWithUS";
-
-const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return windowSize;
-};
+import { useWindowSize } from "../../utils/hooks";
+import { appColors } from "../../utils/colors";
 
 export default function Navbar() {
   const dispatch = useDispatch<AppDispatch>();
@@ -43,16 +26,7 @@ export default function Navbar() {
   const { width } = useWindowSize();
   const isMobile = width <= 960;
 
-  const colors = {
-    primary: "#6d44b8",
-    primaryHover: "#5a379a",
-    danger: "#fa5252",
-    dangerHover: "#e03131",
-    textDark: "#212529",
-    textMedium: "#555",
-    borderColor: "#e0e0e0",
-    activeBackground: "#f5f3f9",
-  };
+  const colors = appColors;
 
   const handleMobileNavigate = (path: string, state = {}) => {
     navigate(path, { state });

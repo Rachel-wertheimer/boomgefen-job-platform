@@ -362,9 +362,12 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
 interface DecodedToken {
-  userId: number;
+  id: number;
+  userId?: number;
   name: string;
+  userName?: string;
   role: "USER" | "MANAGER";
+  email?: string;
 }
 
 interface RegistrationFormData {
@@ -564,10 +567,33 @@ export const submitRegistrationForm = createAsyncThunk(
   }
 );
 
+// ----------------- INITIALIZE USER FROM TOKEN -----------------
+const initializeUserFromToken = () => {
+  const token = sessionStorage.getItem("token");
+  if (token) {
+    try {
+      const decoded: DecodedToken = jwtDecode(token);
+      return {
+        userId: decoded.id || decoded.userId || 0,
+        name: decoded.name || decoded.userName || "",
+        role: decoded.role
+      };
+    } catch (err) {
+      console.error("Failed to decode token:", err);
+      sessionStorage.removeItem("token");
+      return null;
+    }
+  }
+  return null;
+};
+
 // ----------------- SLICE -----------------
 const userSlice = createSlice({
   name: "user",
-  initialState,
+  initialState: {
+    ...initialState,
+    currentUser: initializeUserFromToken()
+  },
   reducers: {
     logout(state) {
       state.token = null;
@@ -594,7 +620,13 @@ const userSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.token = action.payload.token;
-        state.currentUser = action.payload.user;
+        if (action.payload.user) {
+          state.currentUser = {
+            userId: action.payload.user.userId || action.payload.user.id || 0,
+            name: action.payload.user.name || "",
+            role: action.payload.user.role
+          };
+        }
       })
       .addCase(login.rejected, (state, action) => { state.loading = false; state.error = action.payload as string; })
       // REGISTER

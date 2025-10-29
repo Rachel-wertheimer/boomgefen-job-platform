@@ -25,7 +25,10 @@
 // }
 import { Ads } from "./Ads";
 import AdsJob from "./AdsJob";
-import React from "react"; // ייבוא של React
+import React from "react";
+import { appColors } from "../../utils/colors";
+
+const colors = appColors;
 
 // אובייקט סגנונות חדש ומודרני
 const styles: Record<string, React.CSSProperties> = {
@@ -35,8 +38,8 @@ const styles: Record<string, React.CSSProperties> = {
     gridTemplateColumns: "2fr 1fr", // חלוקה של 2/3 ו-1/3
     gap: "30px",
     maxWidth: "1400px",
-    margin: "0 auto", // מרכוז
-    padding: "90px 20px 20px 20px", // ריפוד עליון (מתחת ל-Navbar) + צדדים
+    margin: "0 auto",
+    padding: "90px 20px 20px 20px",
   },
   // עמודת המודעות
   adsColumn: {

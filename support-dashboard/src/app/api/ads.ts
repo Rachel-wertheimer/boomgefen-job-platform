@@ -81,3 +81,16 @@ export const getNotRelevantAds = async () => {
   const res = await axios.get(`${BASE_URL}/getAllNotRelevantAds`);
   return res.data.data;
 };
+
+export const updateAdContent = async (adId: number, token: string, adData: { company: string; type: string; goal: string; description: string }) => {
+  const res = await axios.put(
+    `${BASE_URL}/updateContent/${adId}`,
+    adData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data.ad;
+};
