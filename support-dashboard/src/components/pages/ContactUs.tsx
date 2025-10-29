@@ -404,7 +404,6 @@ import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
 import { sendMail } from "../../utils/mailService";
 
-// Inline animations
 const AnimationStyles = () => (
   <style
     dangerouslySetInnerHTML={{
@@ -434,13 +433,6 @@ const ContactUs: React.FC = () => {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
   const [sendingMail, setSendingMail] = useState(false);
   const [mailError, setMailError] = useState<string | null>(null);
-
-  const [focusState, setFocusState] = useState<Record<string, boolean>>({});
-  const [isSubmitHover, setIsSubmitHover] = useState(false);
-  const [isWhatsappHover, setIsWhatsappHover] = useState(false);
-
-  const handleFocus = (field: string) => setFocusState(prev => ({ ...prev, [field]: true }));
-  const handleBlur = (field: string) => setFocusState(prev => ({ ...prev, [field]: false }));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -500,8 +492,6 @@ const ContactUs: React.FC = () => {
             placeholder="שם מלא"
             value={formData.name}
             onChange={handleChange}
-            onFocus={() => handleFocus('name')}
-            onBlur={() => handleBlur('name')}
             required
           />
           <input
@@ -510,8 +500,6 @@ const ContactUs: React.FC = () => {
             placeholder="כתובת מייל"
             value={formData.email}
             onChange={handleChange}
-            onFocus={() => handleFocus('email')}
-            onBlur={() => handleBlur('email')}
             required
           />
           <input
@@ -520,16 +508,12 @@ const ContactUs: React.FC = () => {
             placeholder="טלפון"
             value={formData.phone}
             onChange={handleChange}
-            onFocus={() => handleFocus('phone')}
-            onBlur={() => handleBlur('phone')}
           />
           <textarea
             name="message"
             placeholder="ספרו לנו על האירוע שלכם..."
             value={formData.message}
             onChange={handleChange}
-            onFocus={() => handleFocus('message')}
-            onBlur={() => handleBlur('message')}
           />
 
           <motion.button
