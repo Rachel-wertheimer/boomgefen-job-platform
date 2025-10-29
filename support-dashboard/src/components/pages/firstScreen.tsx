@@ -190,7 +190,7 @@ export default function FirstScreen() {
         {/* עמודת תמונות */}
         <div style={styles.logoContainer}>
           <img
-            src="/Geffen2.png"
+            src="/geffen.jpg"
             alt="גפן הפקות במה"
             style={styles.logoImage}
           />
