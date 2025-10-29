@@ -120,6 +120,7 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
       opacity: isVisible ? 1 : 0,
       animation: isVisible ? animationStyles.fadeIn : "none",
       transition: "box-shadow 0.3s ease",
+      minHeight: "250px", // מינימום גובה לקלף
     },
     companyWrapper: {
       display: "flex",
@@ -159,10 +160,11 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
       WebkitLineClamp: 5,          // מספר שורות מקסימלי
       WebkitBoxOrient: "vertical",
       wordBreak: "break-word",     // שובר מילים ארוכות
+      flex: 1,                     // תופס את כל המרחב הפנוי
     },
 
     button: {
-      marginTop: "16px",
+      marginTop: "auto",           // דוחף את הכפתור לתחתית
       padding: "12px 24px",
       fontSize: "16px",
       borderRadius: "30px",

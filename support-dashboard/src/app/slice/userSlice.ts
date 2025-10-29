@@ -16,6 +16,7 @@ interface DecodedToken {
   userName?: string;
   role: "USER" | "MANAGER";
   email?: string;
+  exp?: number; // זמן תפוגה של הטוקן
 }
 
 interface RegistrationFormData {
@@ -100,7 +101,7 @@ export const login = createAsyncThunk(
       return { token: data.token, user: decoded, error: null, userId: null };
 
     } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.response?.data?.error || "Login failed");
+      return thunkAPI.rejectWithValue(err.response?.data?.error || "התחברות נכשלה");
     }
   }
 );
@@ -146,7 +147,7 @@ export const registerUser = createAsyncThunk(
 
       return { userId, ...userPayload };
     } catch (err: any) {
-      return rejectWithValue(err.response?.data?.error || "Registration failed");
+      return rejectWithValue(err.response?.data?.error || "ההרשמה נכשלה");
     }
   }
 );
@@ -158,13 +159,13 @@ export const subscribeUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const userId = Number(sessionStorage.getItem("userId"));
-      if (!userId) throw new Error("User ID not found in storage");
+      if (!userId) throw new Error("מזהה משתמש לא נמצא במאגר");
 
       const data = await updateSubscription(userId);
       sessionStorage.removeItem("userId");
       return data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || err.message || "Subscription failed");
+      return rejectWithValue(err.response?.data?.message || err.message || "רכישת מנוי נכשלה");
     }
   }
 );
@@ -175,13 +176,13 @@ export const deleteUserAccount = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const userId = Number(sessionStorage.getItem("userId"));
-      if (!userId) throw new Error("User ID not found in storage");
+      if (!userId) throw new Error("מזהה משתמש לא נמצא במאגר");
 
       const response = await deleteUser(userId);
       sessionStorage.clear();
       return response;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || err.message || "Delete user failed");
+      return rejectWithValue(err.response?.data?.message || err.message || "מחיקת המשתמש נכשלה");
     }
   }
 );
@@ -194,7 +195,7 @@ export const fetchUserDetails = createAsyncThunk(
       const data = await getUserDetailsByID(userId);
       return data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data?.error || "Failed to fetch user details");
+      return rejectWithValue(err.response?.data?.error || "נכשל בשליפת פרטי המשתמש");
     }
   }
 );
@@ -207,6 +208,13 @@ const initializeUserFromToken = (): UserDetails | null => {
   if (token) {
     try {
       const decoded: DecodedToken = jwtDecode(token);
+      // בדיקה אם הטוקן פג תוקף
+      const currentTime = Date.now() / 1000; // המרה לזמן יוניקס
+      if (decoded.exp && decoded.exp < currentTime) {
+        // הטוקן פג תוקף - ממשיך למחוק
+        sessionStorage.removeItem("token");
+        return null;
+      }
       return {
         userId: decoded.id || decoded.userId || 0,
         name: decoded.name || decoded.userName || "",

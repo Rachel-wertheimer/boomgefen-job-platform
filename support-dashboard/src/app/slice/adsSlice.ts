@@ -42,14 +42,14 @@ export const registerUserAndCreateAd = createAsyncThunk(
       const userId = await createUser(userData);
 
       if (!userId) {
-        throw new Error("User ID is undefined or null");
+        throw new Error("מזהה משתמש לא מוגדר");
       }
 
       const newAd = await createAd({ id_user: userId, ...adData });
 
       return newAd;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Failed to register user and create ad");
+      return rejectWithValue(error.response?.data?.message || "נכשל ביצירת המשתמש והמודעה");
     }
   }
 );
@@ -123,7 +123,7 @@ const adsSlice = createSlice({
       })
       .addCase(fetchAllAds.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? "Failed to fetch ads";
+        state.error = action.error.message ?? "נכשל בשליפת המודעות";
       })
 
       // מודעות לא מאושרות

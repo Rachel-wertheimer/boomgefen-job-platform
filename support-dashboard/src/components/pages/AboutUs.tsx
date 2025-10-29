@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
 
-// Inline animations
 const AnimationStyles = () => (
   <style
     dangerouslySetInnerHTML={{
@@ -26,6 +25,7 @@ const AnimationStyles = () => (
         @keyframes marqueeScroll {
           0% { transform: translateX(0%); }
           100% { transform: translateX(-100%); }
+        
         }
       `,
     }}
@@ -46,7 +46,6 @@ export default function AboutUs() {
 
   const colors = appColors;
 
-  // --- סגנונות ---
   const styles: Record<string, React.CSSProperties> = {
     pageContainer: {
       display: "flex",
@@ -74,7 +73,7 @@ export default function AboutUs() {
       alignItems: "center",
       gap: isMobile ? "15px" : "30px",
       flexWrap: "wrap",
-      filter: "saturate(1.1)", 
+      filter: "saturate(1.1)",
     },
     topLogo: {
       height: isMobile ? "50px" : "80px",
@@ -100,7 +99,7 @@ export default function AboutUs() {
       flexDirection: "column",
       alignItems: "center",
       textAlign: "center",
-      opacity: 0, // לאנימציה
+      opacity: 0,
       animation: "fadeIn 0.5s ease-out 0.2s forwards",
     },
     cardLogo: {
@@ -110,7 +109,7 @@ export default function AboutUs() {
     },
     cardTitle: {
       fontSize: isMobile ? "1.5rem" : "1.8rem",
-      color: colors.primary, // צבע מותג
+      color: colors.primary,
       fontWeight: 700,
       margin: "10px 0",
     },
@@ -119,7 +118,7 @@ export default function AboutUs() {
       color: colors.textMedium,
       lineHeight: 1.7,
       margin: "0 0 24px 0",
-      flexGrow: 1, 
+      flexGrow: 1,
     },
     visitButtonBase: {
       padding: "12px 28px",
@@ -131,7 +130,7 @@ export default function AboutUs() {
       transition: "all 0.3s ease",
       textDecoration: "none",
       display: "inline-block",
-      marginTop: "auto", 
+      marginTop: "auto",
       backgroundColor: colors.primary,
       color: "white",
     },
@@ -140,19 +139,18 @@ export default function AboutUs() {
       borderColor: colors.primaryHover,
     },
   };
-  
-  // --- States לכפתורים ---
+
   const [isGefenHover, setIsGefenHover] = useState(false);
   const [isBoomHover, setIsBoomHover] = useState(false);
-  
+
   const visitBtnStyleGeffen = {
-      ...styles.visitButtonBase,
-      ...(isGefenHover ? styles.visitButtonHover : {})
+    ...styles.visitButtonBase,
+    ...(isGefenHover ? styles.visitButtonHover : {})
   };
-  
+
   const visitBtnStyleBoom = {
-      ...styles.visitButtonBase,
-      ...(isBoomHover ? styles.visitButtonHover : {})
+    ...styles.visitButtonBase,
+    ...(isBoomHover ? styles.visitButtonHover : {})
   };
 
 
@@ -162,13 +160,11 @@ export default function AboutUs() {
       <div style={styles.mainContent}>
         <div style={styles.topLogoContainer}>
           <img src="/Geffen2.png" style={styles.topLogo} />
-          {/* --- השינוי שביקשת --- */}
           <span style={styles.separator}>&</span>
           <img src="/Boom2.png" style={styles.topLogo} />
         </div>
 
         <div style={styles.contentGrid}>
-          {/* גפן */}
           <div style={styles.card}>
             <img src="/Geffen2.png" style={styles.cardLogo} />
             <h2 style={styles.cardTitle}>גפן הפקות במה</h2>
@@ -189,7 +185,6 @@ export default function AboutUs() {
             </a>
           </div>
 
-          {/* BOOM */}
           <div style={{ ...styles.card, animationDelay: '0.4s' }}>
             <img src="/Boom2.png" style={styles.cardLogo} />
             <h2 style={styles.cardTitle}>BOOM - אמנות הבמה</h2>

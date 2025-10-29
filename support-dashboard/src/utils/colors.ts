@@ -1,7 +1,7 @@
 export const appColors = {
   primary: "#6d44b8",
   primaryHover: "#5a379a",
-  danger: "#fa5252",
+  danger: "#ff8800", // שונה מאדום לכתום
   success: "#40c057",
   textDark: "#212529",
   textMedium: "#555",
@@ -12,5 +12,5 @@ export const appColors = {
   cardBackground: "#ffffff",
   primaryDarker: "#5a379a",
   textWhite: "#ffffff",
-  dangerHover: "#e03131",
+  dangerHover: "#e67300", // שונה מאדום לכתום
 };

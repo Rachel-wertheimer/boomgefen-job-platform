@@ -81,12 +81,11 @@ export default function FirstScreen() {
       width: "100%",
     },
     logoImage: {
-      width: "100%",
-      maxWidth: isMobile ? "280px" : "300px", // רוחב מקסימלי מוקטן
-      height: "auto",
+      width: isMobile ? "280px" : "300px", // גודל קבוע
+      height: isMobile ? "280px" : "300px", // גודל קבוע
       borderRadius: "12px",
       boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
-      objectFit: "contain",
+      objectFit: "contain", // שומר על יחס הגובה ללא עיוות
     },
     title: {
       fontSize: isMobile ? "24px" : "28px", // פונט מוקטן

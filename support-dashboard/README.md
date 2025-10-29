@@ -1,4 +1,46 @@
-# React + TypeScript + Vite
+# Boom & Gefen - Support Dashboard
+
+דשבורד לניהול מודעות דרושים וניהול משתמשים עבור Boom & Gefen הפקות.
+
+## התקנה
+
+```bash
+npm install
+```
+
+## הגדרת משתני סביבה
+
+קרא את הקובץ `ENV_SETUP.md` להנחיות מפורטות על הגדרת משתני סביבה למייל.
+
+צור קובץ `.env` בתיקיית `support-dashboard` והוסף:
+
+```
+VITE_EMAILJS_SERVICE_ID=your_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_public_key
+```
+
+## הפעלה
+
+```bash
+npm run dev
+```
+
+## בנייה
+
+```bash
+npm run build
+```
+
+## תכונות
+
+- מערכת התחברות והרשמה
+- ניהול מודעות דרושים
+- שליחת מיילים
+- ממשק ניהול למנהלים
+- עיצוב רספונסיבי
+
+---
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

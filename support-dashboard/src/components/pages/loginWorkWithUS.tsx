@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import type { AppDispatch, RootState } from "../../app/store";
 import { login } from "../../app/slice/userSlice";
 import { FaSpinner } from "react-icons/fa";
@@ -51,6 +52,7 @@ type Props = {
 export const LoginModal: React.FC<Props> = ({ onClose }) => {
   // --- כל הלוגיקה נשארת זהה ---
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const { loading, error } = useSelector((state: RootState) => state.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -69,6 +71,8 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
           }
         } else {
           onClose(); // כניסה תקינה
+          // ניתוב אוטומטי ל-Home אחרי התחברות מוצלחת
+          navigate("/home");
         }
       })
       .catch(() => {

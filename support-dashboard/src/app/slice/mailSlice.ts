@@ -19,7 +19,7 @@ export const sendUserMail = createAsyncThunk(
       const data = await sendMail(payload.to, payload.subject, payload.text);
       return data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data?.error || "Failed to send mail");
+      return rejectWithValue(err.response?.data?.error || "שליחת המייל נכשלה");
     }
   }
 );
