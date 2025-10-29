@@ -6,7 +6,6 @@ const BASE_URL_USERS = "https://boomgefen-job-platform-1.onrender.com/api/v1/use
 
 export const getApprovedAds = async (): Promise<Ad[]> => {
   const response = await axios.get(`${BASE_URL}/getAllApprovedAds`);
-  console.log(response.data.data);
   return response.data.data;
 };
 

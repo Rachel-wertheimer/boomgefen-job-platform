@@ -171,7 +171,6 @@ export default function WorkWithUs() {
             window.location.href = "https://pay.sumit.co.il/g9687k/gg7p5h/hykun7/payment/";
 
         } catch (err) {
-            console.error('Error submitting form:', err);
             alert('אירעה שגיאה בשליחת הטופס. נסי שוב.');
             setLoading(false);
         }

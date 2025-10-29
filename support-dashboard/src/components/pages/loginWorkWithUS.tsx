@@ -71,8 +71,7 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
           onClose(); // כניסה תקינה
         }
       })
-      .catch((err: any) => {
-        console.error(err); // שגיאות רשת/שרת
+      .catch(() => {
       });
   };
   // --- סוף הלוגיקה שלא נגענו בה ---

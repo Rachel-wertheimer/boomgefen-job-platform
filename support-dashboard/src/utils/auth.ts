@@ -17,7 +17,6 @@ export function getUserFromToken(): { name?: string; role?: string } | null {
       role: payload.role || "",
     };
   } catch (err) {
-    console.error("Invalid token", err);
     return null;
   }
 }

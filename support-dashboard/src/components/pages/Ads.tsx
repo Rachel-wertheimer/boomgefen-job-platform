@@ -67,10 +67,7 @@ export const Ads: React.FC = () => {
   ];
 
   useEffect(() => {
-    dispatch(fetchAds())
-      .unwrap()
-      .then((data) => console.log("Data fetched:", data))
-      .catch((err) => console.error("Fetch error:", err));
+    dispatch(fetchAds());
   }, [dispatch]);
 
   const filterText = selectedType?.value?.toLowerCase() ?? "";

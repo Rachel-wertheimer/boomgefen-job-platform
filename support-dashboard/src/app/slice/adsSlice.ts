@@ -40,19 +40,15 @@ export const registerUserAndCreateAd = createAsyncThunk(
     try {
       // קודם יוצרים User
       const userId = await createUser(userData);
-      console.log("User created with ID:", userId); // <- כאן בודקים אם יש ID
 
       if (!userId) {
         throw new Error("User ID is undefined or null");
       }
 
-      // ואז יוצרים מודעה עם ה-ID שהתקבל
       const newAd = await createAd({ id_user: userId, ...adData });
-      console.log("Ad created:", newAd); // <- בודקים את המודעה שנוצרה
 
       return newAd;
     } catch (error: any) {
-      console.log("Error in registerUserAndCreateAd:", error); // <- לוג כללי לשגיאה
       return rejectWithValue(error.response?.data?.message || "Failed to register user and create ad");
     }
   }

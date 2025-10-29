@@ -7,7 +7,6 @@ require("dotenv").config();
 const adsRouter = require('./routes/ads');
 const usersRouter = require('./routes/users');
 const userProfilesRouter = require('./routes/user_profiles');
-const mailRouter = require('./routes/mail');
 
 const app = express();
 app.use(cors());
@@ -17,7 +16,6 @@ const server = require('http').createServer(app);
 app.use('/api/v1/ads', adsRouter);
 app.use('/api/v1/users',usersRouter );
 app.use('/api/v1/user_profiles',userProfilesRouter );
-app.use('/api/v1/mail', mailRouter);
 
-server.listen(port, () => console.log('Listening on port ' + port + '...'));
+server.listen(port);
 

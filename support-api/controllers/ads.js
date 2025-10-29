@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 
 exports.getAllApprovedAds = asyncHandler(async (req, res, next) => {
   try {
-    console.log(`Start getAllApprovedAds controller`);
     const data = await getAllApprovedAdsBL();
     res.status(200).json({
       success: true,
@@ -13,14 +12,12 @@ exports.getAllApprovedAds = asyncHandler(async (req, res, next) => {
     });
   }
   catch (err) {
-    console.log('error in getAllApprovedAds', err);
     return next('getAllApprovedAds failed', 404);
   }
 })
 
 exports.getAllNotApprovedAds = asyncHandler(async (req, res, next) => {
   try {
-    console.log(`Start getAllNotApprovedAds`);
     const data = await getAllNotApprovedAdsBL();
     res.status(200).json({
       success: true,
@@ -29,13 +26,11 @@ exports.getAllNotApprovedAds = asyncHandler(async (req, res, next) => {
     });
   }
   catch (err) {
-    console.log('error in getAllNotApprovedAdsBL', err);
     return next('getAllNotApprovedAdsBL failed', 404);
   }
 })
 exports.getAllNotRelevantAds = asyncHandler(async (req, res, next) => {
   try {
-    console.log(`Start getAllNotRelevantAds`);
     const data = await getAllNotRelevantAdsBL();
     res.status(200).json({
       success: true,
@@ -44,14 +39,12 @@ exports.getAllNotRelevantAds = asyncHandler(async (req, res, next) => {
     });
   }
   catch (err) {
-    console.log('error in getAllNotRelevantAds', err);
     return next('getAllNotRelevantAds failed', 404);
   }
 })
 
 exports.getAllAds = asyncHandler(async (req, res, next) => {
   try {
-    console.log(`Start getAllAds`);
     const data = await getAllAdsBL();
     res.status(200).json({
       success: true,
@@ -60,14 +53,12 @@ exports.getAllAds = asyncHandler(async (req, res, next) => {
     });
   }
   catch (err) {
-    console.log('error in getAllAds', err);
     return next('getAllAds failed', 404);
   }
 })
 
 exports.createAds = asyncHandler(async (req, res, next) => {
   try {
-    console.log(`Start createAds`);
     const adData = {
       id_user: req.body.id_user,
       company: req.body.company,
@@ -83,7 +74,6 @@ exports.createAds = asyncHandler(async (req, res, next) => {
     });
   }
   catch (err) {
-    console.log('error in createAds', err);
     return next('createAds failed', 500);
   }
 }

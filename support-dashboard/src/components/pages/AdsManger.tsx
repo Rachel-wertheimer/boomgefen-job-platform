@@ -104,7 +104,6 @@ export default function AdsManager() {
           const userDetails = await dispatch(fetchUserDetails(ad.id_user)).unwrap();
           userEmail = userDetails.email;
         } catch (err) {
-          console.error("שגיאה בקבלת פרטי המשתמש:", err);
         }
       }
 
@@ -116,11 +115,8 @@ export default function AdsManager() {
           : "המודעה שלך נדחתה על ידי מנהל המערכת.";
 
         dispatch(sendUserMail({ to: userEmail, subject, text }));
-      } else {
-        console.log("לא נמצא אימייל למודעה:", ad);
       }
     } catch (err) {
-      console.error("שגיאה בטיפול באישור מודעה:", err);
     } finally {
       setTogglingId(null);
     }
@@ -135,7 +131,6 @@ export default function AdsManager() {
       await dispatch(toggleAdRelevant({ adId: ad.id, token }));
       refreshList();
     } catch (err) {
-      console.error("שגיאה בטיפול ברלוונטיות:", err);
     } finally {
       setTogglingId(null);
     }
