@@ -194,7 +194,7 @@ export default function FirstScreen() {
             alt="גפן הפקות במה"
             style={styles.logoImage}
           />
-          <img src="/Boom2.png" alt="BOOM הפקות" style={styles.logoImage} />
+          <img src="/boom.png" alt="BOOM הפקות" style={styles.logoImage} />
         </div>
 
         <h1 style={styles.title}>ברוכים הבאים לאתר הדרושים</h1>
