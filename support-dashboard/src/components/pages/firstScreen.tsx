@@ -84,12 +84,15 @@ export default function FirstScreen() {
       width: "100%",
     },
     logoImage: {
-      width: isMobile ? "280px" : "300px", // גודל קבוע
-      height: isMobile ? "280px" : "300px", // גודל קבוע
+      width: isMobile ? "280px" : "300px",
+      height: isMobile ? "280px" : "300px",
       borderRadius: "12px",
       boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
-      objectFit: "contain", // שומר על יחס הגובה ללא עיוות
-    },
+      objectFit: "contain",
+      backgroundColor: "#fff", // רקע אחיד
+      border: "1px solid #ddd", // גבול עדין סביב שתי התמונות
+    }
+    ,    
     title: {
       fontSize: isMobile ? "24px" : "28px", // פונט מוקטן
       fontWeight: "bold",

@@ -70,7 +70,7 @@ const CreateAdForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fullName || !email || !phone || !company || !type || !goal || !description) {
+    if (!fullName || !email || !type || !goal || !description) {
       alert("אנא מלא את כל השדות");
       return;
     }
@@ -176,7 +176,7 @@ const CreateAdForm = () => {
       boxSizing: "border-box",
       fontFamily: "inherit",
     }
-    ,    
+    ,
 
     buttonContainer: {
       paddingTop: '24px',
@@ -262,7 +262,7 @@ const CreateAdForm = () => {
             </div>
             <div style={styles.formGroup}>
               <label style={styles.label}>חברה / מוסד</label>
-              <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} 
+              <input type="text" value={company} onChange={(e) => setCompany(e.target.value)}
                 style={getInputStyle('company')} onFocus={() => handleFocus('company')} onBlur={() => handleBlur('company')}
                 placeholder="שם החברה" />
             </div>
@@ -280,7 +280,7 @@ const CreateAdForm = () => {
             </div>
             <div style={styles.formGroup}>
               <label style={styles.label}>טלפון</label>
-              <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} 
+              <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
                 style={getInputStyle('phone')} onFocus={() => handleFocus('phone')} onBlur={() => handleBlur('phone')}
                 placeholder="050-1234567" />
             </div>

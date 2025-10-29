@@ -397,68 +397,51 @@
 
 // export default ContactUs;
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaSpinner, FaWhatsapp } from "react-icons/fa";
-import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
-import { sendMail } from "../../utils/mailService";
-
-const AnimationStyles = () => (
-  <style
-    dangerouslySetInnerHTML={{
-      __html: `
-        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        @keyframes overlayFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes marqueeScroll { 0% { transform: translateX(0%); } 100% { transform: translateX(-100%); } }
-      `,
-    }}
-  />
-);
-
-const animationStyles = {
-  spin: "spin 1s linear infinite",
-};
+import { useWindowSize } from "../../utils/hooks";
+import { sendMail } from "../../app/api/email";
 
 const ContactUs: React.FC = () => {
-  const location = useLocation();
-  const fromNav = location.state?.fromNav === true;
+  const { isMobile } = useWindowSize();
 
-  const { width } = useWindowSize();
-  const isMobile = width <= 768;
-  const colors = appColors;
-
-  const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
   const [sendingMail, setSendingMail] = useState(false);
   const [mailError, setMailError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSendingMail(true);
     setMailError(null);
+    setSuccess(false);
 
     const payload = {
       to: "boom.gefen.hevy@gmail.com",
       subject: `פנייה חדשה מאתר - ${formData.name}`,
       text: `
-        התקבלה פנייה חדשה מאתר:
-        שם מלא: ${formData.name}
-        כתובת מייל: ${formData.email}
-        טלפון: ${formData.phone}
-        -----------------
-        ${formData.message}
+      התקבלה פנייה חדשה מאתר:
+      שם מלא: ${formData.name}
+      מייל: ${formData.email}
+      טלפון: ${formData.phone}
+      -----------------
+      ${formData.message}
       `,
     };
 
     try {
       await sendMail(payload);
+      setSuccess(true);
       setFormData({ name: "", email: "", phone: "", message: "" });
     } catch (err: any) {
       setMailError(err.message || "שגיאה בשליחת המייל");
@@ -468,73 +451,141 @@ const ContactUs: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: isMobile ? "90px 15px 30px 15px" : "100px 30px 30px 30px" }}>
-      <AnimationStyles />
-      <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-        {fromNav && (
-          <div>
-            <h1>יצירת קשר</h1>
-            <p>בואו נתחיל לתכנן את האירוע המושלם שלכם ✨</p>
-            <p>📞 טלפון: 0507999045</p>
-            <p>✉️ מייל: boom.gefen.hevy@gmail.com</p>
-            <a href="https://wa.me/972507999045?text=שלום%20גפן%20וBOOM!">
-              <FaWhatsapp /> צ׳אט בוואטסאפ
-            </a>
-          </div>
-        )}
+    <div style={styles.pageContainer(isMobile)}>
+      <motion.div
+        initial={{ opacity: 0, y: 25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        style={styles.formCard(isMobile)}
+      >
+        <h1 style={styles.title}>צור קשר</h1>
+        <p style={styles.subtitle}>
+          נשמח לשמוע ממך! מלא את הפרטים ונחזור אליך בהקדם האפשרי.
+        </p>
 
-        <form onSubmit={handleSubmit}>
-          {!fromNav && <h2>שלחו לנו הודעה</h2>}
-
+        <form onSubmit={handleSubmit} style={styles.form}>
           <input
-            type="text"
             name="name"
-            placeholder="שם מלא"
             value={formData.name}
             onChange={handleChange}
+            placeholder="שם מלא"
             required
+            style={styles.input}
           />
           <input
-            type="email"
             name="email"
-            placeholder="כתובת מייל"
             value={formData.email}
             onChange={handleChange}
+            placeholder="אימייל"
             required
+            type="email"
+            style={styles.input}
           />
           <input
-            type="tel"
             name="phone"
-            placeholder="טלפון"
             value={formData.phone}
             onChange={handleChange}
+            placeholder="טלפון"
+            style={styles.input}
           />
           <textarea
             name="message"
-            placeholder="ספרו לנו על האירוע שלכם..."
             value={formData.message}
             onChange={handleChange}
+            placeholder="הודעה"
+            required
+            rows={4}
+            style={styles.textarea}
           />
-
-          <motion.button
-            whileHover={{ scale: sendingMail ? 1 : 1.03 }}
-            whileTap={{ scale: sendingMail ? 1 : 0.98 }}
+          <button
             type="submit"
             disabled={sendingMail}
+            style={{
+              ...styles.button,
+              backgroundColor: sendingMail ? "#aaa" : appColors.main,
+            }}
           >
-            {sendingMail ? (
-              <>
-                שולח...
-                <FaSpinner style={{ animation: animationStyles.spin }} />
-              </>
-            ) : "שלח הודעה"}
-          </motion.button>
-
-          {mailError && <p style={{ color: colors.danger }}>שגיאה: {mailError}</p>}
+            {sendingMail ? "שולח..." : "שלח"}
+          </button>
         </form>
+
+        {mailError && <p style={styles.error}>{mailError}</p>}
+        {success && <p style={styles.success}>ההודעה נשלחה בהצלחה ✅</p>}
       </motion.div>
     </div>
   );
+};
+
+const styles = {
+  pageContainer: (isMobile: boolean) => ({
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "100vh",
+    background: appColors.lightGradient,
+    padding: isMobile ? "90px 15px" : "100px 30px",
+    boxSizing: "border-box",
+    direction: "rtl" as const,
+  }),
+  formCard: (isMobile: boolean) => ({
+    backgroundColor: "#fff",
+    borderRadius: "20px",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+    padding: isMobile ? "25px" : "40px",
+    width: "100%",
+    maxWidth: "600px",
+    textAlign: "center" as const,
+  }),
+  title: {
+    fontSize: "2rem",
+    color: appColors.dark,
+    marginBottom: "10px",
+  },
+  subtitle: {
+    color: "#555",
+    marginBottom: "30px",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "15px",
+  },
+  input: {
+    padding: "12px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    fontSize: "1rem",
+    outline: "none",
+    textAlign: "right" as const,
+  },
+  textarea: {
+    padding: "12px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    fontSize: "1rem",
+    resize: "none" as const,
+    textAlign: "right" as const,
+  },
+  button: {
+    marginTop: "10px",
+    padding: "12px",
+    border: "none",
+    borderRadius: "10px",
+    color: "white",
+    fontSize: "1.1rem",
+    cursor: "pointer",
+    transition: "0.3s",
+  },
+  error: {
+    marginTop: "15px",
+    color: "red",
+    fontWeight: 500,
+  },
+  success: {
+    marginTop: "15px",
+    color: "green",
+    fontWeight: 500,
+  },
 };
 
 export default ContactUs;
