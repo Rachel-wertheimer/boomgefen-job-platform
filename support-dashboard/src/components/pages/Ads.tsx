@@ -129,7 +129,7 @@ export const Ads: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>לוח המשרות</h2>
+      <h2 style={styles.title}>לוח משרות</h2>
 
       <div style={styles.filterBox}>
         <Select
