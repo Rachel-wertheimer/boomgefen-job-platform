@@ -12,7 +12,7 @@ exports.insertUserDetails = async (details, userId) => {
 exports.getUserByEmail = async (email) => {
   const [rows] = await pool.query(
     `SELECT email
-     FROM user_profiles
+     FROM users
      WHERE LOWER(email) = ?`,
     [email.toLowerCase()]
   );
