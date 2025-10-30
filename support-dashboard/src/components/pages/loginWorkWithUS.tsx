@@ -56,7 +56,7 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
   const { loading, error } = useSelector((state: RootState) => state.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  // const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const handleLogin = () => {
     dispatch(login({ email, password }))
@@ -208,17 +208,17 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
     ...(isCancelHover ? styles.secondaryButtonHover : {})
   };
 
-  if (showForgotPassword) {
-    return (
-      <ForgotPasswordModal 
-        onClose={onClose} 
+  // if (showForgotPassword) {
+  //   return (
+  //     <ForgotPasswordModal 
+  //       onClose={onClose} 
         
-      />
-      // onBack={() => setShowForgotPassword(false)} 
+  //     />
+  //     // onBack={() => setShowForgotPassword(false)} 
       
 
-    );
-  }
+  //   );
+  // }
 
   return (
     <>
