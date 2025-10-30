@@ -17,7 +17,6 @@ exports.CreateUserProfilesBL = async (details, userId) => {
 };
 
 
-// בקשת קוד איפוס
 exports.getUserByEmailBL = async (email) => {
   const user = await getUserByEmailDAL(email);
   if (!user) return null;

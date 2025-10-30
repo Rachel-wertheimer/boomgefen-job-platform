@@ -1,4 +1,4 @@
-const pool = require("./db"); 
+const pool = require("./db");
 
 exports.insertUserDetails = async (details, userId) => {
   const [result] = await pool.query(
@@ -11,9 +11,8 @@ exports.insertUserDetails = async (details, userId) => {
 
 exports.getUserByEmail = async (email) => {
   const [rows] = await pool.query(
-    `SELECT u.id, u.email, u.full_name, p.password, p.temporary_password
-     FROM users u
-     LEFT JOIN user_profiles p ON u.id = p.user_id
+    `SELECT  u.email
+     FROM user_profiles
      WHERE LOWER(u.email) = ?`,
     [email.toLowerCase()]
   );
