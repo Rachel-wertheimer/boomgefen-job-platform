@@ -212,8 +212,11 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
     return (
       <ForgotPasswordModal 
         onClose={onClose} 
-        onBack={() => setShowForgotPassword(false)} 
+        
       />
+      // onBack={() => setShowForgotPassword(false)} 
+      
+
     );
   }
 
