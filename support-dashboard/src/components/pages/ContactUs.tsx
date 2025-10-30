@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaSpinner, FaWhatsapp } from "react-icons/fa";
 import { useWindowSize } from "../../utils/hooks";
@@ -243,7 +243,18 @@ const ContactUs: React.FC = () => {
       color: colors.danger,
       textAlign: "center",
       fontSize: '0.9rem',
-    }
+    },
+    error: {
+      marginTop: "15px",
+      color: "red",
+      fontWeight: 500,
+    },
+    success: {
+      marginTop: "15px",
+      color: "green",
+      fontWeight: 500,
+    },
+  
   };
 
   // --- סגנונות דינמיים ---
@@ -389,11 +400,8 @@ const ContactUs: React.FC = () => {
             ) : "שלח הודעה"}
           </motion.button>
 
-          {mailError && (
-            <p style={styles.errorText}>
-              שגיאה: {mailError}
-            </p>
-          )}
+          {mailError && <p style={styles.error}>{mailError}</p>}
+          {success && <p style={styles.success}>ההודעה נשלחה בהצלחה ✅</p>}
         </form>
       </motion.div>
     </div>
