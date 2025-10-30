@@ -73,7 +73,7 @@ export default function FirstScreen() {
       width: "100%",
       maxWidth: "900px",
       textAlign: "center",
-      boxSizing: "border-box", // חשוב כדי שהפדינג לא ישבור את הרוחב
+      boxSizing: "border-box",
     },
     logoContainer: {
       display: "flex",

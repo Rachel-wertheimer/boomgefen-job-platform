@@ -71,16 +71,23 @@ const CreateAdForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+  
+    // בדיקה האם הצ'קבוקס סומן
+    if (!notifyWhenExpired) {
+      alert("יש לאשר את הסימון לפני שניתן להמשיך");
+      return;
+    }
+  
     if (!fullName || !email || !type || !goal || !description) {
       alert("אנא מלא את כל השדות");
       return;
     }
+  
     const userData = { full_name: fullName, email, phone };
     const adData = { company, type, goal, description };
     dispatch(registerUserAndCreateAd({ userData, adData }));
-
-    // ניקוי הטופס (רק אם ההרשמה הצליחה - אולי כדאי לטפל בזה ב-Redux)
-    // בינתיים משאיר את הלוגיקה המקורית
+  
+    // ניקוי הטופס
     setFullName("");
     setEmail("");
     setPhone("");
@@ -88,7 +95,9 @@ const CreateAdForm = () => {
     setType("");
     setGoal("");
     setDescription("");
+    setNotifyWhenExpired(false);
   };
+  
 
   // --- אובייקט הסגנונות הראשי ---
   const styles: Record<string, React.CSSProperties> = {
