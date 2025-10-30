@@ -159,14 +159,14 @@ export default function AboutUs() {
       <AnimationStyles />
       <div style={styles.mainContent}>
         <div style={styles.topLogoContainer}>
-          <img src="/Geffen2.png" style={styles.topLogo} />
+          <img src="/geffen.jpg" style={styles.topLogo} />
           <span style={styles.separator}>&</span>
           <img src="/Boom2.png" style={styles.topLogo} />
         </div>
 
         <div style={styles.contentGrid}>
           <div style={styles.card}>
-            <img src="/Geffen2.png" style={styles.cardLogo} />
+            <img src="/geffen.jpg" style={styles.cardLogo} />
             <h2 style={styles.cardTitle}>גפן הפקות במה</h2>
             <p style={styles.cardText}>
               עם ניסיון של מעל 10 שנים בתעשיית הבידור, גפן מתמחה בהפקות במה, תיאטרון

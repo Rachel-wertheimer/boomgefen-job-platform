@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import type { AppDispatch, RootState } from "../../app/store";
 import { login } from "../../app/slice/userSlice";
 import { FaSpinner } from "react-icons/fa";
-import ForgotPasswordModal from "./ForgotPasswordModal";
+// import ForgotPasswordModal from "./ForgotPasswordModal";
 import { appColors } from "../../utils/colors";
 
 // Inline animations
