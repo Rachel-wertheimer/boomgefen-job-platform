@@ -519,16 +519,18 @@ const ContactUs: React.FC = () => {
 };
 
 const styles = {
-  pageContainer: (isMobile: boolean) => ({
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "100vh",
-    background: appColors.lightGradient,
-    padding: isMobile ? "90px 15px" : "100px 30px",
-    boxSizing: "border-box" as const,
-    direction: "rtl" as const,
-  }),
+    pageContainer: (isMobile: boolean) => ({
+      display: "flex",
+      justifyContent: "flex-start", // במקום center
+      alignItems: "flex-start",     // במקום center
+      minHeight: "100vh",
+      paddingTop: isMobile ? "90px" : "100px", // שמור על מרחק מלמעלה
+      paddingLeft: isMobile ? "15px" : "30px",
+      paddingRight: isMobile ? "15px" : "30px",
+      boxSizing: "border-box" as const,
+      direction: "rtl" as const,
+    })
+  ,   
   formCard: (isMobile: boolean) => ({
     backgroundColor: "#fff",
     borderRadius: "20px",
