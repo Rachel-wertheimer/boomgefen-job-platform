@@ -399,12 +399,12 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { appColors } from "../../utils/colors";
-import { useWindowSize } from "../../utils/hooks"; // hook שלנו
+import { useWindowSize } from "../../utils/hooks";
 import { sendMail } from "../../utils/mailService";
 
 const ContactUs: React.FC = () => {
   const { width } = useWindowSize();
-  const isMobile = width <= 768; // נקודת שבירה למובייל
+  const isMobile = width <= 768;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -418,7 +418,7 @@ const ContactUs: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -431,13 +431,13 @@ const ContactUs: React.FC = () => {
       to: "boom.gefen.hevy@gmail.com",
       subject: `פנייה חדשה מאתר - ${formData.name}`,
       text: `
-התקבלה פנייה חדשה מאתר:
-שם מלא: ${formData.name}
-מייל: ${formData.email}
-טלפון: ${formData.phone}
------------------
-${formData.message}
-`,
+        התקבלה פנייה חדשה מאתר:
+        שם מלא: ${formData.name}
+        מייל: ${formData.email}
+        טלפון: ${formData.phone}
+        -----------------
+        ${formData.message}
+      `,
     };
 
     try {
@@ -503,7 +503,8 @@ ${formData.message}
             disabled={sendingMail}
             style={{
               ...styles.button,
-              backgroundColor: sendingMail ? "#aaa" : appColors.main,
+              backgroundColor: sendingMail ? "#aaa" : appColors.primary,
+              color: "#fff",
             }}
           >
             {sendingMail ? "שולח..." : "שלח"}
@@ -525,7 +526,7 @@ const styles = {
     minHeight: "100vh",
     background: appColors.lightGradient,
     padding: isMobile ? "90px 15px" : "100px 30px",
-    boxSizing: "border-box",
+    boxSizing: "border-box" as const,
     direction: "rtl" as const,
   }),
   formCard: (isMobile: boolean) => ({
@@ -539,7 +540,7 @@ const styles = {
   }),
   title: {
     fontSize: "2rem",
-    color: appColors.dark,
+    color: appColors.primary,
     marginBottom: "10px",
   },
   subtitle: {
@@ -572,7 +573,6 @@ const styles = {
     padding: "12px",
     border: "none",
     borderRadius: "10px",
-    color: "white",
     fontSize: "1.1rem",
     cursor: "pointer",
     transition: "0.3s",
