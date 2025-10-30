@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { FaSpinner } from "react-icons/fa";
 import { appColors } from "../../utils/colors";
