@@ -1,4 +1,4 @@
-const { CreateUserBL, FindUserByEmailBL, getDetailsBL, updateSubscriptionBL, deleteUserBL, forgotPasswordBL, resetPasswordBL } = require("../BL/users");
+const { CreateUserBL, FindUserByEmailBL, getDetailsBL, updateSubscriptionBL, deleteUserBL } = require("../BL/users");
 const asyncHandler = require("../middleware/asyncHandler");
 
 exports.CreateUser = asyncHandler(async (req, res, next) => {
@@ -60,22 +60,3 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-exports.forgotPassword = async (req, res) => {
-  try {
-    const { email } = req.body;
-    const result = await forgotPasswordBL(email);
-    res.json(result);
-  } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
-  }
-};
-
-exports.resetPassword = async (req, res) => {
-  try {
-    const { resetToken, newPassword } = req.body;
-    const result = await resetPasswordBL(resetToken, newPassword);
-    res.json(result);
-  } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
-  }
-};

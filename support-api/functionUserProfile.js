@@ -1,4 +1,4 @@
-const pool = require("./db"); // חיבור MySQL
+const pool = require("./db"); 
 
 exports.insertUserDetails = async (details, userId) => {
   const [result] = await pool.query(
@@ -20,7 +20,6 @@ exports.getUserByEmail = async (email) => {
   return rows[0];
 };
 
-// עדכון קוד זמני (temporary_password)
 exports.updateTemporaryPassword = async (userId, code) => {
   await pool.query(
     `UPDATE user_profiles SET temporary_password = ? WHERE user_id = ?`,
@@ -28,7 +27,6 @@ exports.updateTemporaryPassword = async (userId, code) => {
   );
 };
 
-// עדכון סיסמה חדשה
 exports.updatePassword = async (userId, hashedPassword) => {
   await pool.query(
     `UPDATE user_profiles 

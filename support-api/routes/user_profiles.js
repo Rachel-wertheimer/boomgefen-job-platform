@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post('/insert/:userId', CreateUserProfile);
 router.post('/getUserByEmail', getUserByEmail);
-router.post('/updateTemporaryPassword', updateTemporaryPassword);
+router.post('/verifyCode', updateTemporaryPassword);
 router.post('/updatePassword', updatePassword);
 
 module.exports = router;

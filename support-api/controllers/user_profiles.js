@@ -19,7 +19,13 @@ exports.getUserByEmail = async (req, res) => {
     const result = await getUserByEmailBL(email);
     if (!result)
       return res.status(200).json({ message: "אם המייל קיים – נשלח קוד לאיפוס" });
-
+    if (result) {
+      await sendEmail({
+        to: result.email,
+        subject: "קוד איפוס סיסמה",
+        text: `הקוד שלך לאיפוס הסיסמה: ${result.code}`
+      });
+    }    
     return res.status(200).json({ 
       message: "אם המייל קיים – נשלח קוד לאיפוס",
       code: result.code 

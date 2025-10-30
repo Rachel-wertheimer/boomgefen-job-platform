@@ -3,221 +3,215 @@ import axios from "axios";
 import { FaSpinner } from "react-icons/fa";
 import { appColors } from "../../utils/colors";
 
-// Inline animations
-const AnimationStyles = () => (
-  <style
-    dangerouslySetInnerHTML={{
-      __html: `
-        @keyframes modalFadeIn {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes overlayFadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes marqueeScroll {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-100%); }
-        }
-      `,
-    }}
-  />
-);
-
-const animationStyles = {
-  modalFadeIn: "modalFadeIn 0.3s ease-out forwards",
-  overlayFadeIn: "overlayFadeIn 0.3s ease-out forwards",
-  spin: "spin 1s linear infinite",
-  fadeIn: "fadeIn 0.5s ease-out forwards",
-  marqueeScroll: "marqueeScroll 40s linear infinite",
-};
-type Props = {
-  onClose: () => void;
-  onBack: () => void;
-};
-
-const ForgotPasswordModal: React.FC<Props> = ({ onClose, onBack }) => {
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
+// קומפוננטות נוספות לשלבים הבאים
+const VerifyCodeModal = ({ email, onVerified }: { email: string; onVerified: (code: string) => void }) => {
+  const [code, setCode] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleForgotPassword = async () => {
-    if (!email) {
-      setError("נא להזין אימייל");
-      return;
-    }
-
+  const handleVerify = async () => {
+    if (!code) return setError("נא להזין קוד אימות");
     setLoading(true);
     setError("");
-    
     try {
       await axios.post(
-        "https://boomgefen-job-platform-1.onrender.com/api/v1/users/forgot-password",
-        { email }
+        "https://boomgefen-job-platform-1.onrender.com/api/v1/user_profiles/verifyCode",
+        { email, code }
       );
-      setSuccess(true);
+      onVerified(code);
     } catch (err: any) {
-      setError(err.response?.data?.message || "שגיאה בשליחת בקשת איפוס סיסמה");
+      setError(err.response?.data?.message || "קוד שגוי או שפג תוקפו");
     } finally {
       setLoading(false);
     }
   };
 
-  const colors = appColors;
+  return (
+    <div style={{ padding: 20, textAlign: "center" }}>
+      <h2>אימות קוד</h2>
+      <p>הכנס את הקוד שנשלח למייל {email}</p>
+      <input
+        type="text"
+        placeholder="קוד אימות"
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        style={{
+          width: "100%",
+          padding: "10px",
+          marginBottom: "10px",
+          textAlign: "center",
+        }}
+      />
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <button
+        onClick={handleVerify}
+        disabled={loading}
+        style={{
+          background: appColors.primary,
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "8px",
+          cursor: "pointer",
+        }}
+      >
+        {loading ? <FaSpinner /> : "אמת קוד"}
+      </button>
+    </div>
+  );
+};
 
-  const styles: Record<string, React.CSSProperties> = {
-    overlay: {
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundColor: "rgba(0,0,0,0.7)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 2000,
-      direction: "rtl",
-      animation: animationStyles.overlayFadeIn,
-    },
-    modal: {
-      background: "#fff",
-      padding: "30px",
-      borderRadius: "20px",
-      width: "90%",
-      maxWidth: "420px",
-      textAlign: "center",
-      boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-      display: "flex",
-      flexDirection: "column",
-      gap: "16px",
-      animation: animationStyles.modalFadeIn,
-    },
-    title: {
-      margin: "0 0 10px 0",
-      fontSize: "1.8rem",
-      fontWeight: 700,
-      color: colors.primary,
-    },
-    description: {
-      fontSize: "1rem",
-      color: colors.textDark,
-      lineHeight: 1.6,
-      marginBottom: "10px",
-    },
-    input: {
-      width: "100%",
-      padding: "14px 16px",
-      fontSize: "1rem",
-      borderRadius: "8px",
-      border: `1px solid ${colors.borderColor}`,
-      boxSizing: "border-box",
-      textAlign: "right",
-      outline: "none",
-    },
-    button: {
-      padding: "12px 24px",
-      fontSize: "16px",
-      borderRadius: "30px",
-      cursor: loading ? "not-allowed" : "pointer",
-      fontWeight: "bold",
-      border: "2px solid transparent",
-      transition: "all 0.3s ease",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "8px",
-      width: "100%",
-      backgroundColor: loading ? colors.borderColor : colors.primary,
-      color: "white",
-      opacity: loading ? 0.6 : 1,
-    },
-    backButton: {
-      padding: "12px 24px",
-      fontSize: "16px",
-      borderRadius: "30px",
-      cursor: "pointer",
-      fontWeight: "bold",
-      border: `2px solid ${colors.primary}`,
-      backgroundColor: "white",
-      color: colors.primary,
-      transition: "all 0.3s ease",
-      width: "100%",
-    },
-    errorText: {
-      color: colors.danger,
-      fontSize: "0.9rem",
-      fontWeight: 500,
-    },
-    successText: {
-      color: colors.success,
-      fontSize: "1rem",
-      fontWeight: 600,
-    },
+const ResetPasswordModal = ({
+  email,
+  code,
+  onSuccess,
+}: {
+  email: string;
+  code: string;
+  onSuccess: () => void;
+}) => {
+  const [newPassword, setNewPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleReset = async () => {
+    if (newPassword.length < 6)
+      return setError("הסיסמה חייבת להכיל לפחות 6 תווים");
+    setLoading(true);
+    setError("");
+    try {
+      await axios.post(
+        "https://boomgefen-job-platform-1.onrender.com/api/v1/user_profiles/updatePassword",
+        { email, code, newPassword }
+      );
+      onSuccess();
+    } catch (err: any) {
+      setError(err.response?.data?.message || "שגיאה בעדכון הסיסמה");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      <AnimationStyles />
-      <div style={styles.overlay} onClick={onClose}>
-        <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
-          <h2 style={styles.title}>שכחתי סיסמה</h2>
-          
-          {!success ? (
-            <>
-              <p style={styles.description}>
-                הזינו את כתובת האימייל שלכם ואנו נשלח קוד לאיפוס הסיסמה
-              </p>
-              <input
-                type="email"
-                placeholder="אימייל"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                style={styles.input}
-              />
-              {error && <p style={styles.errorText}>{error}</p>}
-              
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <button onClick={handleForgotPassword} style={styles.button} disabled={loading}>
-                  {loading ? (
-                    <>
-                      שולח... <FaSpinner style={{ animation: animationStyles.spin }} />
-                    </>
-                  ) : (
-                    "שלח קוד איפוס"
-                  )}
-                </button>
-                <button onClick={onBack} style={styles.backButton}>
-                  חזרה להתחברות
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <p style={styles.successText}>מייל נשלח בהצלחה!</p>
-              <p style={styles.description}>
-                בדקו את תיבת הדואר הנכנס שלכם לקבלת קוד האיפוס
-              </p>
-              <button onClick={onClose} style={styles.button}>
-                סגור
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-    </>
+    <div style={{ padding: 20, textAlign: "center" }}>
+      <h2>בחר סיסמה חדשה</h2>
+      <input
+        type="password"
+        placeholder="סיסמה חדשה"
+        value={newPassword}
+        onChange={(e) => setNewPassword(e.target.value)}
+        style={{
+          width: "100%",
+          padding: "10px",
+          marginBottom: "10px",
+          textAlign: "center",
+        }}
+      />
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <button
+        onClick={handleReset}
+        disabled={loading}
+        style={{
+          background: appColors.primary,
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "8px",
+          cursor: "pointer",
+        }}
+      >
+        {loading ? "מעדכן..." : "עדכן סיסמה"}
+      </button>
+    </div>
+  );
+};
+
+const ForgotPasswordModal = ({ onClose }: { onClose: () => void }) => {
+  const [email, setEmail] = useState("");
+  const [step, setStep] = useState<"email" | "verify" | "reset">("email");
+  const [code, setCode] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  const handleForgotPassword = async () => {
+    if (!email) return setError("נא להזין כתובת מייל");
+    setLoading(true);
+    setError("");
+    try {
+      await axios.post(
+        "https://boomgefen-job-platform-1.onrender.com/api/v1/user_profiles/getUserByEmail",
+        { email }
+      );
+      setMessage("נשלח מייל עם קוד אימות");
+      setStep("verify");
+    } catch (err: any) {
+      setError(err.response?.data?.message || "לא נמצאה כתובת מייל זו");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // שלב אימות
+  if (step === "verify")
+    return (
+      <VerifyCodeModal
+        email={email}
+        onVerified={(c) => {
+          setCode(c);
+          setStep("reset");
+        }}
+      />
+    );
+
+  // שלב שינוי סיסמה
+  if (step === "reset")
+    return (
+      <ResetPasswordModal
+        email={email}
+        code={code}
+        onSuccess={() => {
+          alert("הסיסמה הוחלפה בהצלחה!");
+          onClose();
+        }}
+      />
+    );
+
+  // שלב שליחת מייל
+  return (
+    <div style={{ padding: 20, textAlign: "center" }}>
+      <h2>שכחתי סיסמה</h2>
+      <p>הכנס את כתובת המייל שלך ונשלח קוד אימות</p>
+      <input
+        type="email"
+        placeholder="כתובת מייל"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        style={{
+          width: "100%",
+          padding: "10px",
+          marginBottom: "10px",
+          textAlign: "center",
+        }}
+      />
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {message && <p style={{ color: "green" }}>{message}</p>}
+      <button
+        onClick={handleForgotPassword}
+        disabled={loading}
+        style={{
+          background: appColors.primary,
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "8px",
+          cursor: "pointer",
+        }}
+      >
+        {loading ? <FaSpinner /> : "שלח קוד אימות"}
+      </button>
+    </div>
   );
 };
 
 export default ForgotPasswordModal;
-

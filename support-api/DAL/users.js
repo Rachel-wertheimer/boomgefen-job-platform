@@ -47,20 +47,3 @@ exports.deleteUserDAL = async (userId) => {
     }
   };
 
-exports.generateResetTokenDAL = async (userId) => {
-  try {
-    const token = await functionDB.generateResetToken(userId);
-    return token;
-  } catch (error) {
-    throw error;
-  }
-};
-
-exports.updatePasswordByTokenDAL = async (resetToken, newPassword) => {
-  try {
-    const result = await functionDB.updatePasswordByToken(resetToken, newPassword);
-    return result;
-  } catch (error) {
-    throw error;
-  }
-};
