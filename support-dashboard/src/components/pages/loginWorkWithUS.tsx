@@ -247,7 +247,7 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
                 />
                 
                 <div style={{ textAlign: "left", marginTop: "8px", marginBottom: "8px" }}>
-                  <button 
+                  {/* <button 
                       type="button"
                       onClick={() => setShowForgotPassword(true)}
                       style={{
@@ -261,7 +261,7 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
                       }}
                   >
                     שכחתי סיסמה
-                  </button>
+                  </button> */}
                 </div>
                 
                 {error && <p style={styles.errorText}>{error}</p>}
