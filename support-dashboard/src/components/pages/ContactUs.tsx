@@ -399,11 +399,12 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { appColors } from "../../utils/colors";
-import { useWindowSize } from "../../utils/hooks";
-import { sendMail } from "../../app/api/email";
+import { useWindowSize } from "../../utils/hooks"; // hook שלנו
+import { sendMail } from "../../utils/mailService";
 
 const ContactUs: React.FC = () => {
-  const { isMobile } = useWindowSize();
+  const { width } = useWindowSize();
+  const isMobile = width <= 768; // נקודת שבירה למובייל
 
   const [formData, setFormData] = useState({
     name: "",
@@ -430,13 +431,13 @@ const ContactUs: React.FC = () => {
       to: "boom.gefen.hevy@gmail.com",
       subject: `פנייה חדשה מאתר - ${formData.name}`,
       text: `
-      התקבלה פנייה חדשה מאתר:
-      שם מלא: ${formData.name}
-      מייל: ${formData.email}
-      טלפון: ${formData.phone}
-      -----------------
-      ${formData.message}
-      `,
+התקבלה פנייה חדשה מאתר:
+שם מלא: ${formData.name}
+מייל: ${formData.email}
+טלפון: ${formData.phone}
+-----------------
+${formData.message}
+`,
     };
 
     try {
