@@ -11,7 +11,7 @@ exports.insertUserDetails = async (details, userId) => {
 
 exports.getUserByEmail = async (email) => {
   const [rows] = await pool.query(
-    `SELECT  u.email
+    `SELECT email
      FROM user_profiles
      WHERE LOWER(u.email) = ?`,
     [email.toLowerCase()]
