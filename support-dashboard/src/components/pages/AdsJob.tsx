@@ -58,6 +58,7 @@ const CreateAdForm = () => {
 
   // --- State לאפקט הפוקוס ---
   const [focusState, setFocusState] = useState<Record<string, boolean>>({});
+  const [notifyWhenExpired, setNotifyWhenExpired] = useState(false);
 
   const { width } = useWindowSize();
   const isMobile = width <= 768; // נקודת שבירה לטפסים
@@ -295,6 +296,18 @@ const CreateAdForm = () => {
               <textarea value={description} onChange={(e) => setDescription(e.target.value)} required rows={4}
                 style={getTextareaStyle('description')} onFocus={() => handleFocus('description')} onBlur={() => handleBlur('description')}
                 placeholder="תרחיבו כאן עוד על הדרישה שלכם..."></textarea>
+            </div>
+            <div style={{ ...styles.formGroupFullWidth, display: "flex", alignItems: "center", gap: "10px" }}>
+              <input
+                type="checkbox"
+                id="notifyExpired"
+                checked={notifyWhenExpired}
+                onChange={(e) => setNotifyWhenExpired(e.target.checked)}
+                style={{ width: "18px", height: "18px", cursor: "pointer" }}
+              />
+              <label htmlFor="notifyExpired" style={{ fontSize: "0.95rem", color: appColors.textDark }}>
+                שלח התראה למערכת כאשר המשרה כבר לא רלוונטית
+              </label>
             </div>
           </div>
 
