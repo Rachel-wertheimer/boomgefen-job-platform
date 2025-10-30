@@ -13,7 +13,7 @@ exports.getUserByEmail = async (email) => {
   const [rows] = await pool.query(
     `SELECT email
      FROM user_profiles
-     WHERE LOWER(u.email) = ?`,
+     WHERE LOWER(email) = ?`,
     [email.toLowerCase()]
   );
   return rows[0];
