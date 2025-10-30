@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../app/store";
 import { FaSpinner, FaWhatsapp } from "react-icons/fa";
 import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
+import { sendMail } from "../../utils/mailService";
 
 // Inline animations
 const AnimationStyles = () => (
@@ -50,10 +49,10 @@ const ContactUs: React.FC = () => {
   const location = useLocation();
   const fromNav = location.state?.fromNav === true;
 
-  const dispatch = useDispatch<AppDispatch>(); // שימוש ב-AppDispatch
-  const navigate = useNavigate();
-  const { sendingMail, mailError } = useSelector((state: RootState) => state.mail); // שימוש ב-RootState
 
+  const [sendingMail, setSendingMail] = useState(false);
+    const [mailError, setMailError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
