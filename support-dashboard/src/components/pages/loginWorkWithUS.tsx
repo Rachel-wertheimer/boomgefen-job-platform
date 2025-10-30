@@ -6,6 +6,7 @@ import { login } from "../../app/slice/userSlice";
 import { FaSpinner } from "react-icons/fa";
 // import ForgotPasswordModal from "./ForgotPasswordModal";
 import { appColors } from "../../utils/colors";
+import ForgotPasswordModal from "./ForgotPasswordModal";
 
 // Inline animations
 const AnimationStyles = () => (
@@ -56,7 +57,7 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
   const { loading, error } = useSelector((state: RootState) => state.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const handleLogin = () => {
     dispatch(login({ email, password }))
@@ -142,10 +143,10 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
       boxShadow: `0 0 0 3px ${colors.primary}30`,
     },
     buttonContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px',
-        marginTop: '10px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px',
+      marginTop: '10px',
     },
     baseButton: {
       padding: "12px 24px",
@@ -208,90 +209,86 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
     ...(isCancelHover ? styles.secondaryButtonHover : {})
   };
 
-  // if (showForgotPassword) {
-  //   return (
-  //     <ForgotPasswordModal 
-  //       onClose={onClose} 
-        
-  //     />
-  //     // onBack={() => setShowForgotPassword(false)} 
-      
+  if (showForgotPassword) {
+    return (
+      <ForgotPasswordModal
+        onClose={() => setShowForgotPassword(false)}
 
-  //   );
-  // }
+      />
+    );
+  }
 
   return (
     <>
-        <AnimationStyles />
-        <div style={styles.overlay} onClick={onClose}>
-            {/* מניעת סגירה בלחיצה על המודאל עצמו */}
-            <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
-                <h2 style={styles.title}>התחברות</h2>
-                <input
-                    type="email"
-                    placeholder="אימייל"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    style={getInputStyle('email')}
-                    onFocus={() => handleFocus('email')}
-                    onBlur={() => handleBlur('email')}
-                />
-                <input
-                    type="password"
-                    placeholder="סיסמה"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    style={getInputStyle('password')}
-                    onFocus={() => handleFocus('password')}
-                    onBlur={() => handleBlur('password')}
-                />
-                
-                <div style={{ textAlign: "left", marginTop: "8px", marginBottom: "8px" }}>
-                  {/* <button 
-                      type="button"
-                      onClick={() => setShowForgotPassword(true)}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: colors.primary,
-                        cursor: "pointer",
-                        fontSize: "0.9rem",
-                        textDecoration: "underline",
-                        padding: "0",
-                      }}
-                  >
-                    שכחתי סיסמה
-                  </button> */}
-                </div>
-                
-                {error && <p style={styles.errorText}>{error}</p>}
-                
-                <div style={styles.buttonContainer}>
-                    <button 
-                        onClick={handleLogin} 
-                        style={loginBtnStyle} 
-                        disabled={loading}
-                        onMouseEnter={() => setIsLoginHover(true)}
-                        onMouseLeave={() => setIsLoginHover(false)}
-                    >
-                        {loading ? (
-                            <>
-                            מתחבר...
-                            <FaSpinner style={{ animation: animationStyles.spin }} />
-                            </>
-                        ) : "התחבר"}
-                    </button>
-                    <button 
-                        onClick={onClose} 
-                        style={cancelBtnStyle}
-                        onMouseEnter={() => setIsCancelHover(true)}
-                        onMouseLeave={() => setIsCancelHover(false)}
-                    >
-                        ביטול
-                    </button>
-                </div>
-            </div>
+      <AnimationStyles />
+      <div style={styles.overlay} onClick={onClose}>
+        {/* מניעת סגירה בלחיצה על המודאל עצמו */}
+        <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
+          <h2 style={styles.title}>התחברות</h2>
+          <input
+            type="email"
+            placeholder="אימייל"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={getInputStyle('email')}
+            onFocus={() => handleFocus('email')}
+            onBlur={() => handleBlur('email')}
+          />
+          <input
+            type="password"
+            placeholder="סיסמה"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={getInputStyle('password')}
+            onFocus={() => handleFocus('password')}
+            onBlur={() => handleBlur('password')}
+          />
+
+          <div style={{ textAlign: "left", marginTop: "8px", marginBottom: "8px" }}>
+            <button
+              type="button"
+              onClick={() => setShowForgotPassword(true)}
+              style={{
+                background: "none",
+                border: "none",
+                color: colors.primary,
+                cursor: "pointer",
+                fontSize: "0.9rem",
+                textDecoration: "underline",
+                padding: "0",
+              }}
+            >
+              שכחתי סיסמה
+            </button>
+          </div>
+          {error && <p style={styles.errorText}>{error}</p>}
+
+          <div style={styles.buttonContainer}>
+            <button
+              onClick={handleLogin}
+              style={loginBtnStyle}
+              disabled={loading}
+              onMouseEnter={() => setIsLoginHover(true)}
+              onMouseLeave={() => setIsLoginHover(false)}
+            >
+              {loading ? (
+                <>
+                  מתחבר...
+                  <FaSpinner style={{ animation: animationStyles.spin }} />
+                </>
+              ) : "התחבר"}
+            </button>
+            <button
+              onClick={onClose}
+              style={cancelBtnStyle}
+              onMouseEnter={() => setIsCancelHover(true)}
+              onMouseLeave={() => setIsCancelHover(false)}
+            >
+              ביטול
+            </button>
+          </div>
         </div>
+      </div >
     </>
   );
 };

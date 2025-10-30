@@ -1,5 +1,6 @@
 const { CreateUserProfilesBL, getUserByEmailBL, updateTemporaryPasswordBL, updatePasswordBL } = require("../BL/user_profiles");
 const asyncHandler = require("../middleware/asyncHandler");
+const { sendEmail } = require("../services/sendEmail");
 
 exports.CreateUserProfile = asyncHandler(async (req, res, next) => {
   try {

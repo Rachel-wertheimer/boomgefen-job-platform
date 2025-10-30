@@ -2,7 +2,7 @@ const pool = require("./db");
 
 exports.insertUser = async (user) => {
   const [result] = await pool.query(
-    `INSERT INTO users (full_name, email, phone, type, is_agree, is_subscribed, subscription_start, subscription_end)
+    `INSERT INTO users (full_name, email, phone, type, is_agree, is_subscribed)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       user.full_name,
@@ -11,8 +11,6 @@ exports.insertUser = async (user) => {
       user.type,
       user.is_agree,
       user.is_subscribed,
-      user.subscription_start,
-      user.subscription_end,
     ]
   );
   return result.insertId;
@@ -43,10 +41,11 @@ exports.update_subscription = async (adId) => {
   const startDate = new Date(); // התאריך הנוכחי
   const endDate = new Date();
   endDate.setMonth(endDate.getMonth() + 1); // חודש קדימה
+  const is_subscribed=true;
 
   await pool.query(
-    `UPDATE users SET subscription_start = ?, subscription_end = ? WHERE id = ?`,
-    [startDate, endDate, adId]
+    `UPDATE users SET is_subscribed=? ,subscription_start = ?, subscription_end = ? WHERE id = ?`,
+    [is_subscribed,startDate, endDate, adId]
   );
   return { endDate: endDate };
 };
