@@ -32,6 +32,7 @@ exports.getUserByEmailBL = async (email) => {
 exports.updateTemporaryPasswordBL = async (email, code) => {
   const user = await getUserByEmailDAL(email);
   if (!user) return false;
+  await updateTemporaryPasswordDAL(code, user.id);
   return user.temporary_password === code;
 };
 

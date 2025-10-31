@@ -19,7 +19,7 @@ exports.getUserByEmail = async (req, res) => {
   try {
     const result = await getUserByEmailBL(email);
     if (!result)
-      return res.status(200).json({ message: "אם המייל קיים – נשלח קוד לאיפוס" });
+      return res.status(200).json({ message: "מייל לא קיים במערכת!" });
     if (result) {
       await sendEmail({
         to: result.email,
@@ -28,7 +28,7 @@ exports.getUserByEmail = async (req, res) => {
       });
     }    
     return res.status(200).json({ 
-      message: "אם המייל קיים – נשלח קוד לאיפוס",
+      message: "נשלח קוד לאיפוס",
       code: result.code 
     });
   } catch (err) {

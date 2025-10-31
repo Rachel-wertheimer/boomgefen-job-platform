@@ -24,15 +24,15 @@ exports.getUserByEmailDAL = async (email) => {
         throw error;
     }
 };
-exports.updateTemporaryPasswordDAL = async (userId, code) => {
+exports.updateTemporaryPasswordDAL = async (code,userId ) => {
     try {
         console.log('start updateTemporaryPasswordDAL');
-        const result = await functionDB.updateTemporaryPassword(userId, code);
-        console.log('end getUserByEmailDAL');
+        const result = await functionDB.updateTemporaryPassword(code, userId);
+        console.log('end updateTemporaryPasswordDAL');
         return result;
     }
     catch (error) {
-        console.error('Error getUserByEmailDAL:', error);
+        console.error('Error updateTemporaryPasswordDAL:', error);
         throw error;
     }
 };

@@ -19,7 +19,7 @@ exports.getUserByEmail = async (email) => {
   return rows[0];
 };
 
-exports.updateTemporaryPassword = async (userId, code) => {
+exports.updateTemporaryPassword = async (code,userId) => {
   await pool.query(
     `UPDATE user_profiles SET temporary_password = ? WHERE user_id = ?`,
     [code, userId]
