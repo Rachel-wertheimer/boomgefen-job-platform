@@ -217,7 +217,7 @@
 // export default ForgotPasswordModal;
 import React, { useState } from "react";
 import axios from "axios";
-import { FaSpinner, FaArrowRight } from "react-icons/fa"; // הוספתי FaArrowRight
+import { FaSpinner } from "react-icons/fa"; 
 import { appColors } from "../../utils/colors";
 
 // --- סגנונות מ-LoginModal (מומלץ לשמור בקובץ נפרד) ---
