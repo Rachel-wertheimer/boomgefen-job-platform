@@ -11,13 +11,15 @@ exports.insertUserDetails = async (details, userId) => {
 
 exports.getUserByEmail = async (email) => {
   const [rows] = await pool.query(
-    `SELECT email
-     FROM users
-     WHERE LOWER(email) = ?`,
+    `SELECT up.user_id AS id, u.email
+     FROM user_profiles up
+     JOIN users u ON u.id = up.user_id
+     WHERE LOWER(u.email) = ?`,
     [email.toLowerCase()]
   );
-  return rows[0];
+  return rows[0]; // אם אין משתמש, יחזור undefined
 };
+
 
 exports.updateTemporaryPassword = async (code, userId) => {
   // קודם מעדכנים את הקוד

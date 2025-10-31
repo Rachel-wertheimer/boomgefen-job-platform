@@ -33,7 +33,7 @@ exports.updateTemporaryPasswordBL = async (email, code) => {
   const user = await getUserByEmailDAL(email);
   if (!user) return false;
   const temporary_password = await updateTemporaryPasswordDAL(code, user.id);
-  return temporary_password === code;
+  return String(temporary_password) === String(code);
 };
 
 // איפוס סיסמה בפועל
