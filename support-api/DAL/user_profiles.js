@@ -27,7 +27,7 @@ exports.getUserByEmailDAL = async (email) => {
 exports.updateTemporaryPasswordDAL = async (code,userId ) => {
     try {
         console.log('start updateTemporaryPasswordDAL');
-        const result = await functionDB.updateTemporaryPassword(code, userId);
+        const result = await functionDB.updateTemporaryPassword(, userId);
         console.log('end updateTemporaryPasswordDAL');
         return result;
     }
