@@ -39,7 +39,7 @@ exports.updateTemporaryPasswordDAL = async (code,userId ) => {
 exports.updatePasswordDAL = async (details, userId) => {
     try {
         console.log('start updatePasswordDAL');
-        const result = await functionDB.updatePassword(userId,details);
+        const result = await functionDB.updatePassword(details , userId);
         console.log('end updatePasswordDAL');
         return result;
     }

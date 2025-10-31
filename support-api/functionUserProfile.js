@@ -26,7 +26,7 @@ exports.updateTemporaryPassword = async (code,userId) => {
   );
 };
 
-exports.updatePassword = async (userId, hashedPassword) => {
+exports.updatePassword = async (hashedPassword ,userId) => {
   await pool.query(
     `UPDATE user_profiles 
      SET password = ?, temporary_password = NULL 
