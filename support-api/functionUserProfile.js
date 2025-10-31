@@ -9,15 +9,25 @@ exports.insertUserDetails = async (details, userId) => {
   return result;
 };
 
+// exports.getUserByEmail = async (email) => {
+//   const [rows] = await pool.query(
+//     `SELECT email
+//      FROM users
+//      WHERE LOWER(email) = ?`,
+//     [email.toLowerCase()]
+//   );
+//   return rows[0];
+// };
 exports.getUserByEmail = async (email) => {
   const [rows] = await pool.query(
-    `SELECT email
+    `SELECT id, email, temporary_password
      FROM users
      WHERE LOWER(email) = ?`,
     [email.toLowerCase()]
   );
   return rows[0];
 };
+
 
 exports.updateTemporaryPassword = async (code,userId) => {
   await pool.query(
