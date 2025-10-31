@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk ,type PayloadAction } from "@reduxjs/toolkit";
-import { createAd, createUser, getAllAds, getAllNotApprovedAds, getApprovedAds, getNotRelevantAds, toggleApproved, toggleRelevant, type NewAdData, type NewUserData } from "../api/ads";
+import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
+import { createAd, createUser, deleteAd, getAllAds, getAllNotApprovedAds, getApprovedAds, getNotRelevantAds, toggleApproved, toggleRelevant, type NewAdData, type NewUserData } from "../api/ads";
 
 export type Ad = {
   id: number;
@@ -82,6 +82,14 @@ export const fetchNotRelevantAds = createAsyncThunk(
     return await getNotRelevantAds();
   }
 );
+// thunk למחיקת מודעה
+export const deleteAdS = createAsyncThunk(
+  "ads/deleteAd",
+  async ({ adId }: { adId: number }) => {
+    return await deleteAd(adId)
+  }
+);
+
 
 const adsSlice = createSlice({
   name: "ads",
@@ -152,8 +160,15 @@ const adsSlice = createSlice({
       .addCase(fetchNotRelevantAds.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? "שגיאה בטעינת מודעות לא רלוונטיות";
+      })
+      .addCase(deleteAdS.fulfilled, (state, action: PayloadAction<number>) => {
+        state.ads = state.ads.filter(ad => ad.id !== action.payload);
+      })
+      .addCase(deleteAdS.rejected, (state, action) => {
+        state.error = action.error.message ?? "שגיאה במחיקת מודעה";
       });
-      
+
+
   },
 });
 

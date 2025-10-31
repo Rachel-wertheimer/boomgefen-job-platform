@@ -93,3 +93,7 @@ export const updateAdContent = async (adId: number, token: string, adData: { com
   );
   return res.data.ad;
 };
+export const deleteAd = async (AdId: number) => {
+  const response = await axios.delete(`${BASE_URL}/deleteAd/${AdId}`);
+  return response.data;
+};
