@@ -39,7 +39,7 @@ exports.updateTemporaryPasswordBL = async (email, code) => {
 // איפוס סיסמה בפועל
 exports.updatePasswordBL = async (email, code, newPassword) => {
   const user = await getUserByEmailDAL(email);
-  if (!user || user.temporary_password !== code) return false;
+  if (!user) return false;
 
   const hashed = await bcrypt.hash(newPassword, 10);
   await updatePasswordDAL(user.id, hashed);

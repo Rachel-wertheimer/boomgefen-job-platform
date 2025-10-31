@@ -49,9 +49,9 @@ exports.updateTemporaryPassword = async (req, res) => {
 };
 
 exports.updatePassword = async (req, res) => {
-  const { email, code, newPassword } = req.body;
+  const { email, newPassword } = req.body;
   try {
-    const success = await updatePasswordBL(email, code, newPassword);
+    const success = await updatePasswordBL(email, newPassword);
     if (!success)
       return res.status(400).json({ message: "קוד לא תקף או שפג תוקף" });
     res.status(200).json({ message: "הסיסמה עודכנה בהצלחה" });

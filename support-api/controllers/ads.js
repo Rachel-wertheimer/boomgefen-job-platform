@@ -1,4 +1,4 @@
-const { getAllApprovedAdsBL, getAllAdsBL, getAllNotApprovedAdsBL, createAdsBL, toggleApprovedBL, toggleRelevantBL, getAllNotRelevantAdsBL, updateAdContentBL } = require("../BL/ads");
+const { getAllApprovedAdsBL, getAllAdsBL, getAllNotApprovedAdsBL, createAdsBL, toggleApprovedBL, toggleRelevantBL, getAllNotRelevantAdsBL, updateAdContentBL, deleteAdBL } = require("../BL/ads");
 const asyncHandler = require("../middleware/asyncHandler");
 const jwt = require("jsonwebtoken");
 
@@ -129,6 +129,15 @@ exports.updateAdContentController = async (req, res) => {
     const updatedAd = await updateAdContentBL(adId, adData, userRole);
 
     res.json({ success: true, ad: updatedAd });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+exports.deleteAd = async (req, res) => {
+  try {
+    const adId = Number(req.params.adId);
+    const result = await deleteAdBL(adId);
+    res.json({ success: true, message: 'AD deleted successfully', result });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
   }

@@ -61,3 +61,15 @@ exports.update_ad_content = async (adId, adData) => {
   const [rows] = await pool.query(`SELECT * FROM ads WHERE id = ?`, [adId]);
   return rows[0];
 };
+exports.deleteAdByID = async (adId) => {
+  try {
+    await pool.query(
+      `DELETE FROM ads WHERE id = ?`,
+      [adId]
+    );
+    return { deletedRows: result.affectedRows };
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    throw error;
+  }
+};

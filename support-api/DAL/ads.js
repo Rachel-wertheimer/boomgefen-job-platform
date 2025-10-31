@@ -102,3 +102,11 @@ exports.updateAdContentDAL = async (adId, adData) => {
 };
 
 
+exports.deleteAdDAL = async (adId) => {
+    try {
+      const result = await functionDB.deleteAdByID(adId);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  };

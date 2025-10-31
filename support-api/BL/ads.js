@@ -1,4 +1,4 @@
-const { getAllApprovedAdsDAL, getAllAdsDAL, getAllNotApprovedAdsDAL, createAdsDAL, toggleApprovedDAL, toggleRelevantDAL, getAllNotRelevantAdsDAL, updateAdContentDAL } = require("../DAL/ads");
+const { getAllApprovedAdsDAL, getAllAdsDAL, getAllNotApprovedAdsDAL, createAdsDAL, toggleApprovedDAL, toggleRelevantDAL, getAllNotRelevantAdsDAL, updateAdContentDAL, deleteAdDAL } = require("../DAL/ads");
 
 exports.getAllApprovedAdsBL = async () => {
   try {
@@ -89,4 +89,15 @@ exports.updateAdContentBL = async (adId, adData, userRole) => {
 
   const updatedAd = await updateAdContentDAL(adId, adData);
   return updatedAd;
+};
+exports.deleteAdBL = async (adId) => {
+  try {
+    console.log('Start deleteAdAdBL');
+    const result = await deleteAdDAL(adId);
+    console.log('End deleteAdAdBL');
+    return result;
+  } catch (err) {
+    console.error('Error in deleteAdAdBL', err);
+    throw err;
+  }
 };
