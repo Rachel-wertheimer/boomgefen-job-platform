@@ -3,7 +3,7 @@ const pool = require("./db");
 exports.insertUser = async (user) => {
   const [result] = await pool.query(
     `INSERT INTO users (full_name, email, phone, type, is_agree, is_subscribed)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+     VALUES (?, ?, ?, ?, ?, ?)`,
     [
       user.full_name,
       user.email,
