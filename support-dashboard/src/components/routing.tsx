@@ -30,9 +30,11 @@ export const Routing = () => (
 
     {/* כל שאר הנתיבים כוללים Navbar */}
     <Route element={<LayoutWithNavbar />}>
-      <Route path="home" element={<Home />} />
+      {/* <Route path="home" element={<Home />} /> */}
+      <Route path="home" element={<div>HOME TEST</div>} />
       <Route path="work-with-us" element={<WorkWithUs />} />
-      <Route path="ads" element={<Ads />} />
+      <Route path="ads" element={<div>ADS TEST</div>} />
+      {/* <Route path="ads" element={<Ads />} /> */}
       <Route path="about-us" element={<AboutUs />} />
       <Route path="createAsdJob" element={<AdsJob />} />
       <Route path="adsManager" element={<AdsManager />} />
