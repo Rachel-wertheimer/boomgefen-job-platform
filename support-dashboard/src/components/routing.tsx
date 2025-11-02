@@ -19,7 +19,7 @@ const LayoutWithNavbar = () => (
     <div style={{ padding: "20px", marginTop: "70px" }}>
       <Outlet />
     </div>
-    <Footer /> 
+    <Footer />
   </>
 );
 
@@ -30,17 +30,17 @@ export const Routing = () => (
 
     {/* כל שאר הנתיבים כוללים Navbar */}
     <Route element={<LayoutWithNavbar />}>
-      <Route path="/home" element={<Home />} />
-      <Route path="/work-with-us" element={<WorkWithUs />} />
-      <Route path="/ads" element={<Ads />} />
-      <Route path="/about-us" element={<AboutUs />} />
-      <Route path="/createAsdJob" element={<AdsJob />} />
-      <Route path="/adsManager" element={<AdsManager />} />
-      <Route path="/contact-us" element={<ContactUs />} />
-      <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
-      <Route path="/payment-failed" element={<PaymentFailed />} />
+      <Route path="home" element={<Home />} />
+      <Route path="work-with-us" element={<WorkWithUs />} />
+      <Route path="ads" element={<Ads />} />
+      <Route path="about-us" element={<AboutUs />} />
+      <Route path="createAsdJob" element={<AdsJob />} />
+      <Route path="adsManager" element={<AdsManager />} />
+      <Route path="contact-us" element={<ContactUs />} />
+      <Route path="PaymentSuccess" element={<PaymentSuccess />} />
+      <Route path="payment-failed" element={<PaymentFailed />} />
+      <Route path="footer" element={<Footer></Footer>}></Route>
       <Route path="*" element={<NotFoundPage></NotFoundPage>} />
-      <Route path="/footer" element={<Footer></Footer>}></Route>
     </Route>
   </Routes>
 );
