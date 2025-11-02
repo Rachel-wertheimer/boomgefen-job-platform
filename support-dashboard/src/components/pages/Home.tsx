@@ -7,12 +7,13 @@ const styles: Record<string, React.CSSProperties> = {
   // קונטיינר ראשי עם פריסת גריד
   homeContainer: {
     display: "grid",
-    gridTemplateColumns: "2fr 1fr", // חלוקה של 2/3 ו-1/3
+    gridTemplateColumns: "2fr 1fr",
     gap: "30px",
     maxWidth: "1400px",
     margin: "0 auto",
     padding: "90px 20px 20px 20px",
-  },
+  }
+  ,  
   // עמודת המודעות
   adsColumn: {
     gridColumn: "1 / 2", // תופס את העמודה הראשונה

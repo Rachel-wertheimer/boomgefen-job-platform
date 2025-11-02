@@ -82,12 +82,9 @@ export const Ads: React.FC = () => {
       flexDirection: "column",
       alignItems: "center",
       width: "100%",
-      minHeight: 0,
-      background: colors.lightGradient, // רקע אחיד
-      padding: isMobile ? "90px 15px 30px 15px" : "100px 30px 30px 30px", // ריווח מה-NAV הקבוע
-      boxSizing: "border-box",
-      direction: "rtl", // וידוא כיווניות
-    },
+      minHeight: 300, // ← זה טוב, אבל יכול להיות שעדיין Grid ב-Home גורם לבעיה
+    }
+    ,    
     title: {
       fontSize: isMobile ? "2rem" : "2.5rem", // פונט מותאם
       marginBottom: "24px",
