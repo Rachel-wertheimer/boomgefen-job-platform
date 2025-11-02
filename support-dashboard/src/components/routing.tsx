@@ -1,8 +1,8 @@
 import { Route, Routes, Outlet } from "react-router-dom";
 import Navbar from "./pages/Navbar";
-import Home from "./pages/Home";
+// import Home from "./pages/Home";
 import WorkWithUs from "./pages/WorkWithUs";
-import { Ads } from "./pages/Ads";
+// import { Ads } from "./pages/Ads";
 import AboutUs from "./pages/AboutUs";
 import AdsJob from "./pages/AdsJob";
 import AdsManager from "./pages/AdsManger";
