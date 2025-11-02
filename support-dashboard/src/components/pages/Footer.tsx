@@ -1,110 +1,90 @@
+import React from "react";
+import { FaEnvelope } from "react-icons/fa";
 import { appColors } from "../../utils/colors";
-const AnimationStyles = () => (
-  <style
-    dangerouslySetInnerHTML={{
-      __html: `
-        @keyframes modalFadeIn {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes overlayFadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes marqueeScroll {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-100%); }
-        }
-      `,
-    }}
-  />
-);
-
-const animationStyles = {
-  modalFadeIn: "modalFadeIn 0.3s ease-out forwards",
-  overlayFadeIn: "overlayFadeIn 0.3s ease-out forwards",
-  spin: "spin 1s linear infinite",
-  fadeIn: "fadeIn 0.5s ease-out forwards",
-  marqueeScroll: "marqueeScroll 80s linear infinite", // האטנו את האנימציה
-};
 
 export const Footer: React.FC = () => {
   const colors = appColors;
 
-  // --- טקסט כולל מייל בלבד ---
-  const marqueeText = (
-    <>
-      אפיון, בנייה ועיצוב אתרים ◆ רחל ורטהיימר ◆{" "}
-      <a
-        href="mailto:Rachel.fsd108@gmail.com"
-        style={{ color: colors.textWhite, textDecoration: "underline" }}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Rachel.fsd108@gmail.com
-      </a>{" "}
-      ◆
-    </>
-  );
+  const handleEmailClick = () => {
+    const mailtoLink =
+      "mailto:Rachel.fsd108@gmail.com?subject=שלום&body=שלום,%20רציתי%20לשאול...";
+    const gmailLink =
+      "https://mail.google.com/mail/?view=cm&to=Rachel.fsd108@gmail.com&su=שלום&body=שלום,%20רציתי%20לשאול...";
+
+    const newWindow = window.open(mailtoLink);
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+      window.open(gmailLink, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  const handlePrivacyClick = () => {
+    window.open(
+      "https://docs.google.com/document/d/1_vmLe3dvBRf4UBEBsUnwNq4jKcgC08Tn2345xyews3s/edit?usp=sharing",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
 
   const styles: Record<string, React.CSSProperties> = {
     footerContainer: {
       width: "100%",
-      backgroundColor: colors.primary,
+      backgroundColor: colors.primaryDarker,
       color: colors.textWhite,
+      padding: "12px 20px",
+      boxSizing: "border-box",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      fontSize: "0.9rem",
+      fontWeight: 500,
       position: "fixed",
       bottom: 0,
       left: 0,
       zIndex: 1000,
-      borderTop: `3px solid ${colors.primaryDarker}`,
-      boxSizing: "border-box",
-      direction: "ltr",
-      animation: animationStyles.fadeIn,
-      overflow: "hidden",
-      whiteSpace: "nowrap",
+      boxShadow: "0 -2px 6px rgba(0,0,0,0.1)",
+      direction: "rtl",
+      flexWrap: "wrap",
     },
-    marqueeContainer: {
-      width: "100%",
-      backgroundColor: colors.primaryDarker,
-      padding: "8px 0",
-      boxSizing: "border-box",
+    contactSection: {
       display: "flex",
+      alignItems: "center",
+      gap: "10px",
+      flexWrap: "wrap",
     },
-    scrollingText: {
-      display: "inline-block",
+    emailLink: {
+      display: "flex",
+      alignItems: "center",
+      gap: "6px",
       color: colors.textWhite,
-      fontSize: "0.9rem",
-      fontWeight: 500,
-      animation: animationStyles.marqueeScroll,
-      paddingLeft: "20px",
-      whiteSpace: "nowrap",
-      minWidth: "100%",
+      textDecoration: "underline",
+      cursor: "pointer",
+    },
+    privacyLink: {
+      color: colors.textWhite,
+      textDecoration: "underline",
+      cursor: "pointer",
     },
   };
 
   return (
-    <>
-      <AnimationStyles />
-      <footer style={styles.footerContainer}>
-        <div style={styles.marqueeContainer}>
-          <span style={styles.scrollingText}>{marqueeText}</span>
-          <span style={styles.scrollingText} aria-hidden="true">
-            {marqueeText}
-          </span>
-          <span style={styles.scrollingText} aria-hidden="true">
-            {marqueeText}
-          </span>
+    <footer style={styles.footerContainer}>
+      {/* צד ימין - פרטים אישיים */}
+      <div style={styles.contactSection}>
+        <span>© {new Date().getFullYear()} רחל ורטהיימר</span>
+        <span>|</span>
+        <span>אפיון, עיצוב ופיתוח אתרים</span>
+        <span>|</span>
+        <div style={styles.emailLink} onClick={handleEmailClick}>
+          <FaEnvelope size={15} />
+          <span>Rachel.fsd108@gmail.com</span>
         </div>
-      </footer>
-    </>
+      </div>
+
+      {/* צד שמאל - מדיניות ופרטיות */}
+      <span style={styles.privacyLink} onClick={handlePrivacyClick}>
+        מדיניות ופרטיות
+      </span>
+    </footer>
   );
 };
 

@@ -217,7 +217,7 @@
 // export default ForgotPasswordModal;
 import React, { useState } from "react";
 import axios from "axios";
-import { FaSpinner } from "react-icons/fa"; 
+import { FaSpinner } from "react-icons/fa";
 import { appColors } from "../../utils/colors";
 
 // --- סגנונות מ-LoginModal (מומלץ לשמור בקובץ נפרד) ---
@@ -258,7 +258,7 @@ const baseStyles: Record<string, React.CSSProperties> = {
     position: "fixed",
     top: 0, left: 0,
     width: "100%", height: "100%",
-    backgroundColor: "rgba(0,0,0,0.7)", 
+    backgroundColor: "rgba(0,0,0,0.7)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -276,15 +276,15 @@ const baseStyles: Record<string, React.CSSProperties> = {
     boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px', 
+    gap: '16px',
     animation: animationStyles.modalFadeIn,
-    transform: "scale(0.95)", 
+    transform: "scale(0.95)",
   },
   title: {
     margin: '0 0 10px 0',
     fontSize: '1.8rem',
     fontWeight: 700,
-    color: colors.primary, 
+    color: colors.primary,
   },
   inputBase: {
     width: "100%",
@@ -295,7 +295,7 @@ const baseStyles: Record<string, React.CSSProperties> = {
     boxSizing: "border-box",
     transition: "border-color 0.3s, box-shadow 0.3s",
     outline: "none",
-    textAlign: 'right', 
+    textAlign: 'right',
   },
   inputFocus: {
     borderColor: colors.primary,
@@ -310,7 +310,7 @@ const baseStyles: Record<string, React.CSSProperties> = {
   baseButton: {
     padding: "12px 24px",
     fontSize: "16px",
-    borderRadius: "30px", 
+    borderRadius: "30px",
     cursor: "pointer",
     fontWeight: "bold",
     border: "2px solid transparent",
@@ -410,7 +410,7 @@ const ResetPasswordModal = ({ email, code, onSuccess, onBack }: { email: string;
     <>
       <h2 style={baseStyles.title}>בחר סיסמה חדשה</h2>
       <p style={{ margin: '0', color: colors.lightGradient || '#666' }}>עוד שלב קטן ואתה בפנים!</p>
-      
+
       <input
         type="password"
         placeholder="סיסמה חדשה"
@@ -422,7 +422,7 @@ const ResetPasswordModal = ({ email, code, onSuccess, onBack }: { email: string;
       />
 
       {error && <p style={baseStyles.errorText}>{error}</p>}
-      
+
       <div style={baseStyles.buttonContainer}>
         <button
           onClick={handleReset}
@@ -439,7 +439,7 @@ const ResetPasswordModal = ({ email, code, onSuccess, onBack }: { email: string;
           ) : "עדכן סיסמה"}
         </button>
         <button
-          onClick={onBack} 
+          onClick={onBack}
           style={cancelBtnStyle}
           onMouseEnter={() => setIsCancelHover(true)}
           onMouseLeave={() => setIsCancelHover(false)}
@@ -502,9 +502,11 @@ const VerifyCodeModal = ({ email, onVerified, onBack }: { email: string; onVerif
   return (
     <>
       <h2 style={baseStyles.title}>אימות קוד</h2>
-      <p style={{ margin: '0', color: colors.lightGradient
-         || '#666' }}>הכנס את הקוד שנשלח למייל **{email}**</p>
-      
+      <p style={{
+        margin: '0', color: colors.lightGradient
+          || '#666'
+      }}>הכנס את הקוד שנשלח למייל **{email}**</p>
+
       <input
         type="text"
         placeholder="קוד אימות"
@@ -513,11 +515,11 @@ const VerifyCodeModal = ({ email, onVerified, onBack }: { email: string; onVerif
         style={getInputStyle('code')}
         onFocus={() => handleFocus('code')}
         onBlur={() => handleBlur('code')}
-        maxLength={6} 
+        maxLength={6}
       />
 
       {error && <p style={baseStyles.errorText}>{error}</p>}
-      
+
       <div style={baseStyles.buttonContainer}>
         <button
           onClick={handleVerify}
@@ -604,7 +606,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
 
 
   let modalContent;
-  
+
   if (step === "verify") {
     // השלב השני - אימות קוד
     modalContent = (
@@ -627,7 +629,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
           alert("הסיסמה הוחלפה בהצלחה!");
           onClose();
         }}
-        onBack={onClose} 
+        onBack={onClose}
       />
     );
   } else {
@@ -635,8 +637,8 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
     modalContent = (
       <>
         <h2 style={baseStyles.title}>שכחתי סיסמה</h2>
-        <p style={{ margin: '0', color: colors.lightGradient|| '#666' }}>הכנס את כתובת המייל שלך ונשלח קוד אימות</p>
-        
+        <p style={{ margin: '0', color: colors.lightGradient || '#666' }}>הכנס את כתובת המייל שלך ונשלח קוד אימות</p>
+
         <input
           type="email"
           placeholder="כתובת מייל"
@@ -648,8 +650,15 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
         />
 
         {error && <p style={baseStyles.errorText}>{error}</p>}
-        {message && <p style={baseStyles.messageText}>{message}</p>}
-        
+        {message && (
+          <>
+            <p style={baseStyles.messageText}>{message}</p>
+            <p style={{ color: '#555', fontSize: '0.8rem', margin: '4px 0 0 0' }}>
+              אם אינך רואה את המייל, בדוק גם בתיקיית ספאם
+            </p>
+          </>
+        )}
+
         <div style={baseStyles.buttonContainer}>
           <button
             onClick={handleSendEmail}

@@ -449,7 +449,19 @@ export default function WorkWithUs() {
                         אני מאשרת לקבל הצעות ומייל
                     </label>
                 </div>
-
+                <p style={{ textAlign: 'center', fontSize: '0.85rem', color: colors.textMedium }}>
+                    על ידי המשך, את מסכימה ל&nbsp;
+                    <span
+                        style={{ ...styles.clickableLink, textDecoration: 'underline' }}
+                        onClick={() => window.open(
+                            "https://docs.google.com/document/d/1_vmLe3dvBRf4UBEBsUnwNq4jKcgC08Tn2345xyews3s/edit?usp=sharing",
+                            "_blank",
+                            "noopener,noreferrer"
+                        )}
+                    >
+                        מדיניות ופרטיות
+                    </span>
+                </p>
                 {/* כפתור המשך */}
                 <div style={styles.formActions}>
                     <button
@@ -467,6 +479,7 @@ export default function WorkWithUs() {
                         ) : 'המשך לתשלום'}
                     </button>
                 </div>
+
             </form>
         </div>
     );

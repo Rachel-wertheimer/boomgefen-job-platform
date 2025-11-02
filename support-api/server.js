@@ -8,7 +8,11 @@ const userProfilesRouter = require('./routes/user_profiles');
 const emailRoute = require('./routes/email');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "https://boomgefen-job-platform-yiax.onrender.com",
+  credentials: true
+}));
+
 app.use(express.json());
 
 app.use('/api/v1/ads', adsRouter);
