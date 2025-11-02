@@ -1,8 +1,8 @@
 import { Route, Routes, Outlet } from "react-router-dom";
 import Navbar from "./pages/Navbar";
-// import Home from "./pages/Home";
+import Home from "./pages/Home";
 import WorkWithUs from "./pages/WorkWithUs";
-// import { Ads } from "./pages/Ads";
+import { Ads } from "./pages/Ads";
 import AboutUs from "./pages/AboutUs";
 import AdsJob from "./pages/AdsJob";
 import AdsManager from "./pages/AdsManger";
@@ -30,11 +30,11 @@ export const Routing = () => (
 
     {/* כל שאר הנתיבים כוללים Navbar */}
     <Route element={<LayoutWithNavbar />}>
-      {/* <Route path="home" element={<Home />} /> */}
-      <Route path="home" element={<div>HOME TEST</div>} />
+      <Route path="home" element={<Home />} />
+      {/* <Route path="home" element={<div>HOME TEST</div>} /> */}
       <Route path="work-with-us" element={<WorkWithUs />} />
-      <Route path="ads" element={<div>ADS TEST</div>} />
-      {/* <Route path="ads" element={<Ads />} /> */}
+      {/* <Route path="ads" element={<div>ADS TEST</div>} /> */}
+      <Route path="ads" element={<Ads />} />
       <Route path="about-us" element={<AboutUs />} />
       <Route path="createAsdJob" element={<AdsJob />} />
       <Route path="adsManager" element={<AdsManager />} />
