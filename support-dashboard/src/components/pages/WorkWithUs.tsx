@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState, AppDispatch } from '../../app/store';
 import { updateRegistrationFormField, updateProfession } from '../../app/slice/userSlice';
-import { createUser, createUserProfile } from '../../app/api/user';
+import { createUser, createUserProfile, getUserDetailsByID } from '../../app/api/user';
 import { FaSpinner } from 'react-icons/fa';
 import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
@@ -108,6 +108,13 @@ export default function WorkWithUs() {
         setLoading(true);
 
         try {
+            // ולידציה בסיסית לפני שליחה
+            if (!formData.fullName || !formData.email || !formData.phone || !formData.age || !formData.passWord) {
+                alert('נא למלא את כל השדות החיוניים');
+                setLoading(false);
+                return;
+            }
+
             const payload = new FormData();
             payload.append('entry.1801059523', formData.fullName);
             payload.append('entry.344081749', formData.email);
@@ -151,7 +158,11 @@ export default function WorkWithUs() {
             };
 
             const userRes = await createUser(userPayload);
-            sessionStorage.setItem('userId', userRes.userId);
+            if (!userRes?.userId && typeof userRes !== 'number') {
+                throw new Error('שגיאה ביצירת משתמש (חסר מזהה משתמש)');
+            }
+            const newUserId = typeof userRes === 'number' ? userRes : userRes.userId;
+            sessionStorage.setItem('userId', String(newUserId));
 
             const selectedProfessions = Object.keys(formData.professions)
                 .filter(p => formData.professions[p]);
@@ -169,7 +180,21 @@ export default function WorkWithUs() {
             sessionStorage.setItem('userEmail', formData.email); // שומר את האימייל ב-SSENSTORG
 
 
-            await createUserProfile(profilePayload, userRes.userId);
+            await createUserProfile(profilePayload, newUserId);
+
+            // וידוא התמPersistות לפני מעבר לתשלום (מטפל בעיכובים בענן)
+            let verified = false;
+            for (let i = 0; i < 3; i++) {
+                try {
+                    const details = await getUserDetailsByID(newUserId);
+                    if (details && details.userId) { verified = true; break; }
+                } catch {}
+                await new Promise(r => setTimeout(r, 800));
+            }
+            if (!verified) {
+                throw new Error('אימות יצירת המשתמש נכשל. נסי שוב בעוד רגע');
+            }
+
             window.location.href = "https://pay.sumit.co.il/g9687k/gg7p5h/hykun7/payment/";
 
         } catch (err) {
