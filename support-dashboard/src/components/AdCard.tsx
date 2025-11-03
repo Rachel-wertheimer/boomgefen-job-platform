@@ -1,4 +1,4 @@
- 
+
 
 // const animationStyles = {
 //   modalFadeIn: "modalFadeIn 0.3s ease-out forwards",
