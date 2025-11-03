@@ -29,7 +29,7 @@ export const Footer: React.FC = () => {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    fontSize: window.innerWidth <= 480 ? "0.7rem" : "0.9rem", // קטן לפלאפון
+    fontSize: window.innerWidth <= 480 ? "0.7rem" : "0.9rem", 
     fontWeight: 500,
     position: "fixed",
     bottom: 0,
@@ -37,13 +37,13 @@ export const Footer: React.FC = () => {
     zIndex: 1000,
     boxShadow: "0 -2px 6px rgba(0,0,0,0.1)",
     direction: "rtl",
-    flexWrap: "nowrap", // ביטול גלישת שורות
+    flexWrap: "nowrap",
   },
   contactSection: {
     display: "flex",
     alignItems: "center",
     gap: "10px",
-    whiteSpace: "nowrap", // מונע שבירת שורות
+    whiteSpace: "nowrap", 
   },
   emailLink: {
     display: "flex",
@@ -63,7 +63,6 @@ export const Footer: React.FC = () => {
 
   return (
     <footer style={styles.footerContainer}>
-      {/* צד ימין - פרטים אישיים */}
       <div style={styles.contactSection}>
         <span>© {new Date().getFullYear()} רחל ורטהיימר</span>
         <span>|</span>
@@ -75,7 +74,6 @@ export const Footer: React.FC = () => {
         </div>
       </div>
 
-      {/* צד שמאל - מדיניות ופרטיות */}
       <span style={styles.privacyLink} onClick={handlePrivacyClick}>
         מדיניות ופרטיות
       </span>

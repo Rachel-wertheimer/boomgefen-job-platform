@@ -3,7 +3,6 @@ import axios from "axios";
 import { FaSpinner } from "react-icons/fa";
 import { appColors } from "../../utils/colors";
 
-// --- אנימציות ---
 const AnimationStyles = () => (
   <style
     dangerouslySetInnerHTML={{
@@ -30,10 +29,8 @@ const animationStyles = {
   overlayFadeIn: "overlayFadeIn 0.3s ease-out forwards",
   spin: "spin 1s linear infinite",
 };
-// --- סוף אנימציות ---
 
 
-// --- הגדרת סגנונות גלובליים במודאל הראשי (ForgotPasswordModal) ---
 const colors = appColors;
 
 const baseStyles: Record<string, React.CSSProperties> = {
@@ -131,16 +128,14 @@ const baseStyles: Record<string, React.CSSProperties> = {
     fontSize: '0.9rem',
     fontWeight: 500,
   },
-  messageText: { // הודעות הצלחה/מידע
+  messageText: {
     color: colors.success || 'green',
     margin: '0',
     fontSize: '0.9rem',
     fontWeight: 500,
   }
 };
-// --- סוף סגנונות גלובליים ---
 
-// --- קומפוננטת איפוס סיסמה (שלב 3) ---
 const ResetPasswordModal = ({ email, code, onSuccess, onBack }: { email: string; code: string; onSuccess: () => void; onBack: () => void }) => {
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -149,7 +144,6 @@ const ResetPasswordModal = ({ email, code, onSuccess, onBack }: { email: string;
   const [isCancelHover, setIsCancelHover] = useState(false);
   const [focusState, setFocusState] = useState<Record<string, boolean>>({});
 
-  // הלוגיקה נשארת כפי שהיא
   const handleReset = async () => {
     if (newPassword.length < 6)
       return setError("הסיסמה חייבת להכיל לפחות 6 תווים");
@@ -234,7 +228,6 @@ const ResetPasswordModal = ({ email, code, onSuccess, onBack }: { email: string;
   );
 };
 
-// --- קומפוננטת אימות קוד (שלב 2) ---
 const VerifyCodeModal = ({ email, onVerified, onBack }: { email: string; onVerified: (code: string) => void; onBack: () => void }) => {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
@@ -243,7 +236,6 @@ const VerifyCodeModal = ({ email, onVerified, onBack }: { email: string; onVerif
   const [isCancelHover, setIsCancelHover] = useState(false);
   const [focusState, setFocusState] = useState<Record<string, boolean>>({});
 
-  // הלוגיקה נשארת כפי שהיא
   const handleVerify = async () => {
     if (!code) return setError("נא להזין קוד אימות");
     setLoading(true);
@@ -266,8 +258,8 @@ const VerifyCodeModal = ({ email, onVerified, onBack }: { email: string; onVerif
   const getInputStyle = (name: string) => ({
     ...baseStyles.inputBase,
     ...(focusState[name] ? baseStyles.inputFocus : {}),
-    textAlign: 'center' as const, // אימות קוד לרוב במרכז
-    letterSpacing: '5px' // להדגשת הקוד
+    textAlign: 'center' as const,
+    letterSpacing: '5px'
   });
 
   const verifyBtnStyle = {
@@ -331,8 +323,6 @@ const VerifyCodeModal = ({ email, onVerified, onBack }: { email: string; onVerif
   );
 };
 
-
-// --- קומפוננטת שכחתי סיסמה (שלב 1 - קומפוננטה ראשית) ---
 type ForgotPasswordModalProps = {
   onClose: () => void;
 };
@@ -349,13 +339,12 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
   const [focusState, setFocusState] = useState<Record<string, boolean>>({});
   const [showSpamHint, setShowSpamHint] = useState(false);
 
-  // הלוגיקה נשארת כפי שהיא
   const handleSendEmail = async () => {
     if (!email) return setError("נא להזין כתובת מייל");
     setLoading(true);
     setError("");
-    setMessage(""); // ניקוי הודעות קודמות
-    setShowSpamHint(true); // הצג מיד עם שליחת הבקשה
+    setMessage("");
+    setShowSpamHint(true);
     try {
       await axios.post(
         "https://boomgefen-job-platform-1.onrender.com/api/v1/user_profiles/getUserByEmail",
@@ -393,7 +382,6 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
   let modalContent;
 
   if (step === "verify") {
-    // השלב השני - אימות קוד
     modalContent = (
       <VerifyCodeModal
         email={email}
@@ -401,11 +389,10 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
           setCode(c);
           setStep("reset");
         }}
-        onBack={() => setStep("email")} // ניתן לחזור לשלב האימייל אם רוצים, או onCLose
+        onBack={() => setStep("email")}
       />
     );
   } else if (step === "reset") {
-    // השלב השלישי - איפוס סיסמה
     modalContent = (
       <ResetPasswordModal
         email={email}
@@ -418,7 +405,6 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
       />
     );
   } else {
-    // השלב הראשון - שליחת מייל
     modalContent = (
       <>
         <h2 style={baseStyles.title}>שכחתי סיסמה</h2>
@@ -477,7 +463,6 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
     <>
       <AnimationStyles />
       <div style={baseStyles.overlay} onClick={onClose}>
-        {/* מניעת סגירה בלחיצה על המודאל עצמו */}
         <div style={baseStyles.modal} onClick={(e) => e.stopPropagation()}>
           {modalContent}
         </div>

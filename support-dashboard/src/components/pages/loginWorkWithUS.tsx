@@ -4,11 +4,9 @@ import { useNavigate } from "react-router-dom";
 import type { AppDispatch, RootState } from "../../app/store";
 import { login } from "../../app/slice/userSlice";
 import { FaSpinner } from "react-icons/fa";
-// import ForgotPasswordModal from "./ForgotPasswordModal";
 import { appColors } from "../../utils/colors";
 import ForgotPasswordModal from "./ForgotPasswordModal";
 
-// Inline animations
 const AnimationStyles = () => (
   <style
     dangerouslySetInnerHTML={{
@@ -51,7 +49,6 @@ type Props = {
 };
 
 export const LoginModal: React.FC<Props> = ({ onClose }) => {
-  // --- כל הלוגיקה נשארת זהה ---
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state: RootState) => state.user);
@@ -71,18 +68,14 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
             window.location.href = "https://pay.sumit.co.il/g9687k/gg7p5h/hykun7/payment/";
           }
         } else {
-          onClose(); // כניסה תקינה
-          // ניתוב אוטומטי ל-Home אחרי התחברות מוצלחת
+          onClose(); 
           navigate("/home");
         }
       })
       .catch(() => {
       });
   };
-  // --- סוף הלוגיקה שלא נגענו בה ---
 
-
-  // --- States ופונקציות לעיצוב בלבד ---
   const [isLoginHover, setIsLoginHover] = useState(false);
   const [isCancelHover, setIsCancelHover] = useState(false);
   const [focusState, setFocusState] = useState<Record<string, boolean>>({});
@@ -90,16 +83,14 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
   const handleFocus = (field: string) => setFocusState(prev => ({ ...prev, [field]: true }));
   const handleBlur = (field: string) => setFocusState(prev => ({ ...prev, [field]: false }));
 
-  // Use shared colors
   const colors = appColors;
 
-  // --- סגנונות מעודכנים ---
   const styles: Record<string, React.CSSProperties> = {
     overlay: {
       position: "fixed",
       top: 0, left: 0,
       width: "100%", height: "100%",
-      backgroundColor: "rgba(0,0,0,0.7)", // רקע כהה יותר
+      backgroundColor: "rgba(0,0,0,0.7)", 
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -117,15 +108,15 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
       boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
       display: 'flex',
       flexDirection: 'column',
-      gap: '16px', // רווח אחיד
+      gap: '16px', 
       animation: animationStyles.modalFadeIn,
-      transform: "scale(0.95)", // התחלה קטנה לאנימציה
+      transform: "scale(0.95)",  
     },
     title: {
       margin: '0 0 10px 0',
       fontSize: '1.8rem',
       fontWeight: 700,
-      color: colors.primary, // צבע מותג
+      color: colors.primary, 
     },
     inputBase: {
       width: "100%",
@@ -136,8 +127,8 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
       boxSizing: "border-box",
       transition: "border-color 0.3s, box-shadow 0.3s",
       outline: "none",
-      textAlign: 'right', // יישור לימין
-    },
+      textAlign: 'right', 
+        },
     inputFocus: {
       borderColor: colors.primary,
       boxShadow: `0 0 0 3px ${colors.primary}30`,
@@ -151,7 +142,7 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
     baseButton: {
       padding: "12px 24px",
       fontSize: "16px",
-      borderRadius: "30px", // עיצוב גלולה
+      borderRadius: "30px",  
       cursor: "pointer",
       fontWeight: "bold",
       border: "2px solid transparent",
@@ -191,7 +182,6 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
     },
   };
 
-  // --- סגנונות דינמיים לכפתורים ---
   const getInputStyle = (name: string) => ({
     ...styles.inputBase,
     ...(focusState[name] ? styles.inputFocus : {})
@@ -213,11 +203,9 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
     return (
       <ForgotPasswordModal
         onClose={() => setShowForgotPassword(false)}
-
       />
     );
   }
-
   return (
     <>
       <AnimationStyles />
@@ -245,22 +233,6 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
           />
 
           <div style={{ textAlign: "left", marginTop: "8px", marginBottom: "8px" }}>
-            {/* <button
-              type="button"
-              onClick={() => setShowForgotPassword(true)}
-              style={{
-                background: "none",
-                border: "none",
-                color: colors.primary,
-                cursor: "pointer",
-                fontSize: "0.9rem",
-                textDecoration: "underline",
-                padding: "0",
-              }}
-            >
-              שכחתי סיסמה
-            </button> */}
-
             <div style={{ textAlign: "left", marginTop: "8px", marginBottom: "8px" }}>
               <button
                 type="button"
@@ -273,7 +245,6 @@ export const LoginModal: React.FC<Props> = ({ onClose }) => {
                   fontSize: "0.9rem",
                   textDecoration: "underline",
                   padding: "0",
-                  // הוספת אפקט ריחוף קטן
                   transition: 'color 0.2s',
                   }}
               >

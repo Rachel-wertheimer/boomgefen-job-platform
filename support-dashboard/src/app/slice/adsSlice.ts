@@ -7,9 +7,9 @@ export type Ad = {
   company: string;
   type: string;
   goal: string;
-  approved: number; // כדאי להוסיף את שדה האישור
+  approved: number;
   description: string;
-  is_relevant: number; // חדש
+  is_relevant: number;
 
 };
 
@@ -25,12 +25,10 @@ const initialState: AdsState = {
   error: null,
 };
 
-
-// thunk אסינכרוני למשיכת הנתונים
 export const fetchAds = createAsyncThunk("/fetchAds", async () => {
   return await getApprovedAds();
 });
-//יצרת מודעה חדשה
+
 export const registerUserAndCreateAd = createAsyncThunk(
   "ads/registerUserAndCreateAd",
   async (
@@ -38,7 +36,6 @@ export const registerUserAndCreateAd = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      // קודם יוצרים User
       const userId = await createUser(userData);
 
       if (!userId) {
@@ -82,7 +79,7 @@ export const fetchNotRelevantAds = createAsyncThunk(
     return await getNotRelevantAds();
   }
 );
-// thunk למחיקת מודעה
+
 export const deleteAdS = createAsyncThunk(
   "ads/deleteAd",
   async ({ adId }: { adId: number }) => {
@@ -109,7 +106,7 @@ const adsSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "שגיאה בטעינת נתונים";
       })
-      // --- Reducers חדשים עבור יצירת מודעה ---
+
       .addCase(registerUserAndCreateAd.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -134,12 +131,10 @@ const adsSlice = createSlice({
         state.error = action.error.message ?? "נכשל בשליפת המודעות";
       })
 
-      // מודעות לא מאושרות
       .addCase(fetchNotApprovedAds.fulfilled, (state, action: PayloadAction<Ad[]>) => {
         state.ads = action.payload;
       })
 
-      // עדכון אישור מודעה
       .addCase(toggleAdApproved.fulfilled, (state, action: PayloadAction<Ad>) => {
         const index = state.ads.findIndex((ad) => ad.id === action.payload.id);
         if (index !== -1) {

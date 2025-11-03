@@ -2,9 +2,7 @@ import { Ads } from "./Ads";
 import AdsJob from "./AdsJob";
 import React from "react";
 
-// אובייקט סגנונות חדש ומודרני
 const styles: Record<string, React.CSSProperties> = {
-  // קונטיינר ראשי עם פריסת גריד
   homeContainer: {
     display: "grid",
     gridTemplateColumns: "2fr 1fr",
@@ -14,23 +12,20 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "90px 20px 20px 20px",
   }
   ,  
-  // עמודת המודעות
   adsColumn: {
-    gridColumn: "1 / 2", // תופס את העמודה הראשונה
-    minWidth: 0, // מונע גלישה של תוכן
-  },
-  // עמודת הטופס
+    gridColumn: "1 / 2", 
+      minWidth: 0, 
+     },
   formColumn: {
-    gridColumn: "2 / 3", // תופס את העמודה השנייה
-    position: "sticky", // הופך לדביק בגלילה
-    top: "90px", // נצמד 90px מלמעלה (גובה ה-Navbar + ריפוד)
-    alignSelf: "start", // מוודא שהוא נצמד לתחילת העמודה
-    maxHeight: "calc(100vh - 100px)", // גובה מקסימלי
-    overflowY: "auto", // מאפשר גלילה פנימית אם הטופס ארוך
+    gridColumn: "2 / 3", 
+    position: "sticky", 
+    top: "90px",
+    alignSelf: "start",
+    maxHeight: "calc(100vh - 100px)", 
+    overflowY: "auto", 
   },
 };
 
-// מדיה קוורי עבור רספונסיביות (מוטמע בתוך הקומפוננטה)
 const useResponsiveStyles = () => {
   const [isMobile, setIsMobile] = React.useState(false);
 
@@ -45,38 +40,33 @@ const useResponsiveStyles = () => {
 
   const homeContainerStyle = {
     ...styles.homeContainer,
-    // במובייל: עמודה אחת
     gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr",
   };
 
   const formColumnStyle = {
     ...styles.formColumn,
-    // במובייל: מבטל את ההצמדה והופך לבלוק רגיל
     position: isMobile ? ("relative" as "sticky") : "sticky",
     top: isMobile ? "0" : "90px",
-    gridColumn: isMobile ? "1 / 2" : "2 / 3", // תמיד עמודה ראשונה במובייל
-    order: isMobile ? 1 : 0, // מזיז את הטופס להתחלה במובייל
+    gridColumn: isMobile ? "1 / 2" : "2 / 3", 
+    order: isMobile ? 1 : 0,     
   };
 
   const adsColumnStyle = {
     ...styles.adsColumn,
-    order: isMobile ? 2 : 0, // מודעות יופיעו אחרי הטופס במובייל
+    order: isMobile ? 2 : 0, 
   };
 
   return { homeContainerStyle, adsColumnStyle, formColumnStyle };
 };
-
 export default function Home() {
   const { homeContainerStyle, adsColumnStyle, formColumnStyle } = useResponsiveStyles();
 
   return (
     <div style={homeContainerStyle}>
-      {/* Ads תופס 2/3 מהרוחב */}
       <div style={adsColumnStyle}>
         <Ads />
       </div>
 
-      {/* AdsJob מוצמד לשמאל (או למעלה במובייל) */}
       <div style={formColumnStyle}>
         <AdsJob />
       </div>

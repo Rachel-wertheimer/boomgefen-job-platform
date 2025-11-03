@@ -16,7 +16,6 @@ import EditAdModal from "./EditAdModal";
 import { useWindowSize } from "../../utils/hooks";
 import { sendMail } from "../../utils/mailService";
 
-// Inline animations
 const AnimationStyles = () => (
   <style
     dangerouslySetInnerHTML={{
@@ -57,21 +56,13 @@ const animationStyles = {
 export default function AdsManager() {
   const dispatch = useDispatch<AppDispatch>();
   const { ads, loading, error } = useSelector((state: RootState) => state.ads);
-
-  // --- שינוי: מצב סינון אחיד ---
   const [filter, setFilter] = useState<'all' | 'notApproved' | 'notRelevant'>('all');
-
-  // --- מצב טעינה לכל כרטיס בנפרד ---
   const [togglingId, setTogglingId] = useState<number | null>(null);
   const [editingAd, setEditingAd] = useState<any | null>(null);
   const [adUserEmailById, setAdUserEmailById] = useState<Record<number, string>>({});
-
   const token = sessionStorage.getItem("token") || "";
-
   const { width } = useWindowSize();
   const isMobile = width <= 768;
-
-  // Use shared colors and styles
   const colors = appColors;
 
   useEffect(() => {
@@ -84,7 +75,6 @@ export default function AdsManager() {
     }
   }, [filter, dispatch]);
 
-  // Fetch and cache ad owners' emails for display
   useEffect(() => {
     const fetchMissingEmails = async () => {
       const missing = ads.filter(a => a.id_user && !adUserEmailById[a.id_user]);
@@ -94,7 +84,7 @@ export default function AdsManager() {
           if (details?.email) {
             setAdUserEmailById(prev => ({ ...prev, [ad.id_user as number]: details.email as string }));
           }
-        } catch {}
+        } catch { }
       }
     };
     if (ads && ads.length) fetchMissingEmails();
@@ -123,7 +113,6 @@ export default function AdsManager() {
       await dispatch(toggleAdApproved({ adId: ad.id, token }));
       refreshList();
 
-      // שליחת מייל למשתמש
       let userEmail = ad.userEmail;
       if (!userEmail && ad.id_user) {
         try {
@@ -133,7 +122,7 @@ export default function AdsManager() {
       }
 
       if (userEmail) {
-        const isNowApproved = !ad.approved; // הערך לאחר הטוגל
+        const isNowApproved = !ad.approved; 
         const subject = isNowApproved ? "המודעה שלך אושרה" : "המודעה שלך נדחתה";
         const text = isNowApproved
           ? "המודעה שלך אושרה על ידי מנהל המערכת."
@@ -147,7 +136,6 @@ export default function AdsManager() {
     }
   };
 
-  // טוגל רלוונטי/לא רלוונטי
   const handleToggleRelevant = async (ad: any) => {
     if (togglingId) return;
     setTogglingId(ad.id);
@@ -156,7 +144,6 @@ export default function AdsManager() {
       await dispatch(toggleAdRelevant({ adId: ad.id, token }));
       refreshList();
 
-      // שליחת מייל למשתמש
       let userEmail = ad.userEmail;
       if (!userEmail && ad.id_user) {
         try {
@@ -166,7 +153,7 @@ export default function AdsManager() {
       }
 
       if (userEmail) {
-        const isNowRelevant = !ad.is_relevant; // הערך לאחר הטוגל
+        const isNowRelevant = !ad.is_relevant;
         const subject = isNowRelevant ? "המודעה שלך נחשבה רלוונטית" : "המודעה שלך נחשבה לא רלוונטית";
         const text = isNowRelevant
           ? "המודעה שלך נחשבת כעת רלוונטית במערכת."
@@ -179,8 +166,6 @@ export default function AdsManager() {
     }
   };
 
-
-  // --- סגנונות ---
   const styles: Record<string, React.CSSProperties> = {
     pageContainer: {
       display: "flex",
@@ -353,7 +338,6 @@ export default function AdsManager() {
     }
   };
 
-  // --- פונקציות להחזרת סגנון דינמי ---
   const getFilterButtonStyle = (filterName: typeof filter) => {
     if (filter === filterName) {
       return { ...styles.filterButtonBase, ...styles.filterButtonActive };
@@ -378,8 +362,6 @@ export default function AdsManager() {
 
     return { container: containerStyle, thumb: thumbStyle };
   };
-
-
 
   return (
     <div style={styles.pageContainer}>
@@ -446,10 +428,10 @@ export default function AdsManager() {
                     <span style={styles.fieldLabel}>תיאור: </span>
                     <p style={styles.fieldDescription}>{ad.description}</p>
                   </div>
-                    <div style={styles.cardField}>
-                      <span style={styles.fieldLabel}>מייל מפרסם: </span>
-                      <span style={styles.fieldValue}>{adUserEmailById[ad.id_user] || '—'}</span>
-                    </div>
+                  <div style={styles.cardField}>
+                    <span style={styles.fieldLabel}>מייל מפרסם: </span>
+                    <span style={styles.fieldValue}>{adUserEmailById[ad.id_user] || '—'}</span>
+                  </div>
                 </div>
 
                 <div style={styles.toggleSection}>
@@ -478,7 +460,6 @@ export default function AdsManager() {
                     </div>
                   </div>
 
-                  {/* כפתור עריכה */}
                   <div style={{
                     display: 'flex',
                     justifyContent: 'center',

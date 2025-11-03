@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaExclamationTriangle } from "react-icons/fa"; // אייקון לשגיאה
+import { FaExclamationTriangle } from "react-icons/fa"; 
 
-// --- פונקציית עזר לבדיקת גודל מסך ---
 const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
@@ -23,8 +22,6 @@ const useWindowSize = () => {
   return windowSize;
 };
 
-
-// --- הגדרת אנימציית FadeIn ---
 const AnimationStyles = () => (
     <style>
         {`
@@ -42,7 +39,6 @@ const NotFoundPage: React.FC = () => {
   const { width } = useWindowSize();
   const isMobile = width <= 600;
 
-  // --- פלטת צבעים אחידה ---
   const colors = {
     primary: "#6d44b8",
     primaryHover: "#5a379a",
@@ -51,7 +47,6 @@ const NotFoundPage: React.FC = () => {
     textMedium: "#555",
   };
 
-  // --- סגנונות ---
   const styles: Record<string, React.CSSProperties> = {
     pageContainer: {
       display: "flex",
@@ -59,7 +54,7 @@ const NotFoundPage: React.FC = () => {
       alignItems: "center",
       justifyContent: "center",
       width: "100%",
-      minHeight: "100vh", // ממלא את כל גובה המסך
+      minHeight: "100vh", 
       background: colors.lightGradient,
       padding: "20px",
       boxSizing: "border-box",
@@ -80,11 +75,11 @@ const NotFoundPage: React.FC = () => {
     },
     icon: {
       fontSize: '4rem',
-      color: colors.primary, // צבע סגול
+      color: colors.primary, 
       marginBottom: '20px',
     },
     title: {
-      fontSize: "4rem", // גופן גדול ל-404
+      fontSize: "4rem",
       fontWeight: 700,
       color: colors.textDark,
       margin: "0",
@@ -93,7 +88,7 @@ const NotFoundPage: React.FC = () => {
     subtitle: {
         fontSize: "1.8rem",
         fontWeight: 600,
-        color: colors.primary, // צבע סגול
+        color: colors.primary, 
         margin: "10px 0 15px 0",
     },
     statusText: {
@@ -136,7 +131,7 @@ const NotFoundPage: React.FC = () => {
                 אופס... נראה שהדף שחיפשת לא קיים או שהקישור שבור.
             </p>
             <button
-                onClick={() => navigate("/home")} // מחזיר לעמוד הבית
+                onClick={() => navigate("/home")} 
                 style={buttonStyle}
                 onMouseEnter={() => setIsHover(true)}
                 onMouseLeave={() => setIsHover(false)}

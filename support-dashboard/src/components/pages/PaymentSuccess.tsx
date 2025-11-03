@@ -1,13 +1,11 @@
-// pages/PaymentSuccess.tsx
-import React, { useEffect, useState } from "react"; // הוספנו useState
-import { useNavigate } from "react-router-dom"; // הוספנו useNavigate
+import React, { useEffect, useState } from "react"; 
+import { useNavigate } from "react-router-dom";  
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
 import { subscribeUser } from "../../app/slice/userSlice";
 import { FaSpinner, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { sendMail } from "../../utils/mailService";
 
-// --- הגדרת אנימציית FadeIn ---
 const AnimationStyles = () => (
   <style>
     {`
@@ -27,7 +25,6 @@ const PaymentSuccess: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.user);
 
-  // --- הוספנו useNavigate וכפתור ---
   const navigate = useNavigate();
   const [isHover, setIsHover] = useState(false);
 
@@ -43,13 +40,12 @@ const PaymentSuccess: React.FC = () => {
         תודה שהצטרפת!`,
       })
         .then(() => {
-          sessionStorage.removeItem("userEmail"); // מוחק מה־SSENSTORG לאחר שליחת המייל
+          sessionStorage.removeItem("userEmail");    
         })
         .catch(err => console.error("Error sending confirmation email:", err));
     }
   }, [dispatch]);
 
-  // --- פלטת צבעים אחידה ---
   const colors = {
     primary: "#6d44b8",
     primaryHover: "#5a379a",
@@ -60,7 +56,6 @@ const PaymentSuccess: React.FC = () => {
     textMedium: "#555",
   };
 
-  // --- סגנונות ---
   const styles: Record<string, React.CSSProperties> = {
     pageContainer: {
       display: "flex",
@@ -122,9 +117,8 @@ const PaymentSuccess: React.FC = () => {
       color: colors.danger,
       fontWeight: 600,
     },
-    // --- סגנונות לכפתור החדש ---
     buttonContainer: {
-      marginTop: '30px', // רווח מעל הכפתור
+      marginTop: '30px',  
     },
     buttonBase: {
       padding: "12px 28px",
@@ -144,7 +138,6 @@ const PaymentSuccess: React.FC = () => {
     },
   };
 
-  // --- סגנון דינמי לכפתור ---
   const buttonStyle = {
     ...styles.buttonBase,
     ...(isHover ? styles.buttonHover : {})
@@ -170,7 +163,6 @@ const PaymentSuccess: React.FC = () => {
           </div>
           <h1 style={{ ...styles.title, color: colors.danger }}>אירעה שגיאה</h1>
           <p style={(styles.errorText, { marginBottom: '30px' })}>{error}</p>
-          {/* --- הוספת כפתור גם במקרה שגיאה --- */}
           <button
             onClick={() => navigate("/home")}
             style={buttonStyle}
@@ -189,7 +181,6 @@ const PaymentSuccess: React.FC = () => {
         </div>
         <h1 style={styles.title}>תודה לך!</h1>
         <p style={styles.statusText}>נרשמת בהצלחה להיות מנויה שלנו 🎉</p>
-        {/* --- הוספת כפתור במקרה הצלחה --- */}
         <div style={styles.buttonContainer}>
           <button
             onClick={() => navigate("/home")}

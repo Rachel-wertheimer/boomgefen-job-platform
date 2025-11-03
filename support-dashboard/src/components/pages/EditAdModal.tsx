@@ -3,7 +3,6 @@ import { FaSpinner } from "react-icons/fa";
 import { appColors } from "../../utils/colors";
 import { updateAdContent } from "../../app/api/ads";
 
-// Inline animations
 const AnimationStyles = () => (
   <style
     dangerouslySetInnerHTML={{

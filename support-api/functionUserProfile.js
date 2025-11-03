@@ -17,24 +17,21 @@ exports.getUserByEmail = async (email) => {
      WHERE LOWER(u.email) = ?`,
     [email.toLowerCase()]
   );
-  return rows[0]; // אם אין משתמש, יחזור undefined
+  return rows[0]; 
 };
 
 
 exports.updateTemporaryPassword = async (code, userId) => {
-  // קודם מעדכנים את הקוד
   await pool.query(
     `UPDATE user_profiles SET temporary_password = ? WHERE user_id = ?`,
     [code, userId]
   );
 
-  // עכשיו שולפים את הערך המעודכן
   const [rows] = await pool.query(
     `SELECT temporary_password FROM user_profiles WHERE user_id = ?`,
     [userId]
   );
 
-  // מחזירים את הערך של temporary_password
   return rows[0]?.temporary_password;
 };
 

@@ -34,13 +34,13 @@ exports.getUserDetailsByID = async (ID) => {
      WHERE id = ?`,
     [ID]
   );
-  return rows[0]; // מחזיר את הרשומה הראשונה (כי ID הוא ייחודי)
+  return rows[0];
 };
 
 exports.update_subscription = async (adId) => {
-  const startDate = new Date(); // התאריך הנוכחי
+  const startDate = new Date(); 
   const endDate = new Date();
-  endDate.setMonth(endDate.getMonth() + 1); // חודש קדימה
+  endDate.setMonth(endDate.getMonth() + 1); 
   const is_subscribed=true;
 
   await pool.query(

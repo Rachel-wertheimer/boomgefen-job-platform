@@ -33,13 +33,13 @@ export const createUser = async (userData: NewUserData): Promise<number> => {
     subscription_start: null,
     subscription_end: null,
   });
-  return response.data.userId; // נחזיר את ה-ID שנוצר
+  return response.data.userId; 
 };
 
 
 export const createAd = async (adData: NewAdData): Promise<Ad> => {
   const response = await axios.post(`${BASE_URL}/createAds`, adData);
-  return response.data.data; // מחזירים את המודעה החדשה שנוצרה
+  return response.data.data; 
 };
 
 export const getAllAds = async () => {

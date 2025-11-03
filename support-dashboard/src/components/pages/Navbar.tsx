@@ -113,7 +113,6 @@ export default function Navbar() {
           onClick={() => handleMobileNavigate("/")}
         />
 
-        {/* ניווט דסקטופ */}
         {!isMobile && (
           <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
             <NavLink to="/home" style={({ isActive }) => (isActive ? { ...styles.link, ...styles.activeLink } : styles.link)}>
@@ -132,7 +131,6 @@ export default function Navbar() {
               <FaInfoCircle /> אודותינו
             </NavLink>
 
-            {/* צור קשר – שולח state: {fromNav:true} */}
             <button
               style={styles.link}
               onClick={() => navigate("/contact-us", { state: { fromNav: true } })}
@@ -148,7 +146,6 @@ export default function Navbar() {
           </div>
         )}
 
-        {/* צד ימין */}
         {!isMobile && (
           <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
             {currentUser ? (
@@ -186,7 +183,6 @@ export default function Navbar() {
           </div>
         )}
 
-        {/* אייקון תפריט במובייל */}
         {isMobile && (
           <div
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -204,7 +200,6 @@ export default function Navbar() {
         )}
       </nav>
 
-      {/* תפריט מובייל */}
       {isMobile && mobileMenuOpen && (
         <div
           style={{
@@ -241,7 +236,6 @@ export default function Navbar() {
             <FaInfoCircle /> אודותינו
           </NavLink>
 
-          {/* צור קשר עם state */}
           <button
             style={styles.link}
             onClick={() => handleMobileNavigate("/contact-us", { fromNav: true })}

@@ -40,10 +40,8 @@ exports.getDetails = asyncHandler(async (req, res, next) => {
 
 exports.updateSubscriptionController = async (req, res) => {
   try {
-    const userId = Number(req.params.user_id); // <-- כאן
-
+    const userId = Number(req.params.user_id); 
     const updatedSub = await updateSubscriptionBL(userId);
-
     res.json({ success: true, ad: updatedSub });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });

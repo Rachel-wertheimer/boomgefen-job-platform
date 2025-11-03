@@ -6,7 +6,6 @@ import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
 import { sendMail } from "../../utils/mailService";
 
-// Inline animations
 const AnimationStyles = () => (
   <style
     dangerouslySetInnerHTML={{
@@ -45,14 +44,13 @@ const animationStyles = {
 };
 
 const ContactUs: React.FC = () => {
-  // --- כל הלוגיקה נשארת זהה ---
   const location = useLocation();
   const fromNav = location.state?.fromNav === true;
 
 
   const [sendingMail, setSendingMail] = useState(false);
-    const [mailError, setMailError] = useState<string | null>(null);
-    const [success, setSuccess] = useState(false);
+  const [mailError, setMailError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -99,10 +97,8 @@ const ContactUs: React.FC = () => {
     }
   };
 
-
   const { width } = useWindowSize();
-  const isMobile = width <= 768; // נקודת שבירה לפריסה
-
+  const isMobile = width <= 768;
   const [focusState, setFocusState] = useState<Record<string, boolean>>({});
   const [isSubmitHover, setIsSubmitHover] = useState(false);
   const [isWhatsappHover, setIsWhatsappHover] = useState(false);
@@ -127,32 +123,29 @@ const ContactUs: React.FC = () => {
     },
     gridContainer: {
       display: "grid",
-      // --- לוגיקת פריסה רספונסיבית ---
       gridTemplateColumns: isMobile ? "1fr" : (fromNav ? "1fr 1fr" : "1fr"),
       backgroundColor: "#ffffff",
       borderRadius: "20px",
       overflow: "hidden",
       boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
       width: "100%",
-      maxWidth: isMobile ? "600px" : (fromNav ? "1100px" : "600px"), // מקס' רוחב
+      maxWidth: isMobile ? "600px" : (fromNav ? "1100px" : "600px"),
     },
     infoPanel: {
-      backgroundColor: colors.activeBackground, // רקע סגול בהיר
+      backgroundColor: colors.activeBackground,
       padding: isMobile ? "30px" : "40px",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
       gap: "20px",
-      // במובייל, הגבול יהיה תחתון
       borderBottom: isMobile ? `1px solid ${colors.borderColor}` : 'none',
-      // בדסקטופ, הגבול יהיה שמאלי
       borderLeft: isMobile ? 'none' : `1px solid ${colors.borderColor}`,
     },
     title: {
       fontSize: "2rem",
       fontWeight: "bold",
       marginBottom: 0,
-      color: colors.primary, // צבע מותג
+      color: colors.primary,
     },
     subtitle: {
       color: colors.textMedium,
@@ -166,7 +159,7 @@ const ContactUs: React.FC = () => {
     infoLabel: {
       margin: 0,
       fontWeight: "bold",
-      color: colors.primary, // צבע מותג
+      color: colors.primary,
       fontSize: '1.1rem',
     },
     infoText: {
@@ -254,10 +247,9 @@ const ContactUs: React.FC = () => {
       color: "green",
       fontWeight: 500,
     },
-  
+
   };
 
-  // --- סגנונות דינמיים ---
   const getInputStyle = (name: string) => ({
     ...styles.inputBase,
     ...(focusState[name] ? styles.inputFocus : {})
@@ -280,7 +272,7 @@ const ContactUs: React.FC = () => {
   const whatsappBtnStyle = {
     ...styles.baseButton,
     ...styles.secondaryButton,
-    width: "fit-content", // מתאים את עצמו לטקסט
+    width: "fit-content",
     ...(isWhatsappHover ? styles.secondaryButtonHover : {})
   };
 
@@ -293,7 +285,6 @@ const ContactUs: React.FC = () => {
         transition={{ duration: 0.6 }}
         style={styles.gridContainer}
       >
-        {/* צד שמאל - מידע על יצירת קשר (רק אם הגיע מה־Navbar) */}
         {fromNav && (
           <div style={styles.infoPanel}>
             <h1 style={styles.title}>
@@ -384,7 +375,7 @@ const ContactUs: React.FC = () => {
           />
 
           <motion.button
-            whileHover={{ scale: sendingMail ? 1 : 1.03 }} // אפקט עדין יותר
+            whileHover={{ scale: sendingMail ? 1 : 1.03 }} 
             whileTap={{ scale: sendingMail ? 1 : 0.98 }}
             type="submit"
             style={submitBtnStyle}
@@ -409,199 +400,3 @@ const ContactUs: React.FC = () => {
 };
 
 export default ContactUs;
-// import React, { useState } from "react";
-// import { motion } from "framer-motion";
-// import { appColors } from "../../utils/colors";
-// import { useWindowSize } from "../../utils/hooks";
-// import { sendMail } from "../../utils/mailService";
-
-// const ContactUs: React.FC = () => {
-//   const { width } = useWindowSize();
-//   const isMobile = width <= 768;
-
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     email: "",
-//     phone: "",
-//     message: "",
-//   });
-//   const [sendingMail, setSendingMail] = useState(false);
-//   const [mailError, setMailError] = useState<string | null>(null);
-//   const [success, setSuccess] = useState(false);
-
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-//     const { name, value } = e.target;
-//     setFormData(prev => ({ ...prev, [name]: value }));
-//   };
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setSendingMail(true);
-//     setMailError(null);
-//     setSuccess(false);
-
-//     const payload = {
-//       to: "boom.gefen.hevy@gmail.com",
-//       subject: `פנייה חדשה מאתר - ${formData.name}`,
-//       text: `
-//         התקבלה פנייה חדשה מאתר:
-//         שם מלא: ${formData.name}
-//         מייל: ${formData.email}
-//         טלפון: ${formData.phone}
-//         -----------------
-//         ${formData.message}
-//       `,
-//     };
-
-//     try {
-//       await sendMail(payload);
-//       setSuccess(true);
-//       setFormData({ name: "", email: "", phone: "", message: "" });
-//     } catch (err: any) {
-//       setMailError(err.message || "שגיאה בשליחת המייל");
-//     } finally {
-//       setSendingMail(false);
-//     }
-//   };
-
-//   return (
-//     <div style={styles.pageContainer(isMobile)}>
-//       <motion.div
-//         initial={{ opacity: 0, y: 25 }}
-//         animate={{ opacity: 1, y: 0 }}
-//         transition={{ duration: 0.6 }}
-//         style={styles.formCard(isMobile)}
-//       >
-//         <h1 style={styles.title}>צור קשר</h1>
-//         <p style={styles.subtitle}>
-//           נשמח לשמוע ממך! מלא את הפרטים ונחזור אליך בהקדם האפשרי.
-//         </p>
-
-//         <form onSubmit={handleSubmit} style={styles.form}>
-//           <input
-//             name="name"
-//             value={formData.name}
-//             onChange={handleChange}
-//             placeholder="שם מלא"
-//             required
-//             style={styles.input}
-//           />
-//           <input
-//             name="email"
-//             value={formData.email}
-//             onChange={handleChange}
-//             placeholder="אימייל"
-//             required
-//             type="email"
-//             style={styles.input}
-//           />
-//           <input
-//             name="phone"
-//             value={formData.phone}
-//             onChange={handleChange}
-//             placeholder="טלפון"
-//             style={styles.input}
-//           />
-//           <textarea
-//             name="message"
-//             value={formData.message}
-//             onChange={handleChange}
-//             placeholder="הודעה"
-//             required
-//             rows={4}
-//             style={styles.textarea}
-//           />
-//           <button
-//             type="submit"
-//             disabled={sendingMail}
-//             style={{
-//               ...styles.button,
-//               backgroundColor: sendingMail ? "#aaa" : appColors.primary,
-//               color: "#fff",
-//             }}
-//           >
-//             {sendingMail ? "שולח..." : "שלח"}
-//           </button>
-//         </form>
-
-//         {mailError && <p style={styles.error}>{mailError}</p>}
-//         {success && <p style={styles.success}>ההודעה נשלחה בהצלחה ✅</p>}
-//       </motion.div>
-//     </div>
-//   );
-// };
-
-// const styles = {
-//     pageContainer: (isMobile: boolean) => ({
-//       display: "flex",
-//       justifyContent: "flex-start", // במקום center
-//       alignItems: "flex-start",     // במקום center
-//       minHeight: "100vh",
-//       paddingTop: isMobile ? "90px" : "100px", // שמור על מרחק מלמעלה
-//       paddingLeft: isMobile ? "15px" : "30px",
-//       paddingRight: isMobile ? "15px" : "30px",
-//       boxSizing: "border-box" as const,
-//       direction: "rtl" as const,
-//     })
-//   ,
-//   formCard: (isMobile: boolean) => ({
-//     backgroundColor: "#fff",
-//     borderRadius: "20px",
-//     boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-//     padding: isMobile ? "25px" : "40px",
-//     width: "100%",
-//     maxWidth: "600px",
-//     textAlign: "center" as const,
-//   }),
-//   title: {
-//     fontSize: "2rem",
-//     color: appColors.primary,
-//     marginBottom: "10px",
-//   },
-//   subtitle: {
-//     color: "#555",
-//     marginBottom: "30px",
-//   },
-//   form: {
-//     display: "flex",
-//     flexDirection: "column" as const,
-//     gap: "15px",
-//   },
-//   input: {
-//     padding: "12px",
-//     borderRadius: "8px",
-//     border: "1px solid #ccc",
-//     fontSize: "1rem",
-//     outline: "none",
-//     textAlign: "right" as const,
-//   },
-//   textarea: {
-//     padding: "12px",
-//     borderRadius: "8px",
-//     border: "1px solid #ccc",
-//     fontSize: "1rem",
-//     resize: "none" as const,
-//     textAlign: "right" as const,
-//   },
-//   button: {
-//     marginTop: "10px",
-//     padding: "12px",
-//     border: "none",
-//     borderRadius: "10px",
-//     fontSize: "1.1rem",
-//     cursor: "pointer",
-//     transition: "0.3s",
-//   },
-//   error: {
-//     marginTop: "15px",
-//     color: "red",
-//     fontWeight: 500,
-//   },
-//   success: {
-//     marginTop: "15px",
-//     color: "green",
-//     fontWeight: 500,
-//   },
-// };
-
-// export default ContactUs;

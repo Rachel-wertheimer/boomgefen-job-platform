@@ -16,8 +16,7 @@ interface DecodedToken {
   userName?: string;
   role: "USER" | "MANAGER";
   email?: string;
-  exp?: number; // זמן תפוגה של הטוקן
-}
+  exp?: number; }
 
 interface RegistrationFormData {
   fullName: string;
@@ -84,7 +83,6 @@ const initialState: AuthState = {
   registrationForm: initialRegistrationForm,
 };
 
-// ----------------- LOGIN -----------------
 export const login = createAsyncThunk(
   "/login",
   async ({ email, password }: { email: string; password: string }, thunkAPI) => {
@@ -106,8 +104,6 @@ export const login = createAsyncThunk(
   }
 );
 
-// ----------------- REGISTER -----------------
-// ----------------- REGISTER -----------------
 export const registerUser = createAsyncThunk(
   "user/registerUser",
   async (formData: RegistrationFormData, { rejectWithValue }) => {
@@ -123,11 +119,9 @@ export const registerUser = createAsyncThunk(
         subscription_end: null,
       };
 
-      // יוצרים את המשתמש
       const userRes = await createUser(userPayload);
-      const userId = userRes.userId; // <-- פה זה עובד כי אתה מחזיר { userId: 123 }
+      const userId = userRes.userId; 
 
-      // מכינים רשימת מקצועות
       const selectedProfessions = Object.keys(formData.professions)
         .filter(p => formData.professions[p]);
       if (formData.otherProfession) selectedProfessions.push(formData.otherProfession);
@@ -141,10 +135,7 @@ export const registerUser = createAsyncThunk(
         additionalSkills: formData.additionalSkills,
         expectations: formData.expectations,
       };
-
-      // יוצרים את הפרופיל
       await createUserProfile(profilePayload, userId);
-
       return { userId, ...userPayload };
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.error || "ההרשמה נכשלה");
@@ -153,7 +144,6 @@ export const registerUser = createAsyncThunk(
 );
 
 
-// ----------------- SUBSCRIBE -----------------
 export const subscribeUser = createAsyncThunk(
   "user/subscribeUser",
   async (_, { rejectWithValue }) => {
@@ -170,7 +160,6 @@ export const subscribeUser = createAsyncThunk(
   }
 );
 
-// ----------------- DELETE -----------------
 export const deleteUserAccount = createAsyncThunk(
   "user/deleteUserAccount",
   async (_, { rejectWithValue }) => {
@@ -187,7 +176,6 @@ export const deleteUserAccount = createAsyncThunk(
   }
 );
 
-// ----------------- FETCH DETAILS -----------------
 export const fetchUserDetails = createAsyncThunk(
   "/getDetails",
   async (userId: number, { rejectWithValue }) => {
@@ -200,18 +188,14 @@ export const fetchUserDetails = createAsyncThunk(
   }
 );
 
-// mail submit via backend removed; Google Form is submitted client-side in WorkWithUs
 
-// ----------------- INITIALIZE USER FROM TOKEN -----------------
 const initializeUserFromToken = (): UserDetails | null => {
   const token = sessionStorage.getItem("token");
   if (token) {
     try {
       const decoded: DecodedToken = jwtDecode(token);
-      // בדיקה אם הטוקן פג תוקף
-      const currentTime = Date.now() / 1000; // המרה לזמן יוניקס
+      const currentTime = Date.now() / 1000;  
       if (decoded.exp && decoded.exp < currentTime) {
-        // הטוקן פג תוקף - ממשיך למחוק
         sessionStorage.removeItem("token");
         return null;
       }
@@ -219,7 +203,7 @@ const initializeUserFromToken = (): UserDetails | null => {
         userId: decoded.id || decoded.userId || 0,
         name: decoded.name || decoded.userName || "",
         role: decoded.role,
-        is_subscribed: undefined, // Will be updated via fetchUserDetails if needed
+        is_subscribed: undefined,
         subscription_end: undefined
       };
     } catch (err) {
@@ -230,7 +214,6 @@ const initializeUserFromToken = (): UserDetails | null => {
   return null;
 };
 
-// ----------------- SLICE -----------------
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -258,7 +241,6 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // LOGIN
       .addCase(login.pending, (state) => { state.loading = true; state.error = null; })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
@@ -274,15 +256,12 @@ const userSlice = createSlice({
         }
       })
       .addCase(login.rejected, (state, action) => { state.loading = false; state.error = action.payload as string; })
-      // REGISTER
       .addCase(registerUser.pending, (state) => { state.loading = true; state.error = null; state.registrationStatus = 'idle'; })
       .addCase(registerUser.fulfilled, (state) => { state.loading = false; state.registrationStatus = 'succeeded'; })
       .addCase(registerUser.rejected, (state, action) => { state.loading = false; state.error = action.payload as string; state.registrationStatus = 'failed'; })
-      // FETCH DETAILS
       .addCase(fetchUserDetails.pending, (state) => { state.loading = true; state.error = null; })
       .addCase(fetchUserDetails.fulfilled, (state, action: PayloadAction<UserDetails>) => { state.loading = false; state.currentUser = action.payload; })
       .addCase(fetchUserDetails.rejected, (state, action) => { state.loading = false; state.error = action.payload as string; })
-      // SUBSCRIBE
       .addCase(subscribeUser.pending, (state) => { state.loading = true; state.error = null; })
       .addCase(subscribeUser.fulfilled, (state, action) => {
         state.loading = false;
@@ -295,7 +274,6 @@ const userSlice = createSlice({
         }
       })
       .addCase(subscribeUser.rejected, (state, action) => { state.loading = false; state.error = action.payload as string; })
-      // DELETE
       .addCase(deleteUserAccount.pending, (state) => { state.loading = true; state.error = null; })
       .addCase(deleteUserAccount.fulfilled, (state) => { state.loading = false; state.token = null; state.currentUser = null; sessionStorage.clear(); })
       .addCase(deleteUserAccount.rejected, (state, action) => { state.loading = false; state.error = action.payload as string; });

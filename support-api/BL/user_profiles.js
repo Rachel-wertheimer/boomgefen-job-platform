@@ -16,19 +16,14 @@ exports.CreateUserProfilesBL = async (details, userId) => {
   }
 };
 
-
 exports.getUserByEmailBL = async (email) => {
   const user = await getUserByEmailDAL(email);
   if (!user) return null;
-
-  // יצירת קוד בן 6 ספרות
   const code = Math.floor(100000 + Math.random() * 900000).toString();
   await updateTemporaryPasswordDAL(user.id, code);
-
   return { email: user.email, code };
 };
 
-// אימות קוד שנשלח במייל
 exports.updateTemporaryPasswordBL = async (email, code) => {
   const user = await getUserByEmailDAL(email);
   if (!user) return false;
@@ -36,11 +31,9 @@ exports.updateTemporaryPasswordBL = async (email, code) => {
   return String(temporary_password) === String(code);
 };
 
-// איפוס סיסמה בפועל
 exports.updatePasswordBL = async (email, newPassword) => {
   const user = await getUserByEmailDAL(email);
   if (!user) return false;
-
   const hashed = await bcrypt.hash(newPassword, 10);
   await updatePasswordDAL(user.id, hashed);
   return true;

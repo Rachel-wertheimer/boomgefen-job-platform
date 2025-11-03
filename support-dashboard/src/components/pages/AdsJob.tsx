@@ -6,7 +6,6 @@ import { FaSpinner } from "react-icons/fa";
 import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
 
-// Inline animations
 const AnimationStyles = () => (
   <style
     dangerouslySetInnerHTML={{
@@ -55,39 +54,30 @@ const CreateAdForm = () => {
 
   const dispatch: AppDispatch = useDispatch();
   const { loading, error } = useSelector((state: RootState) => state.ads);
-
-  // --- State לאפקט הפוקוס ---
   const [focusState, setFocusState] = useState<Record<string, boolean>>({});
   const [notifyWhenExpired, setNotifyWhenExpired] = useState(false);
-
   const { width } = useWindowSize();
-  const isMobile = width <= 768; // נקודת שבירה לטפסים
-
+  const isMobile = width <= 768; 
   const colors = appColors;
-
-  // --- פונקציות לניהול פוקוס ---
   const handleFocus = (field: string) => setFocusState(prev => ({ ...prev, [field]: true }));
   const handleBlur = (field: string) => setFocusState(prev => ({ ...prev, [field]: false }));
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-  
-    // בדיקה האם הצ'קבוקס סומן
+
     if (!notifyWhenExpired) {
       alert("יש לאשר את הסימון לפני שניתן להמשיך");
       return;
     }
-  
+
     if (!fullName || !email || !type || !goal || !description) {
       alert("אנא מלא את כל השדות");
       return;
     }
-  
+
     const userData = { full_name: fullName, email, phone };
     const adData = { company, type, goal, description };
     dispatch(registerUserAndCreateAd({ userData, adData }));
-  
-    // ניקוי הטופס
+
     setFullName("");
     setEmail("");
     setPhone("");
@@ -97,9 +87,7 @@ const CreateAdForm = () => {
     setDescription("");
     setNotifyWhenExpired(false);
   };
-  
 
-  // --- אובייקט הסגנונות הראשי ---
   const styles: Record<string, React.CSSProperties> = {
     pageContainer: {
       display: "flex",
@@ -128,7 +116,7 @@ const CreateAdForm = () => {
     },
     title: {
       fontSize: isMobile ? "2rem" : "2.5rem",
-      color: colors.primary, // צבע ראשי
+      color: colors.primary,
       fontWeight: 700,
       margin: 0,
     },
@@ -140,7 +128,6 @@ const CreateAdForm = () => {
     },
     formGrid: {
       display: "grid",
-      // --- פריסה רספונסיבית: 2 עמודות בדסקטופ, 1 במובייל ---
       gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
       gap: "24px",
     },
@@ -150,7 +137,6 @@ const CreateAdForm = () => {
       gap: "8px",
     },
     formGroupFullWidth: {
-      // --- גורם לשדה לתפוס 2 עמודות ---
       gridColumn: "1 / -1",
     },
     label: {
@@ -158,7 +144,6 @@ const CreateAdForm = () => {
       fontWeight: 600,
       color: colors.textDark,
     },
-    // --- סגנון בסיס לאינפוט ---
     inputBase: {
       width: "100%",
       padding: "14px 16px",
@@ -170,7 +155,6 @@ const CreateAdForm = () => {
       outline: "none",
       fontFamily: "inherit",
     },
-    // --- סגנון לאינפוט בפוקוס ---
     inputFocus: {
       borderColor: colors.primary,
       boxShadow: `0 0 0 3px ${colors.primary}30`,
@@ -231,7 +215,6 @@ const CreateAdForm = () => {
     }
   };
 
-  // --- שילוב סגנונות דינמיים ---
   const [isSubmitHover, setIsSubmitHover] = useState(false);
   const isDisabled = loading;
 
@@ -240,13 +223,11 @@ const CreateAdForm = () => {
     ...(isDisabled ? styles.submitBtnDisabled : (isSubmitHover ? styles.submitBtnHover : {}))
   };
 
-  // פונקציה לקבלת סגנון אינפוט דינמי
   const getInputStyle = (name: string) => ({
     ...styles.inputBase,
     ...(focusState[name] ? styles.inputFocus : {})
   });
 
-  // פונקציה לקבלת סגנון טקסטאריאה דינמי
   const getTextareaStyle = (name: string) => ({
     ...styles.textareaBase,
     ...(focusState[name] ? styles.inputFocus : {})
@@ -319,7 +300,21 @@ const CreateAdForm = () => {
               </label>
             </div>
           </div>
-
+          <p
+            style={{
+              color: "#ff7b00",
+              fontWeight: 600,
+              textAlign: "center",
+              fontSize: isMobile ? "0.85rem" : "0.95rem",
+              marginTop: isMobile ? "8px" : "10px",
+              lineHeight: 1.5,
+              padding: isMobile ? "0 10px" : "0",
+            }}
+          >
+            שים לב! לאחר שהמנהל יאשר את המשרה שלך – ייתכן שהפניות יגיעו לתיבת הספאם.
+            <br />
+            יש לבדוק את תיקיית הספאם במייל.
+          </p>
           <div style={styles.buttonContainer}>
             <button
               type="submit"

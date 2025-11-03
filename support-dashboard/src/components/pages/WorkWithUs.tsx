@@ -7,7 +7,6 @@ import { FaSpinner } from 'react-icons/fa';
 import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
 
-// Inline animations
 const AnimationStyles = () => (
     <style
         dangerouslySetInnerHTML={{
@@ -55,16 +54,11 @@ export default function WorkWithUs() {
     const dispatch = useDispatch<AppDispatch>();
     const formData = useSelector((state: RootState) => state.user.registrationForm);
     const [loading, setLoading] = useState(false);
-
     const [focusState, setFocusState] = useState<Record<string, boolean>>({});
-
     const { width } = useWindowSize();
     const isMobile = width <= 768;
-
     const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScUvzvNjNO2U75PvFc0gIZ-B8qp9N0nD6-v-XbZYHkzQKVyIQ/formResponse';
-
     const colors = appColors;
-
     const handleFocus = (field: string) => setFocusState(prev => ({ ...prev, [field]: true }));
     const handleBlur = (field: string) => setFocusState(prev => ({ ...prev, [field]: false }));
 
@@ -72,7 +66,6 @@ export default function WorkWithUs() {
         const { name, value, type } = e.target;
         const isCheckbox = type === 'checkbox';
         const checkedValue = (e.target as HTMLInputElement).checked;
-
         dispatch(updateRegistrationFormField({
             field: name as keyof typeof formData,
             value: isCheckbox ? checkedValue : value
@@ -90,7 +83,6 @@ export default function WorkWithUs() {
             { name: 'טופס הצהרה חוקי להשתתפות בסוכנות.pdf', path: '/files/טופס הצהרה חוקי להשתתפות בסוכנות.pdf' },
             { name: 'חוזה התקשרות לקבוצת הצעות עבודה לאומניות.pdf', path: '/files/חוזה התקשרות לקבוצת הצעות עבודה לאומניות.pdf' }
         ];
-
         filesToDownload.forEach((file, index) => {
             setTimeout(() => {
                 const link = document.createElement('a');
@@ -106,15 +98,12 @@ export default function WorkWithUs() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
-
         try {
-            // ולידציה בסיסית לפני שליחה
             if (!formData.fullName || !formData.email || !formData.phone || !formData.age || !formData.passWord) {
                 alert('נא למלא את כל השדות החיוניים');
                 setLoading(false);
                 return;
             }
-
             const payload = new FormData();
             payload.append('entry.1801059523', formData.fullName);
             payload.append('entry.344081749', formData.email);
@@ -124,7 +113,6 @@ export default function WorkWithUs() {
             payload.append('entry.169457285', formData.educationExperience);
             payload.append('entry.683306129', formData.additionalSkills);
             payload.append('entry.790512187', formData.expectations);
-
             Object.keys(formData.professions).forEach(prof => {
                 if (formData.professions[prof]) {
                     if (prof === 'אחר') {
@@ -134,18 +122,15 @@ export default function WorkWithUs() {
                     }
                 }
             });
-
             if (formData.isDetailsCorrect) payload.append('entry.334908836', 'אני מאשרת שהפרטים שמילאתי בשאלון זה נכונים ומדויקים.');
             if (formData.isCommitteeApproved) payload.append('entry.334908836', 'אני מאשרת שאני מסכימה שהוועדה של BOOM גפן הפקה תבחן את מועמדותי.');
             if (formData.isReceivingOffers) payload.append('entry.334908836', 'אני מאשרת לקבל הצעות ומייל מBOOM גפן הפקה');
             payload.append('fvv', '1');
-
             await fetch(GOOGLE_FORM_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 body: payload,
             });
-
             const userPayload = {
                 full_name: formData.fullName,
                 email: formData.email,
@@ -156,18 +141,15 @@ export default function WorkWithUs() {
                 subscription_start: null,
                 subscription_end: null,
             };
-
             const userRes = await createUser(userPayload);
             if (!userRes?.userId && typeof userRes !== 'number') {
                 throw new Error('שגיאה ביצירת משתמש (חסר מזהה משתמש)');
             }
             const newUserId = typeof userRes === 'number' ? userRes : userRes.userId;
             sessionStorage.setItem('userId', String(newUserId));
-
             const selectedProfessions = Object.keys(formData.professions)
                 .filter(p => formData.professions[p]);
             if (formData.otherProfession) selectedProfessions.push(formData.otherProfession);
-
             const profilePayload = {
                 age: parseInt(formData.age, 10),
                 website: formData.portfolioLink,
@@ -177,26 +159,20 @@ export default function WorkWithUs() {
                 additionalSkills: formData.additionalSkills,
                 expectations: formData.expectations,
             };
-            sessionStorage.setItem('userEmail', formData.email); // שומר את האימייל ב-SSENSTORG
-
-
+            sessionStorage.setItem('userEmail', formData.email); 
             await createUserProfile(profilePayload, newUserId);
-
-            // וידוא התמPersistות לפני מעבר לתשלום (מטפל בעיכובים בענן)
             let verified = false;
             for (let i = 0; i < 3; i++) {
                 try {
                     const details = await getUserDetailsByID(newUserId);
                     if (details && details.userId) { verified = true; break; }
-                } catch {}
+                } catch { }
                 await new Promise(r => setTimeout(r, 800));
             }
             if (!verified) {
                 throw new Error('אימות יצירת המשתמש נכשל. נסי שוב בעוד רגע');
             }
-
             window.location.href = "https://pay.sumit.co.il/g9687k/gg7p5h/hykun7/payment/";
-
         } catch (err) {
             alert('אירעה שגיאה בשליחת הטופס. נסי שוב.');
             setLoading(false);
@@ -218,7 +194,6 @@ export default function WorkWithUs() {
         title: {
             fontSize: isMobile ? "2rem" : "2.5rem",
             marginBottom: "24px",
-            // --- שינוי כאן: צבע הכותרת ---
             color: colors.primary,
             fontWeight: 700,
             textAlign: 'center',
@@ -363,8 +338,6 @@ export default function WorkWithUs() {
             <AnimationStyles />
             <form style={styles.formCard} onSubmit={handleSubmit}>
                 <h1 style={styles.title}>הרשמה לסוכנות</h1>
-
-                {/* שדות טקסט */}
                 <div style={styles.formRow}>
                     <div style={styles.formGroup}>
                         <label htmlFor="fullName" style={styles.label}>שם מלא *</label>
@@ -377,7 +350,6 @@ export default function WorkWithUs() {
                             style={getInputStyle('email')} onFocus={() => handleFocus('email')} onBlur={() => handleBlur('email')} />
                     </div>
                 </div>
-
                 <div style={styles.formRow}>
                     <div style={styles.formGroup}>
                         <label htmlFor="phone" style={styles.label}>טלפון *</label>
@@ -390,20 +362,16 @@ export default function WorkWithUs() {
                             style={getInputStyle('age')} onFocus={() => handleFocus('age')} onBlur={() => handleBlur('age')} />
                     </div>
                 </div>
-
                 <div style={styles.formGroup}>
                     <label htmlFor="passWord" style={styles.label}>סיסמה *</label>
                     <input type="password" id="passWord" name="passWord" value={formData.passWord} onChange={handleChange} required
                         style={getInputStyle('passWord')} onFocus={() => handleFocus('passWord')} onBlur={() => handleBlur('passWord')} />
                 </div>
-
                 <div style={styles.formGroup}>
                     <label htmlFor="portfolioLink" style={styles.label}>אתר אישי / תיק עבודות</label>
                     <input type="url" id="portfolioLink" name="portfolioLink" value={formData.portfolioLink} onChange={handleChange}
                         style={getInputStyle('portfolioLink')} onFocus={() => handleFocus('portfolioLink')} onBlur={() => handleBlur('portfolioLink')} />
                 </div>
-
-                {/* מקצועות */}
                 <div style={styles.formGroup}>
                     <label style={styles.label}>במה את עוסקת? *</label>
                     <div style={styles.checkboxGrid}>
@@ -426,8 +394,6 @@ export default function WorkWithUs() {
                         </div>
                     )}
                 </div>
-
-                {/* שדות תיאור ארוכים */}
                 <div style={styles.formGroup}>
                     <label htmlFor="educationExperience" style={styles.label}>השכלה וניסיון</label>
                     <textarea id="educationExperience" name="educationExperience" value={formData.educationExperience} onChange={handleChange}
@@ -446,8 +412,6 @@ export default function WorkWithUs() {
                         style={{ ...getInputStyle('expectations'), minHeight: '100px', resize: 'vertical' }} onFocus={() => handleFocus('expectations')} onBlur={() => handleBlur('expectations')}
                         placeholder="סוגי פרויקטים, זמינות, מגבלות..." />
                 </div>
-
-                {/* הורדת קבצים */}
                 <div style={styles.filesSection}>
                     <p style={styles.filesText}>
                         הורידי את <span style={styles.clickableLink} onClick={handleDownloadFiles}>הקבצים כאן</span>,
@@ -458,8 +422,6 @@ export default function WorkWithUs() {
                         אישור: מילאתי את הקבצים ושלחתי למייל
                     </label>
                 </div>
-
-                {/* אישורים */}
                 <div style={styles.formGroup}>
                     <label style={styles.checkboxLabelVertical}>
                         <input type="checkbox" name="isDetailsCorrect" checked={formData.isDetailsCorrect} onChange={handleChange} required style={styles.checkboxInput} />
@@ -487,7 +449,6 @@ export default function WorkWithUs() {
                         מדיניות ופרטיות
                     </span>
                 </p>
-                {/* כפתור המשך */}
                 <div style={styles.formActions}>
                     <button
                         type="submit"
@@ -504,7 +465,6 @@ export default function WorkWithUs() {
                         ) : 'המשך לתשלום'}
                     </button>
                 </div>
-
             </form>
         </div>
     );

@@ -31,7 +31,7 @@ exports.addAd = async (adData) => {
   const { id_user, company, type, goal, description } = adData;
   const query = 'INSERT INTO ads (id_user, company, type, goal, description, approved) VALUES (?, ?, ?, ?, ?, 0)';
   const params = [id_user, company, type, goal, description];
-  const result = await pool.execute(query, params); // החלף את 'db.execute' בפונקציה שלך
+  const result = await pool.execute(query, params); 
   const newAdId = result[0].insertId;
   return { id: newAdId, ...adData, approved: 0 };
 };
