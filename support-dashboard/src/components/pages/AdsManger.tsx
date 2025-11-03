@@ -64,6 +64,7 @@ export default function AdsManager() {
   // --- מצב טעינה לכל כרטיס בנפרד ---
   const [togglingId, setTogglingId] = useState<number | null>(null);
   const [editingAd, setEditingAd] = useState<any | null>(null);
+  const [adUserEmailById, setAdUserEmailById] = useState<Record<number, string>>({});
 
   const token = sessionStorage.getItem("token") || "";
 
@@ -82,6 +83,22 @@ export default function AdsManager() {
       dispatch(fetchAllAds());
     }
   }, [filter, dispatch]);
+
+  // Fetch and cache ad owners' emails for display
+  useEffect(() => {
+    const fetchMissingEmails = async () => {
+      const missing = ads.filter(a => a.id_user && !adUserEmailById[a.id_user]);
+      for (const ad of missing) {
+        try {
+          const details = await dispatch(fetchUserDetails(ad.id_user as number)).unwrap();
+          if (details?.email) {
+            setAdUserEmailById(prev => ({ ...prev, [ad.id_user as number]: details.email as string }));
+          }
+        } catch {}
+      }
+    };
+    if (ads && ads.length) fetchMissingEmails();
+  }, [ads, adUserEmailById, dispatch]);
 
   const refreshList = () => {
     if (filter === 'notApproved') dispatch(fetchNotApprovedAds());
@@ -404,7 +421,7 @@ export default function AdsManager() {
         {!loading && ads.length === 0 && <p style={styles.emptyText}>אין מודעות להצגה</p>}
 
         <div style={styles.adsGrid}>
-          {ads.map((ad, index) => {
+          {[...ads].sort((a, b) => (b.id ?? 0) - (a.id ?? 0)).map((ad, index) => {
             const isToggling = togglingId === ad.id;
             const approvedToggle = getToggleStyle(Boolean(ad.approved), isToggling);
             const relevantToggle = getToggleStyle(Boolean(ad.is_relevant), isToggling);
@@ -429,6 +446,10 @@ export default function AdsManager() {
                     <span style={styles.fieldLabel}>תיאור: </span>
                     <p style={styles.fieldDescription}>{ad.description}</p>
                   </div>
+                    <div style={styles.cardField}>
+                      <span style={styles.fieldLabel}>מייל מפרסם: </span>
+                      <span style={styles.fieldValue}>{adUserEmailById[ad.id_user] || '—'}</span>
+                    </div>
                 </div>
 
                 <div style={styles.toggleSection}>

@@ -564,6 +564,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
   const [isSendHover, setIsSendHover] = useState(false);
   const [isCancelHover, setIsCancelHover] = useState(false);
   const [focusState, setFocusState] = useState<Record<string, boolean>>({});
+  const [showSpamHint, setShowSpamHint] = useState(false);
 
   // הלוגיקה נשארת כפי שהיא
   const handleSendEmail = async () => {
@@ -571,6 +572,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
     setLoading(true);
     setError("");
     setMessage(""); // ניקוי הודעות קודמות
+    setShowSpamHint(true); // הצג מיד עם שליחת הבקשה
     try {
       await axios.post(
         "https://boomgefen-job-platform-1.onrender.com/api/v1/user_profiles/getUserByEmail",
@@ -650,9 +652,9 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
         />
 
         {error && <p style={baseStyles.errorText}>{error}</p>}
-        {message && (
+        {(showSpamHint || message) && (
           <>
-            <p style={baseStyles.messageText}>{message}</p>
+            {message && <p style={baseStyles.messageText}>{message}</p>}
             <p style={{ color: '#555', fontSize: '0.8rem', margin: '4px 0 0 0' }}>
               אם אינך רואה את המייל, בדוק גם בתיקיית ספאם
             </p>

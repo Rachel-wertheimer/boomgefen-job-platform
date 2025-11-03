@@ -6,15 +6,9 @@ export const Footer: React.FC = () => {
   const colors = appColors;
 
   const handleEmailClick = () => {
-    const mailtoLink =
-      "mailto:Rachel.fsd108@gmail.com?subject=שלום&body=שלום,%20רציתי%20לשאול...";
     const gmailLink =
       "https://mail.google.com/mail/?view=cm&to=Rachel.fsd108@gmail.com&su=שלום&body=שלום,%20רציתי%20לשאול...";
-
-    const newWindow = window.open(mailtoLink);
-    if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
-      window.open(gmailLink, "_blank", "noopener,noreferrer");
-    }
+    window.open(gmailLink, "_blank", "noopener,noreferrer");
   };
 
   const handlePrivacyClick = () => {
@@ -25,46 +19,47 @@ export const Footer: React.FC = () => {
     );
   };
 
-  const styles: Record<string, React.CSSProperties> = {
-    footerContainer: {
-      width: "100%",
-      backgroundColor: colors.primaryDarker,
-      color: colors.textWhite,
-      padding: "12px 20px",
-      boxSizing: "border-box",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      fontSize: "0.9rem",
-      fontWeight: 500,
-      position: "fixed",
-      bottom: 0,
-      left: 0,
-      zIndex: 1000,
-      boxShadow: "0 -2px 6px rgba(0,0,0,0.1)",
-      direction: "rtl",
-      flexWrap: "wrap",
-    },
-    contactSection: {
-      display: "flex",
-      alignItems: "center",
-      gap: "10px",
-      flexWrap: "wrap",
-    },
-    emailLink: {
-      display: "flex",
-      alignItems: "center",
-      gap: "6px",
-      color: colors.textWhite,
-      textDecoration: "underline",
-      cursor: "pointer",
-    },
-    privacyLink: {
-      color: colors.textWhite,
-      textDecoration: "underline",
-      cursor: "pointer",
-    },
-  };
+ const styles: Record<string, React.CSSProperties> = {
+  footerContainer: {
+    width: "100%",
+    backgroundColor: colors.primaryDarker,
+    color: colors.textWhite,
+    padding: "12px 20px",
+    boxSizing: "border-box",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    fontSize: window.innerWidth <= 480 ? "0.7rem" : "0.9rem", // קטן לפלאפון
+    fontWeight: 500,
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+    zIndex: 1000,
+    boxShadow: "0 -2px 6px rgba(0,0,0,0.1)",
+    direction: "rtl",
+    flexWrap: "nowrap", // ביטול גלישת שורות
+  },
+  contactSection: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    whiteSpace: "nowrap", // מונע שבירת שורות
+  },
+  emailLink: {
+    display: "flex",
+    alignItems: "center",
+    gap: "6px",
+    color: colors.textWhite,
+    textDecoration: "underline",
+    cursor: "pointer",
+  },
+  privacyLink: {
+    color: colors.textWhite,
+    textDecoration: "underline",
+    cursor: "pointer",
+  },
+};
+
 
   return (
     <footer style={styles.footerContainer}>

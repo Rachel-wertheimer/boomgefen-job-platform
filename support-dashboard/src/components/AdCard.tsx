@@ -347,6 +347,7 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [messageText, setMessageText] = useState("");
+  const [senderEmail, setSenderEmail] = useState("");
 
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
   // ✨ הוספת סטייט חדש לשליטה בהצגת התיאור המלא
@@ -380,6 +381,7 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
   };
 
   const handleSendMessage = async () => {
+    if (!senderEmail.trim()) return alert("נא להזין מייל לשליחת פרטי יצירת קשר");
     if (!messageText.trim()) return alert("אנא כתוב הודעה לפני שליחה");
     if (!contactDetails?.email) return alert("פרטי הקשר חסרים");
 
@@ -389,15 +391,15 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
       const payload = {
         to: contactDetails.email,
         subject: `פנייה בנוגע למודעה של ${company}`,
-        text: messageText,
-        // אופציונלי: אפשר לשלוח גם html אם רוצים
-        html: `<p>${messageText}</p>`,
+        text: `פרטי יוצר/ת הקשר: ${senderEmail}\n\n${messageText}`,
+        html: `<p><strong>פרטי יוצר/ת הקשר:</strong> ${senderEmail}</p><p>${messageText}</p>`,
       };
 
       await sendMail(payload);
 
       alert("המייל נשלח בהצלחה!");
       setMessageText("");
+      setSenderEmail("");
       setContactDetails(null);
     } catch (err: any) {
       console.error(err);
@@ -581,6 +583,20 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
         <div style={styles.contactBox}>
           {contactDetails?.full_name && <p><strong>שם:</strong> {contactDetails.full_name}</p>}
           {contactDetails?.phone && <p><strong>טלפון:</strong> {contactDetails.phone}</p>}
+          <p style={{ marginTop: "10px", fontWeight: 600 }}>המייל שלך ליצירת קשר חוזר:</p>
+          <input
+            type="email"
+            value={senderEmail}
+            onChange={(e) => setSenderEmail(e.target.value)}
+            placeholder="example@gmail.com"
+            style={{
+              width: "100%",
+              padding: "10px",
+              borderRadius: "8px",
+              border: `1px solid ${colors.borderColor}`,
+              outline: "none"
+            }}
+          />
           <p style={{ marginTop: "15px", fontWeight: "600" }}>כתבי הודעה למפרסם:</p>
           <textarea
             value={messageText}

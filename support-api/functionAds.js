@@ -2,27 +2,27 @@ const pool = require("./db");
 
 exports.get_approved_ads = async () => {
   const [result] = await pool.query(
-    `SELECT * FROM ads WHERE approved = TRUE`,
+    `SELECT * FROM ads WHERE approved = TRUE ORDER BY id DESC`,
   );
   return result;
 }
 
 exports.get_Not_approved_ads = async () => {
   const [result] = await pool.query(
-    `SELECT * FROM ads WHERE approved = False`,
+    `SELECT * FROM ads WHERE approved = False ORDER BY id DESC`,
   );
   return result;
 }
 exports.get_Not_relevant_ads = async () => {
   const [result] = await pool.query(
-    `SELECT * FROM ads WHERE is_relevant = False`,
+    `SELECT * FROM ads WHERE is_relevant = False ORDER BY id DESC`,
   );
   return result;
 }
 
 exports.get_ads = async () => {
   const [result] = await pool.query(
-    `SELECT * FROM ads`,
+    `SELECT * FROM ads ORDER BY id DESC`,
   );
   return result;
 }

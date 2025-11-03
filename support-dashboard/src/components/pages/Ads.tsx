@@ -216,7 +216,10 @@ export const Ads: React.FC = () => {
   }, [dispatch]);
 
   const filterText = selectedType?.value?.toLowerCase() ?? "";
-  const filteredAds = ads.filter((ad) => ad.type.toLowerCase().includes(filterText));
+  const filteredAds = ads
+    .filter((ad) => ad.type.toLowerCase().includes(filterText))
+    .slice()
+    .sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
 
   const styles: Record<string, React.CSSProperties> = {
     container: { display: "flex", flexDirection: "column", alignItems: "center", width: "100%", minHeight: 300 },
