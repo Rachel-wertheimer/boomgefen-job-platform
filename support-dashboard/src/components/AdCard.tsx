@@ -1,43 +1,4 @@
-// import React, { useState, useEffect } from "react";
-// import type { Ad } from "../app/slice/adsSlice";
-// import { useSelector } from "react-redux";
-// import type { RootState } from "../app/store";
-// import { LoginModal } from "./pages/loginWorkWithUS";
-// import { getUserDetailsByID } from "../app/api/user";
-// import type { UserDetails } from "../app/slice/userSlice";
-// import { FaSpinner } from "react-icons/fa";
-// import { appColors } from "../utils/colors";
-// import { sendMail } from "../utils/mailService";
-
-// // Inline animations
-// const AnimationStyles = () => (
-//   <style
-//     dangerouslySetInnerHTML={{
-//       __html: `
-//         @keyframes modalFadeIn {
-//           from { opacity: 0; transform: scale(0.95); }
-//           to { opacity: 1; transform: scale(1); }
-//         }
-//         @keyframes overlayFadeIn {
-//           from { opacity: 0; }
-//           to { opacity: 1; }
-//         }
-//         @keyframes spin {
-//           from { transform: rotate(0deg); }
-//           to { transform: rotate(360deg); }
-//         }
-//         @keyframes fadeIn {
-//           from { opacity: 0; transform: translateY(20px); }
-//           to { opacity: 1; transform: translateY(0); }
-//         }
-//         @keyframes marqueeScroll {
-//           0% { transform: translateX(0%); }
-//           100% { transform: translateX(-100%); }
-//         }
-//       `,
-//     }}
-//   />
-// );
+ 
 
 // const animationStyles = {
 //   modalFadeIn: "modalFadeIn 0.3s ease-out forwards",
@@ -281,7 +242,6 @@
 //       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
 //     </>
 //   );
-// };
 import React, { useState, useEffect } from "react";
 import type { Ad } from "../app/slice/adsSlice";
 import { useSelector } from "react-redux";
