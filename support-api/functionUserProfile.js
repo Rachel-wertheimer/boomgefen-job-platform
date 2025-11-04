@@ -1,5 +1,5 @@
 const pool = require("./db");
-const changeTracker = require("../services/changeTracking");
+const changeTracker = require("./services/changeTracking");
 
 exports.insertUserDetails = async (details, userId) => {
   // Check if profile already exists

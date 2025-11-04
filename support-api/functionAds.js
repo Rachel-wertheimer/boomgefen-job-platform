@@ -1,6 +1,6 @@
 const pool = require("./db");
-const cache = require("../services/cache");
-const changeTracker = require("../services/changeTracking");
+const cache = require("./services/cache");
+const changeTracker = require("./services/changeTracking");
 
 exports.get_approved_ads = async () => {
   const cacheKey = cache.generateKey('approved_ads');

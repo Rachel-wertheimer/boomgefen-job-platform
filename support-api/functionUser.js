@@ -1,5 +1,5 @@
 const pool = require("./db");
-const changeTracker = require("../services/changeTracking");
+const changeTracker = require("./services/changeTracking");
 
 exports.insertUser = async (user) => {
   const [result] = await pool.query(
@@ -33,7 +33,7 @@ exports.getUserByEmail = async (email) => {
 };
 
 exports.getUserDetailsByID = async (ID) => {
-  const cache = require("../services/cache");
+  const cache = require("./services/cache");
   const cacheKey = cache.generateKey('user_details', ID);
   const cached = cache.get(cacheKey, 'user');
   if (cached !== null) {
