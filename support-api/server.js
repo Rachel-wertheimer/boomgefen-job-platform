@@ -10,7 +10,7 @@ const { trackChanges, shouldAccessDB } = require('./middleware/changeTrackingMid
 
 const app = express();
 app.use(cors({
-  origin: "https://boomgefen-job-platform-yiax.onrender.com",
+  origin: "https://boomgefen-job-platform-1.onrender.com",
   credentials: true
 }));
 
