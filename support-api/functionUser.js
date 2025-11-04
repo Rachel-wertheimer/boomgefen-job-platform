@@ -1,4 +1,5 @@
-const pool = require("./db"); 
+const pool = require("./db");
+const changeTracker = require("../services/changeTracking");
 
 exports.insertUser = async (user) => {
   const [result] = await pool.query(
@@ -13,6 +14,10 @@ exports.insertUser = async (user) => {
       user.is_subscribed,
     ]
   );
+  
+  // Mark change
+  changeTracker.markChanged('user', result.insertId);
+  
   return result.insertId;
 };
 
@@ -28,30 +33,73 @@ exports.getUserByEmail = async (email) => {
 };
 
 exports.getUserDetailsByID = async (ID) => {
+  const cache = require("../services/cache");
+  const cacheKey = cache.generateKey('user_details', ID);
+  const cached = cache.get(cacheKey, 'user');
+  if (cached !== null) {
+    return cached;
+  }
+
   const [rows] = await pool.query(
     `SELECT email, phone 
      FROM users 
      WHERE id = ?`,
     [ID]
   );
-  return rows[0];
+  const result = rows[0];
+  if (result) {
+    cache.set(cacheKey, result, 'user', 2 * 60 * 1000);
+  }
+  return result;
 };
 
 exports.update_subscription = async (adId) => {
+  // Check current subscription status
+  const [currentRows] = await pool.query(
+    `SELECT is_subscribed, subscription_start, subscription_end FROM users WHERE id = ?`,
+    [adId]
+  );
+  
+  if (!currentRows || currentRows.length === 0) {
+    throw new Error('User not found');
+  }
+
   const startDate = new Date(); 
   const endDate = new Date();
   endDate.setMonth(endDate.getMonth() + 1); 
-  const is_subscribed=true;
+  const is_subscribed = true;
+
+  const current = currentRows[0];
+  
+  // Check if subscription already active and not expired
+  if (current.is_subscribed && current.subscription_end) {
+    const currentEnd = new Date(current.subscription_end);
+    if (currentEnd > new Date()) {
+      // Subscription already active, check if we're just renewing
+      // If end date is same or very close, no change needed
+      return { endDate: currentEnd, noChange: true };
+    }
+  }
 
   await pool.query(
     `UPDATE users SET is_subscribed=? ,subscription_start = ?, subscription_end = ? WHERE id = ?`,
-    [is_subscribed,startDate, endDate, adId]
+    [is_subscribed, startDate, endDate, adId]
   );
+  
+  // Mark change
+  changeTracker.markChanged('user', adId);
+  
   return { endDate: endDate };
 };
 
 exports.deleteUserByID = async (userId) => {
   try {
+    // Check if user exists
+    const [userRows] = await pool.query(`SELECT id FROM users WHERE id = ?`, [userId]);
+    if (!userRows || userRows.length === 0) {
+      return { deletedRows: 0, noChange: true };
+    }
+
     await pool.query(
       `DELETE FROM user_profiles WHERE user_id = ?`,
       [userId]
@@ -60,6 +108,11 @@ exports.deleteUserByID = async (userId) => {
       `DELETE FROM users WHERE id = ?`,
       [userId]
     );
+    
+    // Mark change
+    changeTracker.markChanged('user', userId);
+    changeTracker.markChanged('user_profile', userId);
+    
     return { deletedRows: result.affectedRows };
   } catch (error) {
     console.error("Error deleting user:", error);

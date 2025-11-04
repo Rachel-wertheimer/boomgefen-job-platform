@@ -6,6 +6,7 @@ const adsRouter = require('./routes/ads');
 const usersRouter = require('./routes/users');
 const userProfilesRouter = require('./routes/user_profiles');
 const emailRoute = require('./routes/email');
+const { trackChanges, shouldAccessDB } = require('./middleware/changeTrackingMiddleware');
 
 const app = express();
 app.use(cors({
@@ -14,6 +15,10 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// Apply change tracking middleware
+app.use(shouldAccessDB);
+app.use(trackChanges);
 
 app.use('/api/v1/ads', adsRouter);
 app.use('/api/v1/users', usersRouter);
