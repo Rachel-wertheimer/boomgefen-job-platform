@@ -25,8 +25,13 @@ const initialState: AdsState = {
   error: null,
 };
 
-export const fetchAds = createAsyncThunk("/fetchAds", async () => {
-  return await getApprovedAds();
+export const fetchAds = createAsyncThunk("/fetchAds", async (_, { rejectWithValue }) => {
+  try {
+    const ads = await getApprovedAds();
+    return ads;
+  } catch (error: any) {
+    return rejectWithValue(error.message || "שגיאה בטעינת מודעות");
+  }
 });
 
 export const registerUserAndCreateAd = createAsyncThunk(

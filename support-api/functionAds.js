@@ -3,58 +3,82 @@ const cache = require("./services/cache");
 const changeTracker = require("./services/changeTracking");
 
 exports.get_approved_ads = async () => {
-  const cacheKey = cache.generateKey('approved_ads');
-  const cached = cache.get(cacheKey, 'approved_ads');
-  if (cached !== null) {
-    return cached;
-  }
+  try {
+    const cacheKey = cache.generateKey('approved_ads');
+    const cached = cache.get(cacheKey, 'approved_ads');
+    if (cached !== null && Array.isArray(cached)) {
+      return cached;
+    }
 
-  const [result] = await pool.query(
-    `SELECT * FROM ads WHERE approved = TRUE ORDER BY id DESC`,
-  );
-  cache.set(cacheKey, result, 'approved_ads');
-  return result;
+    const [result] = await pool.query(
+      `SELECT * FROM ads WHERE approved = TRUE ORDER BY id DESC`,
+    );
+    const adsArray = Array.isArray(result) ? result : [];
+    cache.set(cacheKey, adsArray, 'approved_ads');
+    return adsArray;
+  } catch (error) {
+    console.error('Error in get_approved_ads:', error);
+    return [];
+  }
 }
 
 exports.get_Not_approved_ads = async () => {
-  const cacheKey = cache.generateKey('not_approved_ads');
-  const cached = cache.get(cacheKey, 'not_approved_ads');
-  if (cached !== null) {
-    return cached;
-  }
+  try {
+    const cacheKey = cache.generateKey('not_approved_ads');
+    const cached = cache.get(cacheKey, 'not_approved_ads');
+    if (cached !== null && Array.isArray(cached)) {
+      return cached;
+    }
 
-  const [result] = await pool.query(
-    `SELECT * FROM ads WHERE approved = False ORDER BY id DESC`,
-  );
-  cache.set(cacheKey, result, 'not_approved_ads');
-  return result;
+    const [result] = await pool.query(
+      `SELECT * FROM ads WHERE approved = False ORDER BY id DESC`,
+    );
+    const adsArray = Array.isArray(result) ? result : [];
+    cache.set(cacheKey, adsArray, 'not_approved_ads');
+    return adsArray;
+  } catch (error) {
+    console.error('Error in get_Not_approved_ads:', error);
+    return [];
+  }
 }
 exports.get_Not_relevant_ads = async () => {
-  const cacheKey = cache.generateKey('not_relevant_ads');
-  const cached = cache.get(cacheKey, 'not_relevant_ads');
-  if (cached !== null) {
-    return cached;
-  }
+  try {
+    const cacheKey = cache.generateKey('not_relevant_ads');
+    const cached = cache.get(cacheKey, 'not_relevant_ads');
+    if (cached !== null && Array.isArray(cached)) {
+      return cached;
+    }
 
-  const [result] = await pool.query(
-    `SELECT * FROM ads WHERE is_relevant = False ORDER BY id DESC`,
-  );
-  cache.set(cacheKey, result, 'not_relevant_ads');
-  return result;
+    const [result] = await pool.query(
+      `SELECT * FROM ads WHERE is_relevant = False ORDER BY id DESC`,
+    );
+    const adsArray = Array.isArray(result) ? result : [];
+    cache.set(cacheKey, adsArray, 'not_relevant_ads');
+    return adsArray;
+  } catch (error) {
+    console.error('Error in get_Not_relevant_ads:', error);
+    return [];
+  }
 }
 
 exports.get_ads = async () => {
-  const cacheKey = cache.generateKey('all_ads');
-  const cached = cache.get(cacheKey, 'ads');
-  if (cached !== null) {
-    return cached;
-  }
+  try {
+    const cacheKey = cache.generateKey('all_ads');
+    const cached = cache.get(cacheKey, 'ads');
+    if (cached !== null && Array.isArray(cached)) {
+      return cached;
+    }
 
-  const [result] = await pool.query(
-    `SELECT * FROM ads ORDER BY id DESC`,
-  );
-  cache.set(cacheKey, result, 'ads');
-  return result;
+    const [result] = await pool.query(
+      `SELECT * FROM ads ORDER BY id DESC`,
+    );
+    const adsArray = Array.isArray(result) ? result : [];
+    cache.set(cacheKey, adsArray, 'ads');
+    return adsArray;
+  } catch (error) {
+    console.error('Error in get_ads:', error);
+    return [];
+  }
 }
 
 exports.addAd = async (adData) => {
