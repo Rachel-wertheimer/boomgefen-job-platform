@@ -51,7 +51,8 @@ export default function FirstScreen() {
 
   const styles: { [key: string]: React.CSSProperties } = {
     pageContainer: {
-      width: "100vw",
+      width: "100%",
+      maxWidth: "100%",
       minHeight: "100vh",
       boxSizing: "border-box",
       display: "flex",
