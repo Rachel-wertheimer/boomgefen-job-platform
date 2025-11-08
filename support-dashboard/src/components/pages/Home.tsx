@@ -1,6 +1,8 @@
 import { Ads } from "./Ads";
 import AdsJob from "./AdsJob";
 import React from "react";
+import { SEO } from "../SEO";
+import { seoKeywords } from "../../utils/seoKeywords";
 
 const styles: Record<string, React.CSSProperties> = {
   homeContainer: {
@@ -63,6 +65,11 @@ export default function Home() {
 
   return (
     <div style={homeContainerStyle}>
+      <SEO
+        title="BoomGefen - לוח משרות לאמנים | דרושים אמנים"
+        description="לוח משרות מקוון לאמנים. גלו משרות חדשות בתחום האמנות, עבודות יצירה, והזדמנויות מקצועיות. BoomGefen - פלטפורמה לחיפוש עבודה לאמנים."
+        keywords={seoKeywords}
+      />
       <div style={adsColumnStyle}>
         <Ads />
       </div>

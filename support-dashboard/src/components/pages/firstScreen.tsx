@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoginModal } from "./loginWorkWithUS";
+import { SEO } from "../SEO";
+import { seoKeywords } from "../../utils/seoKeywords";
 
 const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState({
@@ -184,6 +186,11 @@ export default function FirstScreen() {
 
   return (
     <div style={styles.pageContainer}>
+      <SEO
+        title="BoomGefen - פלטפורמת משרות לאמנים | דרושים אמנים"
+        description="פלטפורמה לחיפוש עבודה לאמנים. מצאו משרות בתחום האמנות, עבודות יצירה, והזדמנויות חדשות. BoomGefen - המקום לחיפוש עבודה לאמנים."
+        keywords={seoKeywords}
+      />
       <div style={styles.mainCard}>
         <div style={styles.logoContainer}>
           <img

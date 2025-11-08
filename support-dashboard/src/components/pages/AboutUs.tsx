@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
+import { SEO } from "../SEO";
+import { seoKeywords } from "../../utils/seoKeywords";
 
 const AnimationStyles = () => (
   <style
@@ -156,6 +158,11 @@ export default function AboutUs() {
 
   return (
     <div style={styles.pageContainer}>
+      <SEO
+        title="אודותינו - BoomGefen | דרושים אמנים"
+        description="ללמוד עוד על BoomGefen - פלטפורמה לחיפוש עבודה לאמנים. משרות בתחום האמנות, עבודות יצירה, והזדמנויות מקצועיות. BoomGefen - דרושים אמנים."
+        keywords={seoKeywords}
+      />
       <AnimationStyles />
       <div style={styles.mainContent}>
         <div style={styles.topLogoContainer}>

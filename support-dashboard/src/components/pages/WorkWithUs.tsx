@@ -6,6 +6,8 @@ import { createUser, createUserProfile, getUserDetailsByID } from '../../app/api
 import { FaSpinner } from 'react-icons/fa';
 import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
+import { SEO } from "../SEO";
+import { seoKeywords } from "../../utils/seoKeywords";
 
 const AnimationStyles = () => (
     <style
@@ -335,6 +337,11 @@ export default function WorkWithUs() {
 
     return (
         <div style={styles.pageContainer}>
+            <SEO
+                title="הרשמה לסוכנות - BoomGefen | דרושים אמנים"
+                description="הצטרפו לקהילת האמנים שלנו. הרשמה לסוכנות BoomGefen מציעה הזדמנויות עבודה לאמנים, משרות בתחום האמנות ועבודות יצירה."
+                keywords={seoKeywords}
+            />
             <AnimationStyles />
             <form style={styles.formCard} onSubmit={handleSubmit}>
                 <h1 style={styles.title}>הרשמה לסוכנות</h1>

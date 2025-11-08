@@ -5,6 +5,8 @@ import { FaSpinner, FaWhatsapp } from "react-icons/fa";
 import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
 import { sendMail } from "../../utils/mailService";
+import { SEO } from "../SEO";
+import { seoKeywords } from "../../utils/seoKeywords";
 
 const AnimationStyles = () => (
   <style
@@ -278,6 +280,11 @@ const ContactUs: React.FC = () => {
 
   return (
     <div style={styles.pageContainer}>
+      <SEO
+        title="יצירת קשר - BoomGefen | דרושים אמנים"
+        description="יצירת קשר עם BoomGefen - פלטפורמה לחיפוש עבודה לאמנים. משרות בתחום האמנות, עבודות יצירה, והזדמנויות מקצועיות. דרושים אמנים."
+        keywords={seoKeywords}
+      />
       <AnimationStyles />
       <motion.div
         initial={{ opacity: 0, y: 50 }}

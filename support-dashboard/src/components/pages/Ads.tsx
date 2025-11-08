@@ -7,6 +7,8 @@ import { fetchAds } from "../../app/slice/adsSlice";
 import { AdsList } from "../AdsList";
 import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
+import { SEO } from "../SEO";
+import { seoKeywords } from "../../utils/seoKeywords";
 
 const colors = appColors;
 
@@ -75,6 +77,11 @@ export const Ads: React.FC = () => {
 
   return (
     <div style={styles.container}>
+      <SEO
+        title="לוח משרות לאמנים - BoomGefen | דרושים אמנים"
+        description="עיון בלוח משרות מעודכן לאמנים. משרות בתחום האמנות, עבודות יצירה, והזדמנויות מקצועיות חדשות. BoomGefen - חיפוש עבודה לאמנים."
+        keywords={seoKeywords}
+      />
       <h2 style={styles.title}>לוח משרות</h2>
 
       <div style={styles.filterBox}>
