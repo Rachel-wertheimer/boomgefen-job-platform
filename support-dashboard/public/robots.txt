@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://boomgefen-job-platform-yiax.onrender.com/sitemap.xml
