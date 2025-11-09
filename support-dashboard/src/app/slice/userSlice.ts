@@ -1,4 +1,10 @@
+/**
+ * User Redux Slice
+ * Redux slice לניהול state של משתמשים ואימות
+ */
+
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
 import {
   createUser,
   createUserProfile,
@@ -6,8 +12,7 @@ import {
   getUserDetailsByID,
   loginUser,
   updateSubscription,
-} from "../api/user";
-import { jwtDecode } from "jwt-decode";
+} from "../../services/userService";
 
 interface DecodedToken {
   id: number;

@@ -1,5 +1,21 @@
+/**
+ * Ads Redux Slice
+ * Redux slice לניהול state של מודעות
+ */
+
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
-import { createAd, createUser, deleteAd, getAllAds, getAllNotApprovedAds, getApprovedAds, getNotRelevantAds, toggleApproved, toggleRelevant, type NewAdData, type NewUserData } from "../api/ads";
+import {
+  createAd as createAdService,
+  deleteAd as deleteAdService,
+  getAllAds,
+  getAllNotApprovedAds,
+  getApprovedAds,
+  getNotRelevantAds,
+  toggleApproved,
+  toggleRelevant,
+} from "../../services/adsService";
+import { createUser } from "../../services/userService";
+import type { NewAdData, NewUserData } from "../../types";
 
 export type Ad = {
   id: number;
@@ -25,6 +41,10 @@ const initialState: AdsState = {
   error: null,
 };
 
+/**
+ * Fetch approved ads
+ * קבלת מודעות מאושרות
+ */
 export const fetchAds = createAsyncThunk("/fetchAds", async (_, { rejectWithValue }) => {
   try {
     const ads = await getApprovedAds();
@@ -34,20 +54,24 @@ export const fetchAds = createAsyncThunk("/fetchAds", async (_, { rejectWithValu
   }
 });
 
+/**
+ * Register user and create ad
+ * הרשמת משתמש ויצירת מודעה
+ */
 export const registerUserAndCreateAd = createAsyncThunk(
   "ads/registerUserAndCreateAd",
   async (
-    { userData, adData }: { userData: NewUserData; adData: Omit<NewAdData, "id_user"> },
+    { userData, adData, token }: { userData: NewUserData; adData: Omit<NewAdData, "id_user">; token: string },
     { rejectWithValue }
   ) => {
     try {
-      const userId = await createUser(userData);
+      const userResponse = await createUser(userData);
 
-      if (!userId) {
+      if (!userResponse.userId) {
         throw new Error("מזהה משתמש לא מוגדר");
       }
 
-      const newAd = await createAd({ id_user: userId, ...adData });
+      const newAd = await createAdService({ id_user: userResponse.userId, ...adData }, token);
 
       return newAd;
     } catch (error: any) {
@@ -85,10 +109,15 @@ export const fetchNotRelevantAds = createAsyncThunk(
   }
 );
 
+/**
+ * Delete ad
+ * מחיקת מודעה
+ */
 export const deleteAdS = createAsyncThunk(
   "ads/deleteAd",
-  async ({ adId }: { adId: number }) => {
-    return await deleteAd(adId)
+  async ({ adId, token }: { adId: number; token: string }) => {
+    await deleteAdService(adId, token);
+    return adId;
   }
 );
 
