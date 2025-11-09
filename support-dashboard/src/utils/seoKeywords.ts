@@ -1,4 +1,3 @@
-// SEO Keywords for BoomGefen platform
 export const seoKeywords = [
   "דרושים אמנים",
   "משרות לאמנים",
