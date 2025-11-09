@@ -1,8 +1,3 @@
-/**
- * User Redux Slice
- * Redux slice לניהול state של משתמשים ואימות
- */
-
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { jwtDecode } from "jwt-decode";
 import {
@@ -21,7 +16,8 @@ interface DecodedToken {
   userName?: string;
   role: "USER" | "MANAGER";
   email?: string;
-  exp?: number; }
+  exp?: number;
+}
 
 interface RegistrationFormData {
   fullName: string;
@@ -148,7 +144,6 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-
 export const subscribeUser = createAsyncThunk(
   "user/subscribeUser",
   async (_, { rejectWithValue }) => {
@@ -192,7 +187,6 @@ export const fetchUserDetails = createAsyncThunk(
     }
   }
 );
-
 
 const initializeUserFromToken = (): UserDetails | null => {
   const token = sessionStorage.getItem("token");
@@ -265,7 +259,17 @@ const userSlice = createSlice({
       .addCase(registerUser.fulfilled, (state) => { state.loading = false; state.registrationStatus = 'succeeded'; })
       .addCase(registerUser.rejected, (state, action) => { state.loading = false; state.error = action.payload as string; state.registrationStatus = 'failed'; })
       .addCase(fetchUserDetails.pending, (state) => { state.loading = true; state.error = null; })
-      .addCase(fetchUserDetails.fulfilled, (state, action: PayloadAction<UserDetails>) => { state.loading = false; state.currentUser = action.payload; })
+      .addCase(fetchUserDetails.fulfilled, (state, action: PayloadAction<any>) => { 
+        state.loading = false; 
+        state.currentUser = {
+          userId: action.payload.id || action.payload.userId || 0,
+          name: action.payload.full_name || action.payload.name || "",
+          role: action.payload.role || "USER",
+          full_name: action.payload.full_name,
+          email: action.payload.email,
+          phone: action.payload.phone,
+        };
+      })
       .addCase(fetchUserDetails.rejected, (state, action) => { state.loading = false; state.error = action.payload as string; })
       .addCase(subscribeUser.pending, (state) => { state.loading = true; state.error = null; })
       .addCase(subscribeUser.fulfilled, (state, action) => {

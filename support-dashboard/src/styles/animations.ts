@@ -1,12 +1,3 @@
-/**
- * Animation styles and keyframes
- * סגנונות אנימציה ו-keyframes
- */
-
-/**
- * CSS keyframes for animations
- * CSS keyframes לאנימציות
- */
 export const animationKeyframes = `
   @keyframes modalFadeIn {
     from { 
@@ -46,10 +37,6 @@ export const animationKeyframes = `
   }
 `;
 
-/**
- * Animation style objects for use in React components
- * אובייקטי סגנון אנימציה לשימוש בקומפוננטות React
- */
 export const animationStyles = {
   modalFadeIn: "modalFadeIn 0.3s ease-out forwards",
   overlayFadeIn: "overlayFadeIn 0.3s ease-out forwards",
@@ -57,12 +44,3 @@ export const animationStyles = {
   fadeIn: "fadeIn 0.5s ease-out forwards",
   marqueeScroll: "marqueeScroll 40s linear infinite",
 } as const;
-
-/**
- * Component to inject animation styles into the document
- * קומפוננטה להזרקת סגנונות אנימציה למסמך
- */
-export const AnimationStyles: React.FC = () => (
-  <style dangerouslySetInnerHTML={{ __html: animationKeyframes }} />
-);
-

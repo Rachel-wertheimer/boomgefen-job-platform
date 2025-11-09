@@ -1,8 +1,3 @@
-/**
- * Custom hook for window size
- * Hook מותאם אישית לבדיקת גודל החלון
- */
-
 import { useState, useEffect } from "react";
 
 interface WindowSize {
@@ -10,10 +5,6 @@ interface WindowSize {
   height: number;
 }
 
-/**
- * Hook that returns the current window size and updates on resize
- * Hook שמחזיר את גודל החלון הנוכחי ומתעדכן בעת שינוי גודל
- */
 export const useWindowSize = (): WindowSize => {
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: typeof window !== "undefined" ? window.innerWidth : 0,
@@ -29,7 +20,7 @@ export const useWindowSize = (): WindowSize => {
     }
 
     window.addEventListener("resize", handleResize);
-    handleResize(); // Call once to set initial size
+    handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -37,12 +28,7 @@ export const useWindowSize = (): WindowSize => {
   return windowSize;
 };
 
-/**
- * Hook that returns whether the screen is mobile size
- * Hook שמחזיר האם המסך הוא בגודל מובייל
- */
 export const useIsMobile = (breakpoint: number = 960): boolean => {
   const { width } = useWindowSize();
   return width <= breakpoint;
 };
-

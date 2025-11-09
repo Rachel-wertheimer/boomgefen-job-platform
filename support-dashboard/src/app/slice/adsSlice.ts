@@ -1,8 +1,3 @@
-/**
- * Ads Redux Slice
- * Redux slice לניהול state של מודעות
- */
-
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import {
   createAd as createAdService,
@@ -15,19 +10,9 @@ import {
   toggleRelevant,
 } from "../../services/adsService";
 import { createUser } from "../../services/userService";
-import type { NewAdData, NewUserData } from "../../types";
+import type { Ad, NewAdData, NewUserData } from "../../types";
 
-export type Ad = {
-  id: number;
-  id_user: number;
-  company: string;
-  type: string;
-  goal: string;
-  approved: number;
-  description: string;
-  is_relevant: number;
-
-};
+export type { Ad };
 
 type AdsState = {
   ads: Ad[];
@@ -41,10 +26,6 @@ const initialState: AdsState = {
   error: null,
 };
 
-/**
- * Fetch approved ads
- * קבלת מודעות מאושרות
- */
 export const fetchAds = createAsyncThunk("/fetchAds", async (_, { rejectWithValue }) => {
   try {
     const ads = await getApprovedAds();
@@ -54,14 +35,10 @@ export const fetchAds = createAsyncThunk("/fetchAds", async (_, { rejectWithValu
   }
 });
 
-/**
- * Register user and create ad
- * הרשמת משתמש ויצירת מודעה
- */
 export const registerUserAndCreateAd = createAsyncThunk(
   "ads/registerUserAndCreateAd",
   async (
-    { userData, adData, token }: { userData: NewUserData; adData: Omit<NewAdData, "id_user">; token: string },
+    { userData, adData }: { userData: NewUserData; adData: Omit<NewAdData, "id_user"> },
     { rejectWithValue }
   ) => {
     try {
@@ -71,6 +48,7 @@ export const registerUserAndCreateAd = createAsyncThunk(
         throw new Error("מזהה משתמש לא מוגדר");
       }
 
+      const token = sessionStorage.getItem("token") || "";
       const newAd = await createAdService({ id_user: userResponse.userId, ...adData }, token);
 
       return newAd;
@@ -109,18 +87,14 @@ export const fetchNotRelevantAds = createAsyncThunk(
   }
 );
 
-/**
- * Delete ad
- * מחיקת מודעה
- */
 export const deleteAdS = createAsyncThunk(
   "ads/deleteAd",
-  async ({ adId, token }: { adId: number; token: string }) => {
+  async ({ adId }: { adId: number }) => {
+    const token = sessionStorage.getItem("token") || "";
     await deleteAdService(adId, token);
     return adId;
   }
 );
-
 
 const adsSlice = createSlice({
   name: "ads",
@@ -132,9 +106,9 @@ const adsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchAds.fulfilled, (state, action) => {
+      .addCase(fetchAds.fulfilled, (state, action: PayloadAction<Ad[]>) => {
         state.loading = false;
-        state.ads = action.payload;
+        state.ads = action.payload as any;
       })
       .addCase(fetchAds.rejected, (state, action) => {
         state.loading = false;
@@ -145,9 +119,9 @@ const adsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(registerUserAndCreateAd.fulfilled, (state, action) => {
+      .addCase(registerUserAndCreateAd.fulfilled, (state, action: PayloadAction<Ad>) => {
         state.loading = false;
-        state.ads.push(action.payload);
+        state.ads.push(action.payload as any);
       })
       .addCase(registerUserAndCreateAd.rejected, (state, action) => {
         state.loading = false;
@@ -172,12 +146,12 @@ const adsSlice = createSlice({
       .addCase(toggleAdApproved.fulfilled, (state, action: PayloadAction<Ad>) => {
         const index = state.ads.findIndex((ad) => ad.id === action.payload.id);
         if (index !== -1) {
-          state.ads[index] = action.payload;
+          state.ads[index] = action.payload as any;
         }
       })
       .addCase(toggleAdRelevant.fulfilled, (state, action: PayloadAction<Ad>) => {
         const index = state.ads.findIndex(ad => ad.id === action.payload.id);
-        if (index !== -1) state.ads[index] = action.payload;
+        if (index !== -1) state.ads[index] = action.payload as any;
       })
       .addCase(fetchNotRelevantAds.pending, (state) => {
         state.loading = true;
@@ -196,8 +170,6 @@ const adsSlice = createSlice({
       .addCase(deleteAdS.rejected, (state, action) => {
         state.error = action.error.message ?? "שגיאה במחיקת מודעה";
       });
-
-
   },
 });
 

@@ -1,26 +1,15 @@
-/**
- * Ads Service
- * שירות לטיפול במודעות - קריאות API למודעות
- */
-
 import axios from "axios";
 import { API_ENDPOINTS } from "../constants";
 import type { Ad, NewAdData } from "../types";
 
-/**
- * Fetch all approved ads
- * קבלת כל המודעות המאושרות
- */
 export const getApprovedAds = async (): Promise<Ad[]> => {
   try {
     const response = await axios.get(`${API_ENDPOINTS.ADS}/getAllApprovedAds`);
     
-    // Validate response structure
     if (response.data?.data && Array.isArray(response.data.data)) {
       return response.data.data;
     }
     
-    // Fallback: try to return data directly if structure is different
     if (Array.isArray(response.data)) {
       return response.data;
     }
@@ -33,10 +22,6 @@ export const getApprovedAds = async (): Promise<Ad[]> => {
   }
 };
 
-/**
- * Fetch all ads (admin only)
- * קבלת כל המודעות (רק למנהלים)
- */
 export const getAllAds = async (): Promise<Ad[]> => {
   try {
     const response = await axios.get(`${API_ENDPOINTS.ADS}/getAll`);
@@ -47,10 +32,6 @@ export const getAllAds = async (): Promise<Ad[]> => {
   }
 };
 
-/**
- * Fetch all not approved ads
- * קבלת כל המודעות שלא אושרו
- */
 export const getAllNotApprovedAds = async (): Promise<Ad[]> => {
   try {
     const response = await axios.get(`${API_ENDPOINTS.ADS}/getAllNotApprovedAds`);
@@ -61,10 +42,6 @@ export const getAllNotApprovedAds = async (): Promise<Ad[]> => {
   }
 };
 
-/**
- * Fetch all not relevant ads
- * קבלת כל המודעות שלא רלוונטיות
- */
 export const getNotRelevantAds = async (): Promise<Ad[]> => {
   try {
     const response = await axios.get(`${API_ENDPOINTS.ADS}/getAllNotRelevantAds`);
@@ -75,10 +52,6 @@ export const getNotRelevantAds = async (): Promise<Ad[]> => {
   }
 };
 
-/**
- * Create a new ad
- * יצירת מודעה חדשה
- */
 export const createAd = async (adData: NewAdData, token: string): Promise<Ad> => {
   const response = await axios.post(
     `${API_ENDPOINTS.ADS}/createAds`,
@@ -92,10 +65,6 @@ export const createAd = async (adData: NewAdData, token: string): Promise<Ad> =>
   return response.data.data;
 };
 
-/**
- * Toggle ad approval status
- * שינוי סטטוס אישור מודעה
- */
 export const toggleApproved = async (adId: number, token: string): Promise<Ad> => {
   const response = await axios.put(
     `${API_ENDPOINTS.ADS}/toggleApproved/${adId}`,
@@ -109,10 +78,6 @@ export const toggleApproved = async (adId: number, token: string): Promise<Ad> =
   return response.data.ad;
 };
 
-/**
- * Toggle ad relevance status
- * שינוי סטטוס רלוונטיות מודעה
- */
 export const toggleRelevant = async (adId: number, token: string): Promise<Ad> => {
   const response = await axios.put(
     `${API_ENDPOINTS.ADS}/toggleRelevant/${adId}`,
@@ -126,10 +91,6 @@ export const toggleRelevant = async (adId: number, token: string): Promise<Ad> =
   return response.data.ad;
 };
 
-/**
- * Update ad content
- * עדכון תוכן מודעה
- */
 export const updateAdContent = async (
   adId: number,
   token: string,
@@ -147,10 +108,6 @@ export const updateAdContent = async (
   return response.data.ad;
 };
 
-/**
- * Delete an ad
- * מחיקת מודעה
- */
 export const deleteAd = async (adId: number, token: string): Promise<void> => {
   await axios.delete(`${API_ENDPOINTS.ADS}/deleteAd/${adId}`, {
     headers: {
@@ -158,4 +115,3 @@ export const deleteAd = async (adId: number, token: string): Promise<void> => {
     },
   });
 };
-

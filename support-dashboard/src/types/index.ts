@@ -1,23 +1,16 @@
-/**
- * TypeScript type definitions for the application
- * מרכז כל הגדרות הטיפוסים של האפליקציה
- */
-
-// Ad Types
 export interface Ad {
-  id?: number;
+  id: number;
   id_user: number;
   company: string;
   type: string;
   goal?: string;
   description: string;
-  approved: boolean;
+  approved: number | boolean;
   is_relevant: number;
   created_at?: string;
   updated_at?: string;
 }
 
-// User Types
 export interface User {
   id: number;
   name: string;
@@ -48,14 +41,12 @@ export interface NewAdData {
   description: string;
 }
 
-// API Response Types
 export interface ApiResponse<T> {
   success: boolean;
   message?: string;
   data: T;
 }
 
-// Component Props Types
 export interface AdCardProps {
   ad: Ad;
   index: number;
@@ -66,4 +57,3 @@ export interface AdsListProps {
   ads: Ad[];
   isMobile: boolean;
 }
-
