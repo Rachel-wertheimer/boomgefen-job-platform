@@ -8,23 +8,36 @@ const styles: Record<string, React.CSSProperties> = {
   homeContainer: {
     display: "grid",
     gridTemplateColumns: "2fr 1fr",
-    gap: "30px",
-    maxWidth: "1400px",
+    gap: "32px",
+    maxWidth: "1320px",
     margin: "0 auto",
-    padding: "90px 20px 20px 20px",
-  }
-  ,  
+    padding: "96px 24px 48px",
+    alignItems: "start",
+    boxSizing: "border-box",
+  },
   adsColumn: {
-    gridColumn: "1 / 2", 
-      minWidth: 0, 
-     },
-  formColumn: {
-    gridColumn: "2 / 3", 
-    position: "sticky", 
-    top: "90px",
+    gridColumn: "1 / 2",
+    minWidth: 0,
+    display: "flex",
+    flexDirection: "column",
+    gap: "24px",
+  },
+  formColumnWrapper: {
+    gridColumn: "2 / 3",
+    position: "sticky",
+    top: "104px",
     alignSelf: "start",
-    maxHeight: "calc(100vh - 100px)", 
-    overflowY: "auto", 
+    width: "100%",
+  },
+  formColumn: {
+    backgroundColor: "#ffffff",
+    borderRadius: "18px",
+    boxShadow: "0 12px 32px rgba(15, 23, 42, 0.15)",
+    padding: "28px 24px",
+    maxHeight: "calc(100vh - 140px)",
+    overflowY: "auto",
+    boxSizing: "border-box",
+    border: "1px solid rgba(148, 163, 184, 0.15)",
   },
 };
 
@@ -45,23 +58,33 @@ const useResponsiveStyles = () => {
     gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr",
   };
 
+  const formColumnWrapperStyle = {
+    ...styles.formColumnWrapper,
+    position: isMobile ? ("relative" as "sticky") : "sticky",
+    top: isMobile ? "0" : styles.formColumnWrapper.top,
+    gridColumn: isMobile ? "1 / 2" : "2 / 3",
+    order: isMobile ? 1 : 0,
+    width: "100%",
+  };
+
   const formColumnStyle = {
     ...styles.formColumn,
-    position: isMobile ? ("relative" as "sticky") : "sticky",
-    top: isMobile ? "0" : "90px",
-    gridColumn: isMobile ? "1 / 2" : "2 / 3", 
-    order: isMobile ? 1 : 0,     
+    maxHeight: isMobile ? "unset" : styles.formColumn.maxHeight,
+    boxShadow: isMobile ? "0 8px 24px rgba(15, 23, 42, 0.1)" : styles.formColumn.boxShadow,
+    padding: isMobile ? "24px 20px" : styles.formColumn.padding,
   };
 
   const adsColumnStyle = {
     ...styles.adsColumn,
-    order: isMobile ? 2 : 0, 
+    order: isMobile ? 2 : 0,
   };
 
-  return { homeContainerStyle, adsColumnStyle, formColumnStyle };
+  return { homeContainerStyle, adsColumnStyle, formColumnWrapperStyle, formColumnStyle };
 };
+
 export default function Home() {
-  const { homeContainerStyle, adsColumnStyle, formColumnStyle } = useResponsiveStyles();
+  const { homeContainerStyle, adsColumnStyle, formColumnWrapperStyle, formColumnStyle } =
+    useResponsiveStyles();
 
   return (
     <div style={homeContainerStyle}>
@@ -74,8 +97,10 @@ export default function Home() {
         <Ads />
       </div>
 
-      <div style={formColumnStyle}>
-        <AdsJob />
+      <div style={formColumnWrapperStyle}>
+        <div style={formColumnStyle}>
+          <AdsJob />
+        </div>
       </div>
     </div>
   );
