@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState, AppDispatch } from '../../app/store';
 import { updateRegistrationFormField, updateProfession } from '../../app/slice/userSlice';
-import { createUser, createUserProfile, getUserDetailsByID } from '../../app/api/user';
+import { createUser, createUserProfile } from '../../app/api/user';
 import { FaSpinner } from 'react-icons/fa';
 import { useWindowSize } from "../../utils/hooks";
 import { appColors } from "../../utils/colors";
@@ -107,7 +107,7 @@ export default function WorkWithUs() {
                 return;
             }
             const payload = new FormData();
-
+ 
             payload.append('entry.1801059523', formData.fullName);
             payload.append('entry.344081749', formData.email);
             payload.append('entry.1529304238', formData.phone);
@@ -165,11 +165,11 @@ export default function WorkWithUs() {
                 additionalSkills: formData.additionalSkills,
                 expectations: formData.expectations,
             };
-            sessionStorage.setItem('userEmail', formData.email);
+            sessionStorage.setItem('userEmail', formData.email); 
             console.log('Creating user profile with payload:', profilePayload);
             await createUserProfile(profilePayload, newUserId);
             console.log('User profile created successfully.');
-
+          
             window.location.href = "https://pay.sumit.co.il/g9687k/gg7p5h/hykun7/payment/";
         } catch (err) {
             alert('אירעה שגיאה בשליחת הטופס. נסי שוב.');
