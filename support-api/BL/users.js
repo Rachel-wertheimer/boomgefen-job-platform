@@ -8,7 +8,6 @@ const JWT_SECRET = process.env.JWT_SECRET;
 exports.CreateUserBL = async (user, details) => {
   try {
     console.log('Start registerUserBL');
-
     if (user.email) {
       user.email = user.email.toLowerCase();
     }

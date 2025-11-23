@@ -2,6 +2,7 @@ const pool = require("./db");
 const changeTracker = require("./services/changeTracking");
 
 exports.insertUser = async (user) => {
+  console.log("Inserting user:", user);
   const [result] = await pool.query(
     `INSERT INTO users (full_name, email, phone, type, is_agree, is_subscribed)
      VALUES (?, ?, ?, ?, ?, ?)`,
@@ -14,10 +15,7 @@ exports.insertUser = async (user) => {
       user.is_subscribed,
     ]
   );
-  
-  // Mark change
   changeTracker.markChanged('user', result.insertId);
-  
   return result.insertId;
 };
 

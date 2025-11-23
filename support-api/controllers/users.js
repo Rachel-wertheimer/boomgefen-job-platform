@@ -3,6 +3,7 @@ const asyncHandler = require("../middleware/asyncHandler");
 
 exports.CreateUser = asyncHandler(async (req, res, next) => {
   try {
+    console.log("CreateUser request body:", req.body);
     const userId = await CreateUserBL(req.body);
     res.json({ message: 'User registered', userId });
   } catch (err) {

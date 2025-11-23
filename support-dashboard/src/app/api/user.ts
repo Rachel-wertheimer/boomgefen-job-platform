@@ -8,7 +8,7 @@ export const createUser = async (userData: {
   email: string;
   phone: string;
 }) => {
-  const response = await axios.post(`${BASE_URL_USERS}/createuser`, {
+  const response = await axios.post(`${BASE_URL_USERS}/createUser`, {
     ...userData,
     type: "USER",
     is_agree: false,

@@ -2,6 +2,7 @@ const functionDB = require('../functionUser');
 
 exports.CreateUserDAL = async (user) => {
     try {
+      console.log('DAL - CreateUserDAL called with user:', user);
         const userId = await functionDB.insertUser(user);
         return userId;
     }
