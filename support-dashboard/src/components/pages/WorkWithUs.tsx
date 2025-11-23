@@ -169,17 +169,17 @@ export default function WorkWithUs() {
             console.log('Creating user profile with payload:', profilePayload);
             await createUserProfile(profilePayload, newUserId);
             console.log('User profile created successfully.');
-            // let verified = false;
-            // for (let i = 0; i < 3; i++) {
-            //     try {
-            //         const details = await getUserDetailsByID(newUserId);
-            //         if (details && details.userId) { verified = true; break; }
-            //     } catch { }
-            //     await new Promise(r => setTimeout(r, 800));
-            // }
-            // if (!verified) {
-            //     throw new Error('אימות יצירת המשתמש נכשל. נסי שוב בעוד רגע');
-            // }
+            let verified = false;
+            for (let i = 0; i < 3; i++) {
+                try {
+                    const details = await getUserDetailsByID(newUserId);
+                    if (details && details.userId) { verified = true; break; }
+                } catch { }
+                await new Promise(r => setTimeout(r, 800));
+            }
+            if (!verified) {
+                throw new Error('אימות יצירת המשתמש נכשל. נסי שוב בעוד רגע');
+            }
             window.location.href = "https://pay.sumit.co.il/g9687k/gg7p5h/hykun7/payment/";
         } catch (err) {
             alert('אירעה שגיאה בשליחת הטופס. נסי שוב.');
