@@ -169,8 +169,8 @@ export default function WorkWithUs() {
             console.log('Creating user profile with payload:', profilePayload);
             await createUserProfile(profilePayload, newUserId);
             console.log('User profile created successfully.');
-          
-            // window.location.href = "https://pay.sumit.co.il/g9687k/gg7p5h/hykun7/payment/";
+            window.location.href = "https://pay.sumit.co.il/g9687k/gg7p5h/hykun7/payment/";
+
         } catch (err) {
             alert('אירעה שגיאה בשליחת הטופס. נסי שוב.');
             setLoading(false);
