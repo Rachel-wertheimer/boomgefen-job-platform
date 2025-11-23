@@ -59,7 +59,7 @@ export default function WorkWithUs() {
     const [focusState, setFocusState] = useState<Record<string, boolean>>({});
     const { width } = useWindowSize();
     const isMobile = width <= 768;
-    const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScUvzvNjNO2U75PvFc0gIZ-B8qp9N0nD6-v-XbZYHkzQKVyIQ/formResponse';
+    const GOOGLE_FORM_URL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLScUvzvNjNO2U75PvFc0gIZ-B8qp9N0nD6-v-XbZYHkzQKVyIQ/formResponse';
     const colors = appColors;
     const handleFocus = (field: string) => setFocusState(prev => ({ ...prev, [field]: true }));
     const handleBlur = (field: string) => setFocusState(prev => ({ ...prev, [field]: false }));
@@ -107,6 +107,7 @@ export default function WorkWithUs() {
                 return;
             }
             const payload = new FormData();
+ 
             payload.append('entry.1801059523', formData.fullName);
             payload.append('entry.344081749', formData.email);
             payload.append('entry.1529304238', formData.phone);
@@ -128,11 +129,13 @@ export default function WorkWithUs() {
             if (formData.isCommitteeApproved) payload.append('entry.334908836', 'אני מאשרת שאני מסכימה שהוועדה של BOOM גפן הפקה תבחן את מועמדותי.');
             if (formData.isReceivingOffers) payload.append('entry.334908836', 'אני מאשרת לקבל הצעות ומייל מBOOM גפן הפקה');
             payload.append('fvv', '1');
+            console.log('Submitting form data to Google Forms and creating user...');
             await fetch(GOOGLE_FORM_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 body: payload,
             });
+            console.log('Google Form submitted successfully.');
             const userPayload = {
                 full_name: formData.fullName,
                 email: formData.email,
@@ -143,6 +146,7 @@ export default function WorkWithUs() {
                 subscription_start: null,
                 subscription_end: null,
             };
+            console.log('Creating user with payload:', userPayload);
             const userRes = await createUser(userPayload);
             if (!userRes?.userId && typeof userRes !== 'number') {
                 throw new Error('שגיאה ביצירת משתמש (חסר מזהה משתמש)');
@@ -162,7 +166,9 @@ export default function WorkWithUs() {
                 expectations: formData.expectations,
             };
             sessionStorage.setItem('userEmail', formData.email); 
+            console.log('Creating user profile with payload:', profilePayload);
             await createUserProfile(profilePayload, newUserId);
+            console.log('User profile created successfully.');
             let verified = false;
             for (let i = 0; i < 3; i++) {
                 try {
