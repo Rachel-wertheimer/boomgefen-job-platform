@@ -148,6 +148,8 @@ export default function WorkWithUs() {
             };
             console.log('Creating user with payload:', userPayload);
             const userRes = await createUser(userPayload);
+            console.log('Creating user with payload הצלחה ליצור משתמש:', userPayload);
+
             if (!userRes?.userId && typeof userRes !== 'number') {
                 throw new Error('שגיאה ביצירת משתמש (חסר מזהה משתמש)');
             }
@@ -169,15 +171,14 @@ export default function WorkWithUs() {
             console.log('Creating user profile with payload:', profilePayload);
             await createUserProfile(profilePayload, newUserId);
             console.log('User profile created successfully.');
+            window.location.href = "https://pay.sumit.co.il/g9687k/gg7p5h/hykun7/payment/";
 
         } catch (err) {
             alert('אירעה שגיאה בשליחת הטופס. נסי שוב.');
+            console.error('Error during form submission:', err);
             setLoading(false);
         }
-        finally{
-            window.location.href = "https://pay.sumit.co.il/g9687k/gg7p5h/hykun7/payment/";
-            alert('תודה על הרשמתך! ניצור איתך קשר בהקדם.');
-        }
+      
     };
 
     const styles: Record<string, React.CSSProperties> = {
