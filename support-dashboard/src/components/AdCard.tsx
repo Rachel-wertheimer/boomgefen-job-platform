@@ -274,6 +274,7 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
         <div style={styles.contactBox}>
           {contactDetails?.full_name && <p><strong>שם:</strong> {contactDetails.full_name}</p>}
           {contactDetails?.phone && <p><strong>טלפון:</strong> {contactDetails.phone}</p>}
+          {contactDetails?.email && <p><strong>מייל:</strong> {contactDetails.email}</p>}
           <p style={{ marginTop: "10px", fontWeight: 600 }}>המייל שלך ליצירת קשר חוזר:</p>
           <input
             type="email"
