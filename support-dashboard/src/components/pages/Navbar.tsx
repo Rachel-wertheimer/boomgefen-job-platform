@@ -116,16 +116,16 @@ export default function Navbar() {
         {!isMobile && (
           <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
             <NavLink to="/home" style={({ isActive }) => (isActive ? { ...styles.link, ...styles.activeLink } : styles.link)}>
-              <FaHome /> בית
+              <FaHome /> ראשי
             </NavLink>
             <NavLink to="/ads" style={({ isActive }) => (isActive ? { ...styles.link, ...styles.activeLink } : styles.link)}>
               <FaBriefcase /> לוח משרות
             </NavLink>
             <NavLink to="/work-with-us" style={({ isActive }) => (isActive ? { ...styles.link, ...styles.activeLink } : styles.link)}>
-              <FaHandshake /> עבוד איתנו
+              <FaHandshake /> הצטרפות למנויים
             </NavLink>
             <NavLink to="/createAsdJob" style={({ isActive }) => (isActive ? { ...styles.link, ...styles.activeLink } : styles.link)}>
-              <FaHandshake /> לפרסם אצלנו
+              <FaHandshake /> פרסם משרה
             </NavLink>
             <NavLink to="/about-us" style={({ isActive }) => (isActive ? { ...styles.link, ...styles.activeLink } : styles.link)}>
               <FaInfoCircle /> אודותינו
