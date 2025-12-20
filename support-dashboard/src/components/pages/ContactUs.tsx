@@ -53,6 +53,12 @@ const ContactUs: React.FC = () => {
   const [sendingMail, setSendingMail] = useState(false);
   const [mailError, setMailError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsCheckboxChecked(e.target.checked);
+  };
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -329,7 +335,97 @@ const ContactUs: React.FC = () => {
           </div>
         )}
 
-        <form
+
+<form
+  onSubmit={handleSubmit}
+  style={styles.formPanel}
+>
+  {!fromNav && (
+    <h2 style={styles.formTitle}>
+      שלחו לנו הודעה
+    </h2>
+  )}
+
+  <input
+    type="text"
+    name="name"
+    placeholder="שם מלא"
+    value={formData.name}
+    onChange={handleChange}
+    style={getInputStyle('name')}
+    onFocus={() => handleFocus('name')}
+    onBlur={() => handleBlur('name')}
+    required
+  />
+  <input
+    type="email"
+    name="email"
+    placeholder="כתובת מייל"
+    value={formData.email}
+    onChange={handleChange}
+    style={getInputStyle('email')}
+    onFocus={() => handleFocus('email')}
+    onBlur={() => handleBlur('email')}
+    required
+  />
+  <input
+    type="tel"
+    name="phone"
+    placeholder="מספר טלפון"
+    value={formData.phone}
+    onChange={handleChange}
+    style={getInputStyle('phone')}
+    onFocus={() => handleFocus('phone')}
+    onBlur={() => handleBlur('phone')}
+  />
+  <textarea
+    name="message"
+    placeholder="ספרו לנו על האירוע שלכם..."
+    value={formData.message}
+    onChange={handleChange}
+    style={getTextAreaStyle('message')}
+    onFocus={() => handleFocus('message')}
+    onBlur={() => handleBlur('message')}
+  />
+
+  {/* Checkbox */}
+  <div style={{ marginTop: "10px", display: "flex", alignItems: "center", gap: "10px" }}>
+    <input
+      type="checkbox"
+      id="consentCheckbox"
+      checked={isCheckboxChecked}
+      onChange={handleCheckboxChange}
+      required
+    />
+    <label htmlFor="consentCheckbox" style={{ fontSize: "0.9rem", color: colors.textDark }}>
+      אני מסכים/ה לעיבוד המידע שסיפקתי למטרות יצירת קשר ושירות בלבד.
+    </label>
+  </div>
+
+  <motion.button
+    whileHover={{ scale: sendingMail || !isCheckboxChecked ? 1 : 1.03 }} 
+    whileTap={{ scale: sendingMail || !isCheckboxChecked ? 1 : 0.98 }}
+    type="submit"
+    style={{
+      ...submitBtnStyle,
+      ...(isCheckboxChecked ? {} : styles.disabledButton),
+    }}
+    disabled={sendingMail || !isCheckboxChecked}
+    onMouseEnter={() => setIsSubmitHover(true)}
+    onMouseLeave={() => setIsSubmitHover(false)}
+  >
+    {sendingMail ? (
+      <>
+        שולח...
+        <FaSpinner style={styles.loadingSpinner} />
+      </>
+    ) : "שלח הודעה"}
+  </motion.button>
+
+  {mailError && <p style={styles.error}>{mailError}</p>}
+  {success && <p style={styles.success}>ההודעה נשלחה בהצלחה ✅</p>}
+</form>
+        {/* <form
           onSubmit={handleSubmit}
           style={styles.formPanel}
         >
@@ -382,7 +478,7 @@ const ContactUs: React.FC = () => {
           />
 
           <motion.button
-            whileHover={{ scale: sendingMail ? 1 : 1.03 }} 
+            whileHover={{ scale: sendingMail ? 1 : 1.03 }}
             whileTap={{ scale: sendingMail ? 1 : 0.98 }}
             type="submit"
             style={submitBtnStyle}
@@ -400,7 +496,7 @@ const ContactUs: React.FC = () => {
 
           {mailError && <p style={styles.error}>{mailError}</p>}
           {success && <p style={styles.success}>ההודעה נשלחה בהצלחה ✅</p>}
-        </form>
+        </form> */}
       </motion.div>
     </div>
   );

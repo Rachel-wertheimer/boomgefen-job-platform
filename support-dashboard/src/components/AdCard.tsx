@@ -274,7 +274,23 @@ export const AdCard: React.FC<{ ad: Ad; index: number; totalAds: number }> = ({
         <div style={styles.contactBox}>
           {contactDetails?.full_name && <p><strong>שם:</strong> {contactDetails.full_name}</p>}
           {contactDetails?.phone && <p><strong>טלפון:</strong> {contactDetails.phone}</p>}
-          {contactDetails?.email && <p><strong>מייל:</strong> {contactDetails.email}</p>}
+          {contactDetails?.email && (
+            <p>
+              <strong>מייל:</strong>{" "}
+              <a
+                href={`https://mail.google.com/mail/u/0/?to=${contactDetails.email}&su=${encodeURIComponent(
+                  "שלום וברכה בנוגע למשרה שפרסמת באתר"
+                )}&body=${encodeURIComponent(
+                  "שלום, רציתי לשאול פרטים נוספים בנוגע למשרה."
+                )}&fs=1&tf=cm`}
+                style={{ color: appColors.primary, textDecoration: "underline" }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {contactDetails.email}
+              </a>
+            </p>
+          )}
           <p style={{ marginTop: "10px", fontWeight: 600 }}>המייל שלך ליצירת קשר חוזר:</p>
           <input
             type="email"
