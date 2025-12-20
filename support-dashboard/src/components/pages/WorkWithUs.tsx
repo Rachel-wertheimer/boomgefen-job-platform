@@ -321,9 +321,13 @@ export default function WorkWithUs() {
             animation: animationStyles.spin,
         },
     };
-
+    const [isPrivacyPolicyChecked, setIsPrivacyPolicyChecked] = useState(false); // מצב חדש לצ'קבוקס מדיניות פרטיות
     const [isSubmitHover, setIsSubmitHover] = useState(false);
-    const isDisabled = !formData.hasSentFiles || loading;
+    const isDisabled = !formData.hasSentFiles || loading || !isPrivacyPolicyChecked;
+
+    const handlePrivacyPolicyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setIsPrivacyPolicyChecked(e.target.checked); // עדכון מצב הצ'קבוקס
+    };
 
     const submitBtnStyle = {
         ...styles.submitBtn,
@@ -443,7 +447,7 @@ export default function WorkWithUs() {
                         אני מאשרת לקבל הצעות ומייל
                     </label>
                 </div>
-                <p style={{ textAlign: 'center', fontSize: '0.85rem', color: colors.textMedium }}>
+                {/* <p style={{ textAlign: 'center', fontSize: '0.85rem', color: colors.textMedium }}>
                     על ידי המשך, את מסכימה ל&nbsp;
                     <span
                         style={{ ...styles.clickableLink, textDecoration: 'underline' }}
@@ -455,7 +459,31 @@ export default function WorkWithUs() {
                     >
                         מדיניות ופרטיות
                     </span>
-                </p>
+                </p> */}
+                
+                <div style={styles.formGroup}>
+                    <label style={{ ...styles.checkboxLabelVertical, fontWeight: 600, color: isPrivacyPolicyChecked ? colors.textDark : colors.danger }}>
+                        <input
+                            type="checkbox"
+                            name="privacyPolicy"
+                            checked={isPrivacyPolicyChecked}
+                            onChange={handlePrivacyPolicyChange}
+                            style={styles.checkboxInput}
+                        />
+                        אני מאשר/ת שקראתי והסכמתי ל
+                        <span
+                            style={{ ...styles.clickableLink, textDecoration: 'underline' }}
+                            onClick={() => window.open(
+                                "https://docs.google.com/document/d/1_vmLe3dvBRf4UBEBsUnwNq4jKcgC08Tn2345xyews3s/edit?usp=sharing",
+                                "_blank",
+                                "noopener,noreferrer"
+                            )}
+                        >
+                            מדיניות ופרטיות
+                        </span>
+                    </label>
+                </div>
+
                 <div style={styles.formActions}>
                     <button
                         type="submit"
