@@ -24,20 +24,22 @@ const styles: Record<string, React.CSSProperties> = {
   },
   formColumnWrapper: {
     gridColumn: "2 / 3",
-    position: "sticky",
-    top: "104px",
-    alignSelf: "start",
-    width: "100%",
+    height: "100%",
+    position: "relative", // משמש כעוגן
   },
   formColumn: {
     backgroundColor: "#ffffff",
     borderRadius: "18px",
     boxShadow: "0 12px 32px rgba(15, 23, 42, 0.15)",
     padding: "28px 24px",
-    maxHeight: "calc(100vh - 140px)",
-    overflowY: "auto",
     boxSizing: "border-box",
     border: "1px solid rgba(148, 163, 184, 0.15)",
+    // הגדרות לקיבוע:
+    position: "fixed",
+    top: "120px",        // גובה מהקצה העליון
+    width: "380px",      // חובה להגדיר רוחב ב-fixed (התאם לפי הצורך)
+    maxHeight: "calc(100vh - 160px)",
+    overflowY: "auto",
   },
 };
 
