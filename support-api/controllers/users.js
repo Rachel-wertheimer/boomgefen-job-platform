@@ -5,7 +5,7 @@ exports.CreateUser = asyncHandler(async (req, res, next) => {
   try {
     console.log("CreateUser request body:", req.body);
     const userId = await CreateUserBL(req.body);
-    res.json({ message: 'User registered', userId });
+    res.json({ message: 'User registered or updated', userId });
   } catch (err) {
     res.status(500).json({ error: err.message });
     return next('CreateUser failed', 404);

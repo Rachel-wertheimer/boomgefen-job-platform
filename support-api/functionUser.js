@@ -1,5 +1,28 @@
 const pool = require("./db");
 const changeTracker = require("./services/changeTracking");
+// פונקציה למציאת מזהה משתמש לפי אימייל
+exports.findUserIdByEmail = async (email) => {
+  const [rows] = await pool.query('SELECT id FROM users WHERE email = ?', [email]);
+  if (rows.length > 0) return rows[0].id;
+  return null;
+};
+
+// UPDATE של משתמש קיים
+exports.updateUser = async (userId, user) => {
+  await pool.query(
+    `UPDATE users 
+     SET full_name = ?, phone = ?, type = ?, is_agree = ?, is_subscribed = ?
+     WHERE id = ?`,
+    [
+      user.full_name,
+      user.phone,
+      user.type,
+      user.is_agree,
+      user.is_subscribed,
+      userId,
+    ]
+  );
+};
 
 exports.insertUser = async (user) => {
   console.log("Inserting user:", user);

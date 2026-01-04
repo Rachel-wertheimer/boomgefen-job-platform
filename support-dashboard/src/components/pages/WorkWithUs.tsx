@@ -321,12 +321,12 @@ export default function WorkWithUs() {
             animation: animationStyles.spin,
         },
     };
-    const [isPrivacyPolicyChecked, setIsPrivacyPolicyChecked] = useState(false); // מצב חדש לצ'קבוקס מדיניות פרטיות
+    const [isPrivacyPolicyChecked, setIsPrivacyPolicyChecked] = useState(false); 
     const [isSubmitHover, setIsSubmitHover] = useState(false);
     const isDisabled = !formData.hasSentFiles || loading || !isPrivacyPolicyChecked;
 
     const handlePrivacyPolicyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setIsPrivacyPolicyChecked(e.target.checked); // עדכון מצב הצ'קבוקס
+        setIsPrivacyPolicyChecked(e.target.checked); 
     };
 
     const submitBtnStyle = {

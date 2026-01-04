@@ -43,7 +43,7 @@ export type NewUserData = {
 export const createUser = async (userData: NewUserData): Promise<number> => {
   const response = await axios.post(`${BASE_URL_USERS}/createuser`, {
     ...userData,
-    type: "USER",
+    type: "ARTIST",
     is_agree: false,
     is_subscribed: false,
     subscription_start: null,

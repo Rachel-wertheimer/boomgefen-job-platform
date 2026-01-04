@@ -18,3 +18,7 @@ support-api/.env
 .DS_Store
 Thumbs.db
 
+# Video files
+*.mp4
+
+
