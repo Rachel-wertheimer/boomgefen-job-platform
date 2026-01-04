@@ -25,7 +25,7 @@ const styles: Record<string, React.CSSProperties> = {
   formColumnWrapper: {
     gridColumn: "2 / 3",
     height: "100%",
-    position: "relative", // משמש כעוגן
+    position: "relative", 
   },
   formColumn: {
     backgroundColor: "#ffffff",
@@ -34,10 +34,9 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "28px 24px",
     boxSizing: "border-box",
     border: "1px solid rgba(148, 163, 184, 0.15)",
-    // הגדרות לקיבוע:
     position: "fixed",
-    top: "120px",        // גובה מהקצה העליון
-    width: "380px",      // חובה להגדיר רוחב ב-fixed (התאם לפי הצורך)
+    top: "120px",      
+    width: "380px",     
     maxHeight: "calc(100vh - 160px)",
     overflowY: "auto",
   },
