@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
 
   const handlePrivacyClick = () => {
     window.open(
-      "https://docs.google.com/document/d/1_vmLe3dvBRf4UBEBsUnwNq4jKcgC08Tn2345xyews3s/edit?usp=sharing",
+      "https://docs.google.com/document/d/1s6sJ2BUDZvYt_5UU9OxrHyLRo1PttTxhFyz2Gy99GIY/edit?usp=sharing",
       "_blank",
       "noopener,noreferrer"
     );
